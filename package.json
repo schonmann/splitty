@@ -2,7 +2,6 @@
   "name": "nodeit",
   "version": "1.0.0",
   "description": "Node It is a simple http server that expose current directory to web browser",
-  "main": "index.js",
   "scripts": {
     "test": "mocha"
   },
@@ -24,5 +23,9 @@
   "homepage": "https://github.com/shortty/nodeit#readme",
   "dependencies": {
     "mocha": "2.3.4"
-  }
+  },
+	"preferGlobal": true,
+	"bin":{
+		"nodeit":"index.js"
+	}
 }
