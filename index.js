@@ -12,7 +12,7 @@ var finalhandler = require('finalhandler');
 var serveStatic = require('serve-static');
 var request = require('request');
 var serve = serveStatic("./");
-
+var fs = require("fs");
 var server = http.createServer(function(req, res) {
   var done = finalhandler(req, res);
   if(isWebEditor(req)){
@@ -21,14 +21,14 @@ var server = http.createServer(function(req, res) {
     serve(req, res, done);    
   }    
 });
-
+var io = require('socket.io')(server);
 
 function isWebEditor(request){
-    return request.url.indexOf("editor") > 0;
+    return request.url.indexOf("_editor") > 0;
 };
 
 function handleWebEditor(req,res){
-    request('http://www.google.com', function (error, response, body) {
+    request('https://raw.githubusercontent.com/shortty/nodeit/master/editor/index.html', function (error, response, body) {
       if (!error && response.statusCode == 200) {
         res.writeHead(200, {"Content-Type": "text/html"});
         res.end(body);
@@ -36,6 +36,15 @@ function handleWebEditor(req,res){
       }
     })
 };
+
+io.on('connection', function (socket) {
+    socket.on('fileSave', function (data) {
+        fs.writeFile(__dirname + data.filePath, data.lines.join('\r\n'));
+        
+    });
+    
+});
+
 
 server.listen(8000);
 
