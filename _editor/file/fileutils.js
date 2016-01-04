@@ -10,7 +10,5 @@ var FileUtils = (function(){
     function exec(cmd){
         socket.emit("command", {command:cmd});
     };
-    
-    
     return self;
 })();
