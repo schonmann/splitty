@@ -6,6 +6,11 @@ var FileUtils = (function(){
     var openedFiles = []
     var currentFile = 0
     
+    const EVENTS = {FILE_OPEN:"FILE OPEN",FILE_CLOSE:"FILE CLOSE", FILE_SAVE:"FILE SAVE"}
+    Events.register(EVENTS.FILE_OPEN)
+    Events.register(EVENTS.FILE_CLOSE)
+    Events.register(EVENTS.FILE_SAVE)
+    
     self.setEditor = (editor) => _editor = editor
     
     self.setSocket = (socket) => _socket = socket
@@ -23,6 +28,7 @@ var FileUtils = (function(){
     var bindChangeAce = () =>_editor.env.document.on("change",save)
     
     function save(e){
+        Events.fire(EVENTS.FILE_SAVE,editor.getSession().doc.$lines.join("\r\n"))        
         _socket.emit('fileSave', {filePath: openedFiles[currentFile].fileName, lines: editor.getSession().doc.$lines})
     }
     
@@ -59,8 +65,17 @@ var FileUtils = (function(){
         self.setEditor(editor)
         self.setSocket(socket)
         self.bind()
+         
+        
     }
     
+    
+    
+    
+    
+    
+    
+    Events.when(EVENTS.FILE_SAVE,(file) => openedFiles[currentFile].data = file)
     
     return self
 })()
