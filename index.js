@@ -8,44 +8,55 @@
 */
 //var userArgs = process.argv.slice(2);
 
-var http         = require('http');
-var finalhandler = require('finalhandler');
-var serveStatic  = require('serve-static');
-var request      = require('request');
-var serve        = serveStatic("./");
-var editor       = serveStatic(__dirname);
-var fs           = require("fs");
+var http         = require('http')
+var finalhandler = require('finalhandler')
+var serveStatic  = require('serve-static')
+var request      = require('request')
+var serve        = serveStatic("./")
+var editor       = serveStatic(__dirname)
+var fs           = require("fs")
 var sys          = require('sys')
-var exec         = require('child_process').exec;
+var exec         = require('child_process').exec
 var child;
 
-var server = http.createServer(function(req, res) {
-  var done = finalhandler(req, res);
+var server = http.createServer((req, res) => {
+  var done = finalhandler(req, res)
   if(isWebEditor(req)){      
-    editor(req,res,done);
+    editor(req,res,done)
   }else{
-    serve(req, res, done);    
-  }    
-});
-var io = require('socket.io')(server);
+    serve(req, res, done)
+  }
+})
+var io = require('socket.io')(server)
 
 function isWebEditor(request){        
     return request.url.indexOf("_editor") > 0;
-};
-io.on('connection', function (socket) {
-    socket.on('fileSave', function (data) {
-        fs.writeFile(process.cwd() + data.filePath, data.lines.join('\r\n'));
-    });
+}
+
+io.on('connection', (socket) => {
+    socket.on('fileSave',  (data) => fs.writeFile(process.cwd() + data.filePath, data.lines.join('\r\n')))
     
-    socket.on('command',function(data){
-        console.log(data.command);
+    socket.on('openFile', (filePath) => {
+        fs.readFile(process.cwd()+filePath, "utf-8", (err, data) => {
+          if (err)  socket.emit("stderr",err)
+          else {
+              var fd = {}
+              fd.data = data
+              fd.fileName = filePath
+              socket.emit("openFile",fd)
+          }
+        })
+    })
+
+    socket.on('command',(data) =>{
+        console.log(data.command)
         child = exec(data.command, function (error, stdout, stderr) {
-          socket.emit("stdout",stdout);
-        });
-    });
-    
-});
-server.listen(8000);
+          socket.emit("stdout",stdout)
+        })
+    })
+
+})
+server.listen(8000)
 
 
 
