@@ -18,25 +18,15 @@
 </div>    
 <script src="/_editor/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/file/fileutils.js" type="text/javascript" charset="utf-8"></script>
+<script src="/_editor/shell/shell.js" type="text/javascript" charset="utf-8"></script>    
 <script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>  
 <script>
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/javascript");
     var socket = io();
-    
-    editor.env.document.on("change",function(e){        
-        socket.emit('fileSave', {filePath: '/readme.txt', lines: editor.getSession().doc.$lines});        
-    });
-    
-    editor.commands.addCommand({
-        name: "replace",
-        bindKey: {win: "Ctrl-O", mac: "Command-O"},
-        exec: FileUtils.ls
-    });
-    socket.on("stdout",function(data){
-        console.log(data);
-    })
+    FileUtils.setup(editor,socket);        
+    Shell.setup(editor,socket);
 </script>
 </body>
 </html>
