@@ -10,7 +10,6 @@ var Events = (() => {
     self.fire = (event,data) => {
         if(typeof(listeners[event]) === "object"){
             listeners[event].each((callback,idx) => {
-                console.log(typeof(callback))
                 callback(data)
             })
         }

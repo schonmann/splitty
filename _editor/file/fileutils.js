@@ -11,6 +11,9 @@ var FileUtils = (function(){
     Events.register(EVENTS.FILE_CLOSE)
     Events.register(EVENTS.FILE_SAVE)
     
+    
+    self.events = EVENTS
+    
     self.setEditor = (editor) => _editor = editor
     
     self.setSocket = (socket) => _socket = socket
@@ -19,9 +22,10 @@ var FileUtils = (function(){
         bindChangeAce()        
         _socket.on("openFile", (fd)=>{
             openedFiles.push(fd)
+            fd.current = true
             currentFile = openedFiles.length - 1
             self.openInEditor(fd)
-            
+            Events.fire(EVENTS.FILE_OPEN,fd)
         })
     }
     
@@ -43,10 +47,13 @@ var FileUtils = (function(){
     }
     
     self.openInEditor = (fd) => {
+        openedFiles.first((e)=> e.current === true ).current = false
         protectedChangeAce(()=> {
+            fd.current = true;
             _editor.setValue(fd.data)
             _editor.gotoLine(1)    
         })
+        Events.fire(EVENTS.FILE_OPEN,fd)
     }
     
     self.openByIndex = (index) => {    
@@ -68,13 +75,7 @@ var FileUtils = (function(){
          
         
     }
-    
-    
-    
-    
-    
-    
-    
+
     Events.when(EVENTS.FILE_SAVE,(file) => openedFiles[currentFile].data = file)
     
     return self

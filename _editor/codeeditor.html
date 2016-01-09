@@ -17,11 +17,15 @@
     </ul>
 </div>    
 <script src="/_editor/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="/_editor/utils/handlebars-v4.0.5.js" type="text/javascript" charset="utf-8"></script>
+<script src="/_editor/utils/templates.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/utils/array-utils.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/utils/events.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/file/fileutils.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/shell/shell.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/utils/shorcut.js" type="text/javascript" charset="utf-8"></script>
+
+<script src="/_editor/ui/editor.js" type="text/javascript" charset="utf-8"></script>
 
 
 <script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>  
@@ -34,6 +38,14 @@
     Shell.setup(editor,socket);
     Shortcut.setup(editor);
     editor.$blockScrolling = Infinity
+</script>
+    
+<script type="text/handlebars" id="template-footer">
+    <ul id="bottombar">
+        {{#each files}}
+            <li class="bottomItem current_{{current}}" onclick="FileUtils.openByIndex({{inc @index}})">{{name}}</li>
+        {{/each}}        
+    </ul>
 </script>
 </body>
 </html>
