@@ -62,6 +62,23 @@ var FileUtils = (function(){
             self.openInEditor(openedFiles[currentFile])
     }
     
+    self.closeByIndex = (index) => {
+        var toClose = openedFiles[index-1]
+        var isCurrent = toClose.current 
+        openedFiles.removeAt(index-1)
+        currentFile = 0
+        if(isCurrent && openedFiles.length > 0){
+            openedFiles[0].current = true;
+            
+            self.openInEditor(openedFiles[0])            
+        }else if(openedFiles.empty()){
+            protectedChangeAce(() => _editor.setValue(""))
+            
+        }
+        Events.fire(EVENTS.FILE_CLOSE,toClose)
+        
+    }
+    
     self.open = (filename) => {
         _socket.emit("openFile",filename)
     }

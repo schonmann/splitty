@@ -43,7 +43,9 @@
 <script type="text/handlebars" id="template-footer">
     <ul id="bottombar">
         {{#each files}}
-            <li class="bottomItem current_{{current}}" onclick="FileUtils.openByIndex({{inc @index}})">{{name}}</li>
+            <li class="bottomItem current_{{current}}" >
+            <span onclick="FileUtils.openByIndex({{inc @index}})">{{name}}</span>&nbsp
+            <span onclick="FileUtils.closeByIndex({{inc @index}})" class="close-file">x</span></li>
         {{/each}}        
     </ul>
 </script>
