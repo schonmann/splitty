@@ -53,11 +53,14 @@ var FileUtils = (function(){
         _socket.emit("openFile",filename)
     }
     
+    self.getOpenedFiles = () => openedFiles
+    
     self.setup = (editor,socket) =>{
         self.setEditor(editor)
         self.setSocket(socket)
         self.bind()
     }
+    
     
     return self
 })()

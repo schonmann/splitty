@@ -43,6 +43,10 @@ io.on('connection', (socket) => {
               var fd = {}
               fd.data = data
               fd.fileName = filePath
+              var spotSlash = filePath.split("/")
+              var spotSplit = filePath.split(".")
+              fd.extension = spotSplit[spotSplit.length - 1]
+              fd.name = spotSlash[spotSlash.length - 1]
               socket.emit("openFile",fd)
           }
         })
