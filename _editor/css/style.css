@@ -13,10 +13,29 @@ body{
     top:0;
     left:0;
     right:0;
-    height:0;
-    
+    height: 0px;
+    z-index: 3000;
+    transition: height 0.3s;  
+    overflow: hidden;
 }
 
+.textBox {
+    padding: 5px;
+    width: 60%;
+    font-size: 14px;
+    margin-top: 10px;
+    border: none;
+    background-color: transparent;
+    font-weight: bolder;
+    font-family: monospace;
+}
+input:focus{
+    outline: none;
+}
+#spanDescription {
+    font-family: monospace;
+    font-size: 12px;
+}
 #footer {
     position: absolute;
     left:0;
@@ -24,15 +43,11 @@ body{
     height:0;
     bottom:0;
     height:25;
+    
 }
 
 .blackGradient {
-    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#7d7e7d+0,0e0e0e+100;Black+3D */
-background: #272822; /* Old browsers */
-background: -moz-linear-gradient(top, #272822 0%, #0e0e0e 100%); /* FF3.6-15 */
-background: -webkit-linear-gradient(top, #272822 0%,#0e0e0e 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(to bottom, #272822 0%,#0e0e0e 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#272822', endColorstr='#0e0e0e',GradientType=0 ); /* IE6-9 */
+    background: #F1F1F1;
 }
 
 
@@ -57,4 +72,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#272822', end
     padding: 5px;
     margin-top: -4px; 
     
+}
+
+.closeButton{
+    font-size: 15px;
+    margin-top:12px;
+    margin-right:5px;
+    cursor: pointer;
+    float:right;
+    font-family: sans-serif;
 }

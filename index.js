@@ -1,9 +1,13 @@
 #! /usr/bin/env node
 
-/*Objetivo e criar um simple utilitario de linha de comando para expor paginas html, js e css atraves de um simples web server
-    A ideia e passar um arquivo (default index.html) para o nodeit e o nodeit criar um servidor para expor
-    Alem disso, seria interessante criar um diretorio de Downloads que facilite  troca de arquivos entre servidores
-    A cereja do bolo seria criar um modulo que permitisse ate a edicao de arquivo dentro do browser e tambem com o live preview dentro
+/*Objetivo e criar um simple utilitario de linha de comando para expor paginas html,
+    js e css atraves de um simples web server
+    A ideia e passar um arquivo (default index.html) para o nodeit e o nodeit criar 
+    um servidor para expor
+    Alem disso, seria interessante criar um diretorio de Downloads que facilite 
+    troca de arquivos entre servidores
+    A cereja do bolo seria criar um modulo que permitisse ate a edicao de arquivo 
+    dentro do browser e tambem com o live preview dentro
     da mesma pagina, seria bem doido
 */
 //var userArgs = process.argv.slice(2);
@@ -34,7 +38,8 @@ function isWebEditor(request){
 }
 
 io.on('connection', (socket) => {
-    socket.on('fileSave',  (data) => fs.writeFile(process.cwd() + data.filePath, data.lines.join('\r\n')))
+    socket.on('fileSave',  (data) => fs.writeFile(process.cwd() + data.filePath,
+                                                  data.lines.join('\r\n')))
     
     socket.on('openFile', (filePath) => {
         fs.readFile(process.cwd()+filePath, "utf-8", (err, data) => {

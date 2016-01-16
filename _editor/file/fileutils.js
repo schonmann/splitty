@@ -32,8 +32,11 @@ var FileUtils = (function(){
     var bindChangeAce = () =>_editor.env.document.on("change",save)
     
     function save(e){
-        Events.fire(EVENTS.FILE_SAVE,editor.getSession().doc.$lines.join("\r\n"))        
-        _socket.emit('fileSave', {filePath: openedFiles[currentFile].fileName, lines: editor.getSession().doc.$lines})
+        if(openedFiles[currentFile] && openedFiles[currentFile].fileName){
+            Events.fire(EVENTS.FILE_SAVE,editor.getSession().doc.$lines.join("\r\n"))            
+            _socket.emit('fileSave', {filePath: openedFiles[currentFile].fileName, lines: editor.getSession().doc.$lines})    
+        }
+        
     }
     
     var unbindingChangeAce = () => _editor.session.removeListener('change',save);
@@ -47,6 +50,7 @@ var FileUtils = (function(){
     }
     
     self.openInEditor = (fd) => {
+        if(!fd) return
         openedFiles.first((e)=> e.current === true ).current = false
         protectedChangeAce(()=> {
             fd.current = true;
@@ -56,7 +60,8 @@ var FileUtils = (function(){
         Events.fire(EVENTS.FILE_OPEN,fd)
     }
     
-    self.openByIndex = (index) => {    
+    self.openByIndex = (index) => {  
+        if(openedFiles.empty() || openedFiles.length < index)return
         currentFile = index - 1
         if(openedFiles.length >= currentFile)
             self.openInEditor(openedFiles[currentFile])

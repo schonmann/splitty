@@ -6,7 +6,7 @@ var Shortcut = (()=>{
     
     self.setup = (editor) => {
         self.setEditor(editor)
-        _editor.commands.addCommand({name: "open",bindKey: {win: "Ctrl-O", mac: "Command-O"},exec: Shell.ls})
+        _editor.commands.addCommand({name: "open",bindKey: {win: "Ctrl-O", mac: "Command-O"},exec: EditorUI.openFile})
         _editor.commands.addCommand({name: "refresh right side",bindKey: {win: "Ctrl-R", mac: "Command-R"},exec: Shell.ls})
         
         var indexed = [1,2,3,4]

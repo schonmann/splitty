@@ -4,7 +4,13 @@
   <link rel="stylesheet" href="/_editor/css/style.css"/>
 </head>
 <body>
-<div id="header" class="blackGradient"></div> 
+<div id="header" class="blackGradient">    
+    <span id="spanDescription"> open > </span>
+    <span>
+        <input type="text" id="optionValue" class="textBox" />
+    </span>
+    <span class="closeButton" onclick="javascript:EditorUI.closeInputBox()"> x </span>
+</div> 
 <div id="editor">
  function foo(items) {
     var x = "All this is syntax highlighted";
@@ -13,7 +19,7 @@
 </div>
 <div id="footer" style="background-color:#6B6B6B">
     <ul id="bottombar">
-        <li class="bottomItem">index.js</li>
+        
     </ul>
 </div>    
 <script src="/_editor/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -38,6 +44,13 @@
     Shell.setup(editor,socket);
     Shortcut.setup(editor);
     editor.$blockScrolling = Infinity
+    
+    document.getElementById("optionValue").addEventListener("keyup",(event) =>{
+        if(event.code === "Enter") EditorUI.onEnterOption(document.getElementById("optionValue").value)
+    });
+    
+    editor.focus()
+    
 </script>
     
 <script type="text/handlebars" id="template-footer">
