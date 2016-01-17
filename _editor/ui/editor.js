@@ -15,23 +15,48 @@ var EditorUI = (()=> {
     
     
     
-    self.openBox = () => _("header").style.height = "50px"
+    self.openBox = () => {
+        _("header").style.height = "50px"
+        _('foundFiles').style.height = "auto"
+    }
     
     
     self.onEnterOption = (value) => {
-        FileUtils.open(value)
-        self.closeInputBox()
+       self.openSelectedFile(value)        
+    }
+    
+    self.onkeyup = (value) => {        
+        Shell.find(value, (founds) => {
+            var ctx = {};
+            ctx.files = [];
+            founds.each((elem,i)=>{
+                var obj = {};
+                obj.name = elem.split("/").last()
+                obj.path = elem
+                ctx.files.push(obj)    
+            })
+            Template.render(ctx,"template-found-files","foundFiles") 
+        })        
     }
     
     self.openFile = () => {
         self.openBox()
-        _("optionValue").value = "/"
+        _("optionValue").value = ""
         _("optionValue").focus()
     };
     
     self.closeInputBox = () => {
-        document.getElementById('header').style.height = '0px'
+        _('header').style.height = '0px'
+        var list = _('foundFiles')
+        list.innerHTML = ""
+        list.style.height = "0px"
         editor.focus()    
     }
+    
+    self.openSelectedFile = (file) => {        
+         FileUtils.open("/"+file)
+        self.closeInputBox()
+    }
+    
     return self
 })()

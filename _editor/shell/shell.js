@@ -4,15 +4,21 @@ var Shell = (function(){
     var _socket = null
     var stdioBuffer =  []
     var stderrBuffer =  []
-    
+    var stdioCallback = null
     self.setEditor = (editor) => _editor = editor
     
     self.setSocket = (socket) => _socket = socket
     
     self.ls = () => exec("ls")
 
+    self.exec = (command,params,callback) => exec(command,params,callback)
+    
     self.bind = () => {
-        socket.on("stdout",(data)=>stdioBuffer.push(data))
+        socket.on("stdout",(data)=>{
+            stdioBuffer.push(data)
+            if (typeof(stdioCallback) == "function")
+                stdioCallback(data)
+        })
         socket.on("stderr",(data)=>stderrBuffer.push(data))
     }
     
@@ -20,7 +26,7 @@ var Shell = (function(){
     
     self.clearStdErr = () => stderrBuffer = []
 
-    self.stdio = () => stdioBuffer.join("\r\n")
+    self.stdio = () => stdioBuffer.join("\n")
 
     self.setup = (editor,socket) => {
         self.setEditor(editor)
@@ -28,7 +34,15 @@ var Shell = (function(){
         self.bind()
     }
     
-    function exec(cmd){ socket.emit("command", {command:cmd}) }
+    self.find = (value,callback) => {
+        socket.emit("find", {text:value})
+        socket.on("find",callback)
+    }
+    
+    function exec(cmd,params,callback){ 
+        stdioCallback = callback
+        socket.emit("command", {command:cmd,params:params}) 
+    }
     
     return self
 })();

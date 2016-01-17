@@ -1,17 +1,8 @@
 #! /usr/bin/env node
 
-/*Objetivo e criar um simple utilitario de linha de comando para expor paginas html,
-    js e css atraves de um simples web server
-    A ideia e passar um arquivo (default index.html) para o nodeit e o nodeit criar 
-    um servidor para expor
-    Alem disso, seria interessante criar um diretorio de Downloads que facilite 
-    troca de arquivos entre servidores
-    A cereja do bolo seria criar um modulo que permitisse ate a edicao de arquivo 
-    dentro do browser e tambem com o live preview dentro
-    da mesma pagina, seria bem doido
-*/
-//var userArgs = process.argv.slice(2);
 
+//var userArgs = process.argv.slice(2);
+console.log(process.platform)
 var http         = require('http')
 var finalhandler = require('finalhandler')
 var serveStatic  = require('serve-static')
@@ -21,6 +12,8 @@ var editor       = serveStatic(__dirname)
 var fs           = require("fs")
 var sys          = require('sys')
 var exec         = require('child_process').exec
+const spawn      = require('child_process').spawn
+require('shelljs/global');
 var child;
 
 var server = http.createServer((req, res) => {
@@ -37,9 +30,16 @@ function isWebEditor(request){
     return request.url.indexOf("_editor") > 0;
 }
 
+function getFileSeparator(){
+    var isWin = /^win/.test(process.platform);
+    if(isWin) return "\r\n"
+    return "\n"
+}
+
 io.on('connection', (socket) => {
-    socket.on('fileSave',  (data) => fs.writeFile(process.cwd() + data.filePath,
-                                                  data.lines.join('\r\n')))
+    socket.on('fileSave',
+                    (data) => fs.writeFile(process.cwd() 
+                            + data.filePath,data.lines.join(getFileSeparator())))
     
     socket.on('openFile', (filePath) => {
         fs.readFile(process.cwd()+filePath, "utf-8", (err, data) => {
@@ -57,17 +57,20 @@ io.on('connection', (socket) => {
         })
     })
 
+    socket.on("find",(data) => {
+        var out = find('./').filter((file) => file.match(data.text))
+        socket.emit("find",out.slice(0,10))
+    })
     socket.on('command',(data) =>{
-        console.log(data.command)
-        child = exec(data.command, function (error, stdout, stderr) {
-          socket.emit("stdout",stdout)
-        })
+        const cmd = spawn(data.command, data.params);
+        cmd.stdout.on('data', (data) => {
+            var buff = new Buffer(data);            
+            socket.emit("stdout",buff.toString("utf-8"))
+        });
     })
 
 })
 server.listen(8000)
-
-
 
 
 

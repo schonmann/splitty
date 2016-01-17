@@ -4,13 +4,16 @@
   <link rel="stylesheet" href="/_editor/css/style.css"/>
 </head>
 <body>
+<div id="masterHead">
 <div id="header" class="blackGradient">    
     <span id="spanDescription"> open > </span>
     <span>
-        <input type="text" id="optionValue" class="textBox" />
+        <input tabindex="1" type="text" id="optionValue" class="textBox"  />
     </span>
     <span class="closeButton" onclick="javascript:EditorUI.closeInputBox()"> x </span>
-</div> 
+</div>
+<div id="foundFiles"></div>
+</div>    
 <div id="editor">
  function foo(items) {
     var x = "All this is syntax highlighted";
@@ -47,10 +50,23 @@
     
     document.getElementById("optionValue").addEventListener("keyup",(event) =>{
         if(event.code === "Enter") EditorUI.onEnterOption(document.getElementById("optionValue").value)
+        else EditorUI.onkeyup(document.getElementById("optionValue").value)
+    });
+    
+    
+    editor.on("focus", function() { 
+        setTimeout(EditorUI.closeInputBox,100)
     });
     
     editor.focus()
     
+    function executeAction(e , value) {
+        var nextEl = document.querySelector('[tabindex="'+(parseInt(e.target.getAttribute("tabindex")) + 1)+'"]')
+        var nextPrev = document.querySelector('[tabindex="'+(parseInt(e.target.getAttribute("tabindex")) - 1)+'"]')
+        var exec =  e.keyCode == 13 && EditorUI.openSelectedFile(value)
+        exec = exec || (e.keyCode == 40 && nextEl && nextEl.focus()) || (e.keyCode == 38 && nextPrev && nextPrev.focus())
+        return exec;        
+    }   
 </script>
     
 <script type="text/handlebars" id="template-footer">
@@ -62,5 +78,20 @@
         {{/each}}        
     </ul>
 </script>
+<script type="text/handlebars" id="template-found-files">
+    <ul >
+        {{#each files}}
+            <li tabindex="{{inc (inc @index)}}" onfocus="this.classList.add('selected');" 
+                onblur="this.classList.remove('selected');" 
+                onclick="EditorUI.openSelectedFile('{{path}}')"
+                onkeyup="executeAction(event,'{{path}}')">
+                <div style="width:100%">
+                    <span style="width:100%">{{name}}</span><br/>
+                    <span style="width:100%;font-size:12px;color:gray;">{{path}}</span>
+                </div>
+            </li>
+        {{/each}}        
+    </ul>
+</script> 
 </body>
 </html>

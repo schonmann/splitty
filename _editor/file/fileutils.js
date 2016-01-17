@@ -81,7 +81,6 @@ var FileUtils = (function(){
             
         }
         Events.fire(EVENTS.FILE_CLOSE,toClose)
-        
     }
     
     self.open = (filename) => {
@@ -94,10 +93,8 @@ var FileUtils = (function(){
         self.setEditor(editor)
         self.setSocket(socket)
         self.bind()
-         
-        
     }
-
+    
     Events.when(EVENTS.FILE_SAVE,(file) => openedFiles[currentFile].data = file)
     
     return self

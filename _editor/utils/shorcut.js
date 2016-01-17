@@ -6,8 +6,8 @@ var Shortcut = (()=>{
     
     self.setup = (editor) => {
         self.setEditor(editor)
-        _editor.commands.addCommand({name: "open",bindKey: {win: "Ctrl-O", mac: "Command-O"},exec: EditorUI.openFile})
-        _editor.commands.addCommand({name: "refresh right side",bindKey: {win: "Ctrl-R", mac: "Command-R"},exec: Shell.ls})
+        _editor.commands.addCommand({name: "open",bindKey: {win: "Ctrl+Shift-O", mac: "Command+Shift-O"},exec: EditorUI.openFile})
+        _editor.commands.addCommand({name: "refresh right side",bindKey: {win: "Ctrl-R", mac: "Command+Shift-Z"},exec: refreshRightSide})
         
         var indexed = [1,2,3,4]
         indexed.forEach((el) => {
@@ -25,5 +25,10 @@ var Shortcut = (()=>{
     function tryOpenFile  ()  {        
         FileUtils.openByIndex(parseInt(this))
     }
+    
+    function refreshRightSide(){
+        
+    }
+    
     return self;
 })()
