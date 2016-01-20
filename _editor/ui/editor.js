@@ -3,40 +3,26 @@ var EditorUI = (()=> {
     var currentActionContext = null
     
     _ = (id) => document.getElementById(id)
-    function renderOpenFiles(){
-         var ctx = {};
-        ctx.files = FileUtils.getOpenedFiles()        
-        Template.render(ctx,"template-footer","footer")
-        editor.focus()
-    }
-    
-    Events.when(FileUtils.events.FILE_OPEN, renderOpenFiles)
-    Events.when(FileUtils.events.FILE_CLOSE, renderOpenFiles)
     
     
     
     self.openBox = () => {
         _("header").style.height = "50px"
         _('foundFiles').style.height = "auto"
+        _("optionValue").focus()
     }
     
+    self.setActionText = (value) => _("optionValue").value = value
+    self.getActionText = () => _("optionValue").value
     
-    self.onEnterOption = (value) => {
-       self.openSelectedFile(value)        
+    
+    self.onEnterOption = (value) => {       
+        currentActionContext.execute(value);
+        self.closeInputBox()
     }
     
     self.onkeyup = (value) => {        
-        Shell.find(value, (founds) => {
-            var ctx = {};
-            ctx.files = [];
-            founds.each((elem,i)=>{
-                var obj = {};
-                obj.name = elem.split("/").last()
-                obj.path = elem
-                ctx.files.push(obj)    
-            })
-            Template.render(ctx,"template-found-files","foundFiles") 
-        })        
+        currentActionContext.onkeyup(value)        
     }
     
     self.openFile = () => {
@@ -51,11 +37,15 @@ var EditorUI = (()=> {
         list.innerHTML = ""
         list.style.height = "0px"
         editor.focus()    
-    }
-    
-    self.openSelectedFile = (file) => {        
-         FileUtils.open("/"+file)
-        self.closeInputBox()
+    }    
+    self.setupContext = (context) => {
+      currentActionContext = context
+      self.openBox();
+      self.setLabelAction(context.getLabelAction())
+      currentActionContext.init(_("optionValue"))
+    } 
+    self.setLabelAction = (value) => {
+        _("spanDescription").innerHTML = "&nbsp;" + value + " >"
     }
     
     return self

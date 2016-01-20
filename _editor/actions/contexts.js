@@ -1,0 +1,1 @@
+Shortcut.registerContext("open",FileAction);

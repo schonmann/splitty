@@ -6,7 +6,7 @@
 <body>
 <div id="masterHead">
 <div id="header" class="blackGradient">    
-    <span id="spanDescription"> open > </span>
+    <span id="spanDescription"></span>
     <span>
         <input tabindex="1" type="text" id="optionValue" class="textBox"  />
     </span>
@@ -16,8 +16,7 @@
 </div>    
 <div id="editor">
  function foo(items) {
-    var x = "All this is syntax highlighted";
-    return x;
+    return "Hello Node IT!!";
  }
 </div>
 <div id="footer" style="background-color:#6B6B6B">
@@ -32,9 +31,11 @@
 <script src="/_editor/utils/events.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/file/fileutils.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/shell/shell.js" type="text/javascript" charset="utf-8"></script>
-<script src="/_editor/utils/shorcut.js" type="text/javascript" charset="utf-8"></script>
-
+<script src="/_editor/utils/shortcut.js" type="text/javascript" charset="utf-8"></script>
+<script src="/_editor/actions/fileaction.js" type="text/javascript" charset="utf-8"></script>    
+<script src="/_editor/actions/contexts.js" type="text/javascript" charset="utf-8"></script> 
 <script src="/_editor/ui/editor.js" type="text/javascript" charset="utf-8"></script>
+
 
 
 <script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>  
@@ -60,13 +61,7 @@
     
     editor.focus()
     
-    function executeAction(e , value) {
-        var nextEl = document.querySelector('[tabindex="'+(parseInt(e.target.getAttribute("tabindex")) + 1)+'"]')
-        var nextPrev = document.querySelector('[tabindex="'+(parseInt(e.target.getAttribute("tabindex")) - 1)+'"]')
-        var exec =  e.keyCode == 13 && EditorUI.openSelectedFile(value)
-        exec = exec || (e.keyCode == 40 && nextEl && nextEl.focus()) || (e.keyCode == 38 && nextPrev && nextPrev.focus())
-        return exec;        
-    }   
+    
 </script>
     
 <script type="text/handlebars" id="template-footer">
@@ -78,13 +73,25 @@
         {{/each}}        
     </ul>
 </script>
+   
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 <script type="text/handlebars" id="template-found-files">
     <ul >
         {{#each files}}
             <li tabindex="{{inc (inc @index)}}" onfocus="this.classList.add('selected');" 
-                onblur="this.classList.remove('selected');" 
-                onclick="EditorUI.openSelectedFile('{{path}}')"
-                onkeyup="executeAction(event,'{{path}}')">
+                onblur="this.classList.remove('selected');"                
+                onkeyup="FileAction.executeAction(event,'{{path}}')">
                 <div style="width:100%">
                     <span style="width:100%">{{name}}</span><br/>
                     <span style="width:100%;font-size:12px;color:gray;">{{path}}</span>

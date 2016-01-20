@@ -29,7 +29,7 @@ body{
     font-weight: bolder;
     font-family: monospace;
 }
-input:focus{
+li,input:focus{
     outline: none;
 }
 #spanDescription {
