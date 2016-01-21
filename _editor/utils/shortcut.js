@@ -10,10 +10,10 @@ var Shortcut = (()=>{
         _editor.commands.addCommand({name: "open",bindKey: {win: "Ctrl+Shift-O", mac: "Command+Shift-O"},
                                      exec: resolveShortcut.bind({action:"open"})})
         
-        _editor.commands.addCommand({name: "refresh right side",bindKey: {win: "Ctrl-L", mac: "Command-L"},exec:                        
-                                     resolveShortcut.bind({action:"open"})})
+        _editor.commands.addCommand({name: "set right side",bindKey: {win: "Ctrl-L", mac: "Command-L"},exec:                        
+                                     resolveShortcut.bind({action:"set right side"})})
         
-        var indexed = [1,2,3,4]
+        var indexed = [1,2,3,4,5,6,7,8,9]
         indexed.forEach((el) => {
             _editor.commands.addCommand(
                 {name: "open file "+el,
