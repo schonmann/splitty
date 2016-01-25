@@ -122,3 +122,7 @@ li,input:focus{
     background-color: #272D38 !important;
     color:white !important;
 }
+
+iframe, object, embed {
+        max-width: 100%;
+}

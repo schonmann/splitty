@@ -15,9 +15,11 @@ var Shell = (function(){
     
     self.bind = () => {
         socket.on("stdout",(data)=>{
+            console.log(data)
             stdioBuffer.push(data)
             if (typeof(stdioCallback) == "function")
                 stdioCallback(data)
+            
         })
         socket.on("stderr",(data)=>stderrBuffer.push(data))
     }

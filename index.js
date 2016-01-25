@@ -11,7 +11,7 @@ var serve        = serveStatic("./")
 var editor       = serveStatic(__dirname)
 var fs           = require("fs")
 var sys          = require('sys')
-var exec         = require('child_process').exec
+
 const spawn      = require('child_process').spawn
 require('shelljs/global');
 var child;
@@ -62,10 +62,13 @@ io.on('connection', (socket) => {
         socket.emit("find",out.slice(0,10))
     })
     socket.on('command',(data) =>{
-        const cmd = spawn(data.command, data.params);
-        cmd.stdout.on('data', (data) => {
-            var buff = new Buffer(data);            
-            socket.emit("stdout",buff.toString("utf-8"))
+        var tokens = data.command.split(" ")
+        var cmd = tokens[0]
+        tokens.splice(0,1)
+        console.log(tokens)
+        exec(cmd, tokens, function(code, stdout, stderr) {              
+              var buff = new Buffer(stdout);            
+              socket.emit("stdout",buff.toString("utf-8"))
         });
     })
 

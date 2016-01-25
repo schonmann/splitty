@@ -12,6 +12,8 @@ var Shortcut = (()=>{
         
         _editor.commands.addCommand({name: "set right side",bindKey: {win: "Ctrl-L", mac: "Command-L"},exec:                        
                                      resolveShortcut.bind({action:"set right side"})})
+        _editor.commands.addCommand({name: "bing search",bindKey: {win: "Ctrl-B", mac: "Command-B"},exec:                        
+                                     resolveShortcut.bind({action:"bing search"})})
         
         var indexed = [1,2,3,4,5,6,7,8,9]
         indexed.forEach((el) => {
