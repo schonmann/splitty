@@ -33,9 +33,9 @@ var FileAction = (()=>{
         })
     }
     
-    self.init = () => {
+    self.init = (txtValue) => txtValue.value = ""
         
-    }
+    
     
     self.getLabelAction = () => "open"
     

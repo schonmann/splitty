@@ -12,11 +12,15 @@ var Shortcut = (()=>{
         
         _editor.commands.addCommand({name: "set right side",bindKey: {win: "Ctrl-L", mac: "Command-L"},exec:                        
                                      resolveShortcut.bind({action:"set right side"})})
-        _editor.commands.addCommand({name: "bing search",bindKey: {win: "Ctrl-B", mac: "Command-B"},exec:                        
+
+        _editor.commands.addCommand({name: "bing search",bindKey: {win: "Ctrl+Shift-B", mac: "Command+Shift-B"},exec:                        
                                      resolveShortcut.bind({action:"bing search"})})
         
+        _editor.commands.addCommand({name: "proportion",bindKey: {win: "Ctrl+Shift-P", mac: "Command+Shift-P"},exec:                        
+                                     resolveShortcut.bind({action:"proportion"})})
+        
         var indexed = [1,2,3,4,5,6,7,8,9]
-        indexed.forEach((el) => {
+        indexed.forEach((el) => {   
             _editor.commands.addCommand(
                 {name: "open file "+el,
                  bindKey: {
