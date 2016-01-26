@@ -2,7 +2,6 @@
 
 
 //var userArgs = process.argv.slice(2);
-console.log(process.platform)
 var http         = require('http')
 var finalhandler = require('finalhandler')
 var serveStatic  = require('serve-static')

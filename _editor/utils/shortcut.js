@@ -19,6 +19,9 @@ var Shortcut = (()=>{
         _editor.commands.addCommand({name: "proportion",bindKey: {win: "Ctrl+Shift-P", mac: "Command+Shift-P"},exec:                        
                                      resolveShortcut.bind({action:"proportion"})})
         
+        _editor.commands.addCommand({name: "terminal",bindKey: {win: "Ctrl+Shift-Z", mac: "Command+Shift-Z"},exec:                        
+                                     resolveShortcut.bind({action:"terminal"})})                                    
+        
         var indexed = [1,2,3,4,5,6,7,8,9]
         indexed.forEach((el) => {   
             _editor.commands.addCommand(

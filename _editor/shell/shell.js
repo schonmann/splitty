@@ -11,11 +11,10 @@ var Shell = (function(){
     
     self.ls = () => exec("ls")
 
-    self.exec = (command,params,callback) => exec(command,params,callback)
+    self.exec = (command,callback) => exec(command,callback)
     
     self.bind = () => {
         socket.on("stdout",(data)=>{
-            console.log(data)
             stdioBuffer.push(data)
             if (typeof(stdioCallback) == "function")
                 stdioCallback(data)
@@ -41,9 +40,9 @@ var Shell = (function(){
         socket.on("find",callback)
     }
     
-    function exec(cmd,params,callback){ 
+    function exec(cmd,callback){ 
         stdioCallback = callback
-        socket.emit("command", {command:cmd,params:params}) 
+        socket.emit("command", {command:cmd}) 
     }
     
     return self

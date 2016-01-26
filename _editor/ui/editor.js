@@ -8,7 +8,7 @@ var EditorUI = (()=> {
     
     self.openBox = () => {
         _("header").style.height = "50px"
-        _('foundFiles').style.display = "none"
+        _('ctxout').style.display = "none"
         _("optionValue").focus()
     }
     
@@ -17,8 +17,9 @@ var EditorUI = (()=> {
     
     
     self.onEnterOption = (value) => {       
-        currentActionContext.execute(value);
-        self.closeInputBox()
+        var ret = currentActionContext.execute(value);
+        if(ret < 0 || typeof(ret) === "undefined")
+            self.closeInputBox()
     }
     
     self.onkeyup = (value) => {        
@@ -33,7 +34,7 @@ var EditorUI = (()=> {
     
     self.closeInputBox = () => {
         _('header').style.height = '0px'
-        var list = _('foundFiles')
+        var list = _('ctxout')
         list.innerHTML = ""
         list.style.display = "none"
         editor.focus()    

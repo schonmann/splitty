@@ -83,7 +83,7 @@ li,input:focus{
     font-family: sans-serif;
 }
 
-#foundFiles{
+#ctxout{
     position: absolute;
     top:40px;
     left: 5px;
@@ -98,18 +98,18 @@ li,input:focus{
     cursor: pointer;
 }
 
-#foundFiles ul {
+#ctxout ul {
     list-style: none;
     margin: 0px;
     padding: 0px;
 }
 
-#foundFiles ul li {
+#ctxout ul li {
     list-style: none;    
     padding: 8px;
     border-bottom: 1px solid #969696;
 }
-#foundFiles ul li:nth-child(odd) {
+#ctxout ul li:nth-child(odd) {
    background-color: #dedede;
 }
 
@@ -118,7 +118,7 @@ li,input:focus{
     color:white !important;
 }
 
-#foundFiles ul li:hover{
+#ctxout ul li:hover{
     background-color: #272D38 !important;
     color:white !important;
 }

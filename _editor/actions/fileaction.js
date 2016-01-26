@@ -29,8 +29,8 @@ var FileAction = (()=>{
                 obj.path = elem
                 ctx.files.push(obj)    
             })
-            document.getElementById('foundFiles').style.display = "block"
-            Template.render(ctx,"template-found-files","foundFiles") 
+            document.getElementById('ctxout').style.display = "block"
+            Template.render(ctx,"template-found-files","ctxout") 
         })
     }
     
