@@ -61,7 +61,7 @@ io.on('connection', (socket) => {
         socket.emit("find",out.slice(0,10))
     })
     socket.on('command',(data) =>{
-        var child = exec(data.command, {async:true});
+        var child = exec(data.command, {async:true, silent:true});
         child.stdout.on('data', (stdout) => {
             var buff = new Buffer(stdout);            
             socket.emit("stdout",buff.toString("utf-8"))
