@@ -62,13 +62,10 @@ io.on('connection', (socket) => {
         socket.emit("find",out.slice(0,10))
     })
     socket.on('command',(data) =>{
-        var tokens = data.command.split(" ")
-        var cmd = tokens[0]
-        tokens.splice(0,1)
-        console.log(tokens)
-        exec(cmd, tokens, function(code, stdout, stderr) {              
-              var buff = new Buffer(stdout);            
-              socket.emit("stdout",buff.toString("utf-8"))
+        var child = exec(data.command, {async:true});
+        child.stdout.on('data', (stdout) => {
+            var buff = new Buffer(stdout);            
+            socket.emit("stdout",buff.toString("utf-8"))
         });
     })
 
