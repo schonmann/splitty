@@ -9,7 +9,7 @@ var ProportionAction = (()=>{
     }    
     self.onkeyup = (value) => {}
     self.init = (txtValue) => {txtValue.value = ""}
-    self.getLabelAction = () => "wide"
+    self.getLabelAction = () => "right side size"
     
     return self;
 })();

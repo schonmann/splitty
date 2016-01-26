@@ -8,7 +8,7 @@ var EditorUI = (()=> {
     
     self.openBox = () => {
         _("header").style.height = "50px"
-        _('foundFiles').style.height = "auto"
+        _('foundFiles').style.display = "none"
         _("optionValue").focus()
     }
     
@@ -35,7 +35,7 @@ var EditorUI = (()=> {
         _('header').style.height = '0px'
         var list = _('foundFiles')
         list.innerHTML = ""
-        list.style.height = "0px"
+        list.style.display = "none"
         editor.focus()    
     }    
     self.setupContext = (context) => {
