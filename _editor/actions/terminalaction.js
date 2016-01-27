@@ -5,7 +5,7 @@ var TerminalAction = (()=>{
             var ctxout = document.getElementById('ctxout')
             ctxout.focus()
             ctxout.style.display = "block"
-            ctxout.innerHTML = "<pre>"+stdout+"</pre>"
+            ctxout.innerHTML = "<pre>"+Shell.stdio()+"</pre>"
             document.getElementById('optionValue').value = ""   
         })
         return 1
