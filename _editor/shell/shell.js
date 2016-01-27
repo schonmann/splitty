@@ -41,6 +41,7 @@ var Shell = (function(){
     }
     
     function exec(cmd,callback){ 
+        stdioBuffer = []
         stdioCallback = callback
         socket.emit("command", {command:cmd}) 
     }
