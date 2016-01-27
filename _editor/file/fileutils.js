@@ -6,6 +6,10 @@ var FileUtils = (function(){
     var openedFiles = []
     var currentFile = 0
     
+    const ACE_SESSION_MAP = {
+        "js":"javascript"
+    }
+    
     const EVENTS = {FILE_OPEN:"FILE OPEN",FILE_CLOSE:"FILE CLOSE", FILE_SAVE:"FILE SAVE"}
     Events.register(EVENTS.FILE_OPEN)
     Events.register(EVENTS.FILE_CLOSE)
@@ -54,6 +58,10 @@ var FileUtils = (function(){
         openedFiles.first((e)=> e.current === true ).current = false
         protectedChangeAce(()=> {
             fd.current = true;
+            var mode = fd.extension
+            if(ACE_SESSION_MAP[fd.extension])
+                mode = ACE_SESSION_MAP[fd.extension]
+            _editor.getSession().setMode("ace/mode/"+mode);
             _editor.setValue(fd.data)
             _editor.gotoLine(1)    
         })
