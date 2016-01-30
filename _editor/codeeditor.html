@@ -65,6 +65,14 @@ Ctrl+Shift-S, Command+Shift-S => input[text] split editor open a specific file o
             var prmstr = window.parent.location.search.substr(1)
             return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {}
         }
+        self.prop = (prop,value) => {
+            if(typeof(value) !== "undefined"){
+                localStorage["$$nodeit$$"+prop] = value    
+            }else return localStorage["$$nodeit$$"+prop]
+            
+        }
+        self.hasProp = (prop) => typeof(localStorage["$$nodeit$$"+prop]) !== "undefined"
+    
         return self;
     })();
     document.addEventListener("DOMContentLoaded", function(event) { 
