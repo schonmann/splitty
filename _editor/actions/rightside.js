@@ -15,5 +15,15 @@ var RightSideAction = (()=>{
     
     
     Shortcut.bindEvent("set right side",{win: "Ctrl-L", mac: "Command-L"},self)
+    
+    Shortcut.bindEvent("set right side",{win: "Ctrl-L", mac: "Command-L"},self)
+    
+    Shortcut.bindEvent("refresh right side",{mac:"Ctrl+Shift-L", win:"Ctrl+Shift-L"},{
+        action:()=>{
+            var frame = window.parent.document.getElementById('rightSideFrame')
+            var src = frame.getAttribute('src')
+            frame.setAttribute('src',src)
+        }
+    })
     return self;
 })();
