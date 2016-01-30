@@ -2,9 +2,13 @@ var RightSideAction = (()=>{
     var self = {};
     
     self.execute = (value) => {
-        window.parent.document.getElementById("rightSideFrame").setAttribute('src',value)
+        self.setUrl(value)
         ProportionAction.execute("50")
-    }    
+    }
+    self.setUrl = (url) => {
+       var doc = window.parent.document
+       doc.getElementById("rightSideFrame").setAttribute('src',value)
+    }
     self.onkeyup = (value) => {}
     self.init = () => {}
     self.getLabelAction = () => ">>>>"
