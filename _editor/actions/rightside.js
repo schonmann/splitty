@@ -3,6 +3,7 @@ var RightSideAction = (()=>{
     
     self.execute = (value) => {
         window.parent.document.getElementById("rightSideFrame").setAttribute('src',value)
+        ProportionAction.execute("50")
     }    
     self.onkeyup = (value) => {}
     self.init = () => {}

@@ -5,6 +5,9 @@ var BingSearchAction = (()=>{
         window.parent.document
                         .getElementById("rightSideFrame")
                         .setAttribute('src','http://www.bing.com/search?q='+value)
+        
+        ProportionAction.execute("50")                
+                        
     }    
     self.onkeyup = (value) => {}
     self.init = (txtBox) => {txtBox.value = ""}
