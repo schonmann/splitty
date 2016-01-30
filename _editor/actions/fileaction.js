@@ -60,6 +60,18 @@ var FileAction = (()=>{
         
     
     Shortcut.bindEvent("open",{mac:"Command+Shift-O", win:"Ctrl+Shift-O"},self)
+    
+    
+    Shortcut.bindEvent("open next",{mac:"Option-Left", win:"Alt-Left"},{
+        action:()=> {
+            FileUtils.openByIndex(FileUtils.currentFileIndex())
+        }
+    })
+    Shortcut.bindEvent("open previous",{mac:"Option-Right", win:"Alt-Right"},{
+        action:()=>{
+            FileUtils.openByIndex(FileUtils.currentFileIndex() + 2)
+        }
+    })
     NodeIT.register(self)
     return self;
 })();

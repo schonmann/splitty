@@ -22,8 +22,9 @@ var EditorUI = (()=> {
             self.closeInputBox()
     }
     
-    self.onkeyup = (value) => {        
-        currentActionContext.onkeyup(value)        
+    self.onkeyup = (value) => { 
+        if(typeof(currentActionContext["onkeyup"]) !== "undefined")
+            currentActionContext.onkeyup(value)
     }
     
     self.openFile = () => {
@@ -41,9 +42,13 @@ var EditorUI = (()=> {
     }    
     self.setupContext = (context) => {
       currentActionContext = context
-      self.openBox();
-      self.setLabelAction(context.getLabelAction())
-      currentActionContext.init(_("optionValue"))
+      if(typeof(currentActionContext["init"]) !== "undefined"){
+          self.openBox();
+          self.setLabelAction(context.getLabelAction())
+          currentActionContext.init(_("optionValue"))
+      }else if(typeof(currentActionContext["action"]) !== "undefined"){
+          currentActionContext.action()
+      }
     } 
     self.setLabelAction = (value) => {
         _("spanDescription").innerHTML = "&nbsp;" + value + " >"

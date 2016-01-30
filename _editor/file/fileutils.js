@@ -70,7 +70,9 @@ var FileUtils = (function(){
     
     self.openByIndex = (index) => {  
         if(openedFiles.empty() || openedFiles.length < index)return
-        currentFile = index - 1
+        if(index < 0) currentFile = 0
+        else if(index > openedFiles.length) currentFile = openedFiles.length
+        else currentFile = index - 1
         if(openedFiles.length >= currentFile)
             self.openInEditor(openedFiles[currentFile])
     }
@@ -102,7 +104,7 @@ var FileUtils = (function(){
         self.setSocket(socket)
         self.bind()
     }
-    
+    self.currentFileIndex = () => currentFile
     Events.when(EVENTS.FILE_SAVE,(file) => openedFiles[currentFile].data = file)
     
     return self
