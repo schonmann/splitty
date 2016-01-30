@@ -48,9 +48,17 @@ var FileAction = (()=>{
         return exec;        
     }   
     
+    self.startup = ()=>{
+        var appParams = NodeIT.params()
+        if(typeof(appParams["openFile"]) === "undefined") return
+        const fileToOpen = appParams["openFile"]
+        ProportionAction.execute("0")
+        self.openSelectedFile(fileToOpen)
+    }
         
     
-    Shortcut.bindEvent("open",{mac:"Command+Shift-O", win:"Ctrl+Shift-O"},self)    
+    Shortcut.bindEvent("open",{mac:"Command+Shift-O", win:"Ctrl+Shift-O"},self)
+    NodeIT.register(self)
     return self;
 })();
 

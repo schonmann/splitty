@@ -37,7 +37,40 @@ Ctrl-L, Command-L => input[text] Configure which page was showed on the right si
     <ul id="bottombar">
         
     </ul>
-</div>    
+</div>  
+
+<script type="text/javascript">
+    const NodeIT = (()=>{
+        var actions = [];
+        var self = {};
+        self.register =  (module) => actions.push(module)
+        self.startup  = () => {
+            actions.each((module)=>{
+                if(typeof module["startup"] === "function"){
+                    module.startup()
+                }
+            })
+        }
+        const  transformToAssocArray = ( prmstr ) => {
+            var params = {}
+            var prmarr = prmstr.split("&")
+            for ( var i = 0; i < prmarr.length; i++) {
+                var tmparr = prmarr[i].split("=")
+                params[tmparr[0]] = tmparr[1]
+            }
+            return params
+        }
+        self.params = () => {
+            var prmstr = window.parent.location.search.substr(1)
+            return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {}
+        }
+        return self;
+    })();
+    document.addEventListener("DOMContentLoaded", function(event) { 
+        NodeIT.startup()
+    });
+</script>
+
 <script src="/_editor/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/utils/handlebars-v4.0.5.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/utils/templates.js" type="text/javascript" charset="utf-8"></script>
@@ -51,6 +84,7 @@ Ctrl-L, Command-L => input[text] Configure which page was showed on the right si
 <script src="/_editor/actions/bingaction.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/actions/proportionaction.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/actions/terminalaction.js" type="text/javascript" charset="utf-8"></script>
+<script src="/_editor/actions/splitaction.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/ui/editor.js" type="text/javascript" charset="utf-8"></script>
 
 
@@ -75,9 +109,6 @@ Ctrl-L, Command-L => input[text] Configure which page was showed on the right si
     editor.on("focus", function() { 
         setTimeout(EditorUI.closeInputBox,100)
     });
-    
-   // editor.focus()
-    
     
 </script>
     

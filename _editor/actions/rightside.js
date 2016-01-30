@@ -7,7 +7,7 @@ var RightSideAction = (()=>{
     }
     self.setUrl = (url) => {
        var doc = window.parent.document
-       doc.getElementById("rightSideFrame").setAttribute('src',value)
+       doc.getElementById("rightSideFrame").setAttribute('src',url)
     }
     self.onkeyup = (value) => {}
     self.init = () => {}
