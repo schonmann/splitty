@@ -48,6 +48,9 @@ var FileAction = (()=>{
         return exec;        
     }   
     
+        
     
+    Shortcut.bindEvent("open",{mac:"Command+Shift-O", win:"Ctrl+Shift-O"},self)    
     return self;
 })();
+

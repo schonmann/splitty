@@ -6,12 +6,14 @@ var TerminalAction = (()=>{
             ctxout.focus()
             ctxout.style.display = "block"
             ctxout.innerHTML = "<pre>"+Shell.stdio()+"</pre>"
-            document.getElementById('optionValue').value = ""   
         })
+        document.getElementById('optionValue').value = ""
         return 1
     }    
     self.onkeyup = (value) => {}
     self.init = (txtBox) => {txtBox.value = ""}
     self.getLabelAction = () => "$"
+        
+    Shortcut.bindEvent("terminal",{win: "Ctrl+Shift-Z", mac: "Command+Shift-Z"},self)
     return self;
 })();

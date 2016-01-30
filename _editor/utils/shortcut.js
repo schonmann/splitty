@@ -1,27 +1,12 @@
 var Shortcut = (()=>{
     var self = {};
     var _editor = null
-    
     self.setEditor = (editor) => _editor = editor
     var actionContexts = {};
-    
+    var commands = []
     self.setup = (editor) => {
         self.setEditor(editor)
-        _editor.commands.addCommand({name: "open",bindKey: {win: "Ctrl+Shift-O", mac: "Command+Shift-O"},
-                                     exec: resolveShortcut.bind({action:"open"})})
-        
-        _editor.commands.addCommand({name: "set right side",bindKey: {win: "Ctrl-L", mac: "Command-L"},exec:                        
-                                     resolveShortcut.bind({action:"set right side"})})
-
-        _editor.commands.addCommand({name: "bing search",bindKey: {win: "Ctrl+Shift-B", mac: "Command+Shift-B"},exec:                        
-                                     resolveShortcut.bind({action:"bing search"})})
-        
-        _editor.commands.addCommand({name: "proportion",bindKey: {win: "Ctrl+Shift-P", mac: "Command+Shift-P"},exec:                        
-                                     resolveShortcut.bind({action:"proportion"})})
-        
-        _editor.commands.addCommand({name: "terminal",bindKey: {win: "Ctrl+Shift-Z", mac: "Command+Shift-Z"},exec:                        
-                                     resolveShortcut.bind({action:"terminal"})})                                    
-        
+        commands.each((elem) => _editor.commands.addCommand(elem))               
         var indexed = [1,2,3,4,5,6,7,8,9]
         indexed.forEach((el) => {   
             _editor.commands.addCommand(
@@ -32,7 +17,6 @@ var Shortcut = (()=>{
                  },
                  exec: tryOpenFile.bind(el) })
             })
-        
     }
     
     function tryOpenFile  ()  {        
@@ -45,6 +29,15 @@ var Shortcut = (()=>{
     
     self.registerContext = (event,context) => actionContexts[event] = context 
     
+    self.bindEvent =  (bindName,command,context) => {
+         self.registerContext(bindName,context)
+         var params = { 
+                        name: bindName,
+                        bindKey: command,
+                        exec:resolveShortcut.bind({action: bindName})
+                      }
+        commands.push(params)
+    }
     return self;
 })();
 

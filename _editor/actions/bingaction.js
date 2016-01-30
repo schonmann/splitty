@@ -9,5 +9,8 @@ var BingSearchAction = (()=>{
     self.onkeyup = (value) => {}
     self.init = (txtBox) => {txtBox.value = ""}
     self.getLabelAction = () => "bing"
+    
+    
+    Shortcut.bindEvent("bing search",{win: "Ctrl+Shift-B", mac: "Command+Shift-B"},self)    
     return self;
 })();

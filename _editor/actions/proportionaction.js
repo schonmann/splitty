@@ -11,5 +11,7 @@ var ProportionAction = (()=>{
     self.init = (txtValue) => {txtValue.value = ""}
     self.getLabelAction = () => "right side size"
     
+     
+    Shortcut.bindEvent("proportion",{win: "Ctrl+Shift-P", mac: "Command+Shift-P"},self)
     return self;
 })();
