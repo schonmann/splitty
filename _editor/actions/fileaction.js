@@ -49,11 +49,13 @@ var FileAction = (()=>{
     }   
     
     self.startup = ()=>{
+        
         var appParams = NodeIT.params()
         if(typeof(appParams["openFile"]) === "undefined") return
         const fileToOpen = appParams["openFile"]
         ProportionAction.execute("0")
         self.openSelectedFile(fileToOpen)
+        
     }
         
     

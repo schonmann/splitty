@@ -2,10 +2,7 @@ var SplitAction = (()=>{
     var self = {};
     const PORT = 8000
     self.execute = (value) => {
-        RightSideAction.execute("http://localhost:"+PORT+"/_editor")
-        var root = window.parent.document
-        
-        
+        RightSideAction.execute("http://localhost:"+PORT+"/_editor?openFile="+value)
     }
     self.onkeyup = (value) => {}
     self.init = (txtValue) => {txtValue.value = ""}
