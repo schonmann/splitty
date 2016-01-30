@@ -44,6 +44,7 @@ Ctrl+Shift-S, Command+Shift-S => input[text] split editor open a specific file o
     const NodeIT = (()=>{
         var actions = [];
         var self = {};
+        var configuration = null
         self.register =  (module) => actions.push(module)
         self.startup  = () => {
             actions.each((module)=>{
@@ -67,17 +68,17 @@ Ctrl+Shift-S, Command+Shift-S => input[text] split editor open a specific file o
         }
         self.prop = (prop,value) => {
             if(typeof(value) !== "undefined"){
-                localStorage["$$nodeit$$"+prop] = value    
-            }else return localStorage["$$nodeit$$"+prop]
+                localStorage["$$nodeit$$"+configuration.host_path+"$$"+prop] = value    
+            }else return localStorage["$$nodeit$$"+configuration.host_path+"$$"+prop]
             
         }
-        self.hasProp = (prop) => typeof(localStorage["$$nodeit$$"+prop]) !== "undefined"
-    
+        self.hasProp = (prop) => typeof(localStorage["$$nodeit$$"+configuration.host_path+"$$"+prop]) !== "undefined"
+        
+        self.setConfig = (config) => configuration = config
+        self.config = () => configuration
         return self;
     })();
-    document.addEventListener("DOMContentLoaded", function(event) { 
-        NodeIT.startup()
-    });
+    
 </script>
 
 <script src="/_editor/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -111,6 +112,14 @@ Ctrl+Shift-S, Command+Shift-S => input[text] split editor open a specific file o
         enableLiveAutocompletion: false
     });
     var socket = io();
+    document.addEventListener("DOMContentLoaded", function(event) { 
+        socket.emit("config")
+        socket.on("config",(config)=>{
+            NodeIT.setConfig(config)
+            NodeIT.startup()
+        })
+    });
+    
     FileUtils.setup(editor,socket);        
     Shell.setup(editor,socket);
     Shortcut.setup(editor);
@@ -125,6 +134,8 @@ Ctrl+Shift-S, Command+Shift-S => input[text] split editor open a specific file o
     editor.on("focus", function() { 
         setTimeout(EditorUI.closeInputBox,100)
     });
+    
+    
     
 </script>
     

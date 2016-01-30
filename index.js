@@ -10,10 +10,15 @@ var serve        = serveStatic("./")
 var editor       = serveStatic(__dirname)
 var fs           = require("fs")
 var sys          = require('sys')
-
 const spawn      = require('child_process').spawn
 require('shelljs/global');
 var child;
+
+const config = {
+    host_path:__dirname
+}
+
+
 
 var server = http.createServer((req, res) => {
   var done = finalhandler(req, res)
@@ -67,6 +72,9 @@ io.on('connection', (socket) => {
             socket.emit("stdout",buff.toString("utf-8"))
         });
     })
+    
+    
+    socket.on('config',()=>socket.emit("config",config))
 
 })
 server.listen(8000)
