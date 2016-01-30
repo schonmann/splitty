@@ -72,6 +72,8 @@ var FileAction = (()=>{
             FileUtils.openByIndex(FileUtils.currentFileIndex() + 2)
         }
     })
+    
+    
     NodeIT.register(self)
     return self;
 })();

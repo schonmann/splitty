@@ -70,7 +70,8 @@ var FileUtils = (function(){
     
     self.openByIndex = (index) => {  
         if(openedFiles.empty() || openedFiles.length < index)return
-        if(index < 0) currentFile = 0
+        
+        if(index <= 0) currentFile = 0
         else if(index > openedFiles.length) currentFile = openedFiles.length
         else currentFile = index - 1
         if(openedFiles.length >= currentFile)
