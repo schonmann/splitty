@@ -96,6 +96,7 @@ li,input:focus{
     font-size: 14px;
     overflow: scroll;
     cursor: pointer;
+    display:none;
 }
 
 #ctxout ul {
