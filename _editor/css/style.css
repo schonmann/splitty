@@ -94,14 +94,14 @@ li,input:focus{
     max-height:500px;
     font-family: sans-serif;
     font-size: 14px;
-    overflow: scroll;
+    overflow: auto;
     cursor: pointer;
     display:none;
 }
 
 #ctxout ul {
     list-style: none;
-    margin: 0px;
+    /*margin: 0px;*/
     padding: 0px;
 }
 
@@ -119,10 +119,10 @@ li,input:focus{
     color:white !important;
 }
 
-#ctxout ul li:hover{
+/*#ctxout ul li:hover{
     background-color: #272D38 !important;
     color:white !important;
-}
+}*/
 
 iframe, object, embed {
         max-width: 100%;

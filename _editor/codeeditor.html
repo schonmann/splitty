@@ -30,6 +30,7 @@ Ctrl+Shift-B, Command+Shift-B => input[text] Show bing result for the input on t
 Ctrl+Shift-O, Command+Shift-O => input[text] Open File by name
 Ctrl+Shift-Z, Command+Shift-Z => input[text] Execute terminal commands
 Ctrl-L, Command-L => input[text] Configure which page was showed on the right side
+Ctrl+Shift-S, Command+Shift-S => input[text] split editor open a specific file on the right side
         
       
 </div>
@@ -128,7 +129,7 @@ Ctrl-L, Command-L => input[text] Configure which page was showed on the right si
             <li tabindex="{{inc (inc @index)}}" onfocus="this.classList.add('selected');" 
                 onblur="this.classList.remove('selected');"                
                 onkeyup="FileAction.executeAction(event,'{{path}}')">
-                <div style="width:100%">
+                <div style="width:100%" onclick="FileAction.execute('{{path}}')">
                     <span style="width:100%">{{name}}</span><br/>
                     <span style="width:100%;font-size:12px;color:gray;">{{path}}</span>
                 </div>
