@@ -62,8 +62,8 @@ io.on('connection', (socket) => {
     })
     socket.on('command',(data) =>{
         var child = exec(data.command, {async:true, silent:true});
-        child.stdout.on('data', (stdout) => {
-            var buff = new Buffer(stdout);            
+        child.stdout.on('data', (data) => {
+            var buff = new Buffer(data);            
             socket.emit("stdout",buff.toString("utf-8"))
         });
     })
