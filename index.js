@@ -15,7 +15,7 @@ require('shelljs/global');
 var child;
 
 const config = {
-    host_path:__dirname
+    host_path:pwd()
 }
 
 
