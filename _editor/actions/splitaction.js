@@ -1,10 +1,11 @@
 var SplitAction = (()=>{
     var self = {};
-    const PORT = 8000
+    
     self.execute = (value) => {
-        RightSideAction.execute("http://localhost:"+PORT+"/_editor?openFile="+value)
+        RightSideAction.execute("http://localhost:"+NodeIT.config()["port"]+"/_editor?openFile="+value)
     }
-    self.onkeyup = (value) => {}
+    self.onkeyup = (value) => FileAction.onkeyup(value)
+    
     self.init = (txtValue) => {txtValue.value = ""}
     self.getLabelAction = () => "split"
     

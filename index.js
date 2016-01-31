@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 
-//var userArgs = process.argv.slice(2);
+var userArgs     = process.argv.slice(2);
 var http         = require('http')
 var finalhandler = require('finalhandler')
 var serveStatic  = require('serve-static')
@@ -14,9 +14,16 @@ const spawn      = require('child_process').spawn
 require('shelljs/global');
 var child;
 
+console.log(userArgs)
 const config = {
-    host_path:pwd()
+    host_path:pwd(),
+    port:"8000"
 }
+userArgs.forEach((param)=>{
+ var map = param.split("=")
+ config[map[0]] = map[1]
+})
+
 
 
 
@@ -77,7 +84,7 @@ io.on('connection', (socket) => {
     socket.on('config',()=>socket.emit("config",config))
 
 })
-server.listen(8000)
+server.listen(config["port"])
 
 
 
