@@ -1,6 +1,19 @@
 var TerminalAction = (()=>{
     var self = {}
     self.execute = (value) => {
+        if(value.startsWith("alias:")){
+            self.defineAlias(value)
+            document.getElementById('optionValue').value = ""
+        }else if(NodeIT.hasProp(value)){
+            self.exec(NodeIT.prop(value))    
+        }else{
+            self.exec(value)
+        }
+        return 1
+    }  
+    
+    
+    self.exec = (value) => {
         Shell.exec(value, (stdout) => {
             var ctxout = document.getElementById('ctxout')
             ctxout.focus()
@@ -8,8 +21,11 @@ var TerminalAction = (()=>{
             ctxout.innerHTML = "<pre>"+Shell.stdio()+"</pre>"
         })
         document.getElementById('optionValue').value = ""
-        return 1
-    }    
+    }
+    self.defineAlias = (value) => {
+        var alias = value.replace("alias:","").trim().split("=")
+        NodeIT.prop(alias[0],alias[1])
+    }
     self.onkeyup = (value) => {}
     self.init = (txtBox) => {txtBox.value = ""}
     self.getLabelAction = () => "$"
