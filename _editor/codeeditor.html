@@ -72,7 +72,14 @@ Ctrl+Shift-S, Command+Shift-S => input[text] split editor open a specific file o
             }else return localStorage["$$nodeit$$"+configuration.host_path+"$$"+prop]
             
         }
+        self.global = (prop,value) => {
+            if(typeof(value) !== "undefined"){
+                localStorage["$$nodeit$$"+prop] = value    
+            }else return localStorage["$$nodeit$$"+prop]
+            
+        }
         self.hasProp = (prop) => typeof(localStorage["$$nodeit$$"+configuration.host_path+"$$"+prop]) !== "undefined"
+        self.hasGlobal = (prop) => typeof(localStorage["$$nodeit$$"+prop]) !== "undefined"
         
         self.setConfig = (config) => configuration = config
         self.config = () => configuration
