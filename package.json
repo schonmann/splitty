@@ -1,7 +1,7 @@
 {
   "name": "nodeit",
-  "version": "1.0.0",
-  "description": "Node It is a simple http server that expose current directory to web browser",
+  "version": "1.0.1",
+  "description": "Nodeit is a simple static file server with a embedded text editor based on ACE. NodeIT is focused to speed up the web development  allowing the programmer to use de ACE editor on the left side and see the result on the right side of the same browser tab.",
   "scripts": {
     "test": "mocha"
   },
@@ -13,14 +13,16 @@
     "node",
     "http",
     "static",
-    "server"
+    "server",
+    "editor",
+    "text"
   ],
   "author": "Philippe Moneda philippemoneda@gmail.com",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/shortty/nodeit/issues"
   },
-  "homepage": "https://github.com/shortty/nodeit#readme",
+  "homepage": "http://shortty.github.io/nodeit/",
   "dependencies": {
     "mocha": "2.3.4",
 		"serve-static":"1.10.0",
@@ -30,7 +32,8 @@
     "shelljs":"0.5.3"  
   },
 	"preferGlobal": true,
-	"bin":{
-		"nodeit":"index.js"
-	}
+	"main":"index.js",
+	"bin": {
+        "nodeit": "./bin/nodeit"
+    }
 }
