@@ -1,6 +1,6 @@
 {
   "name": "nodeit",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Nodeit is a simple static file server with a embedded text editor based on ACE. NodeIT is focused to speed up the web development  allowing the programmer to use de ACE editor on the left side and see the result on the right side of the same browser tab.",
   "scripts": {
     "test": "mocha"
