@@ -17,6 +17,7 @@ var child;
 console.log(userArgs)
 console.log(__dirname)
 console.log(pwd())
+
 const config = {
     host_path:pwd(),
     port:"8000"
