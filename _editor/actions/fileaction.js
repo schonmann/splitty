@@ -25,19 +25,21 @@ var FileAction = (()=>{
       }
          
     }
-    var acc = 0
+    var acc = true
     var oldValue = ""
     self.onkeyup = (value) => {
-        if(value == "") return
-        if(acc == 0 || acc > 8){
-            setTimeout(()=>{
-               self.findFiles()
-            },700)
-        }
-        acc++;
+        if(value == "" || value.length < 3) return
+        
+        setTimeout(()=>{
+           // EditorUI.block()
+            self.findFiles()
+            
+        },800);
+        
     }
     
     self.findFiles = () => {
+        
         Shell.find(EditorUI.actionBoxValue(), (founds) => {
             var ctx = {};
             ctx.files = [];
@@ -48,7 +50,8 @@ var FileAction = (()=>{
                 ctx.files.push(obj)    
             })
             EditorUI.renderOutputAction(ctx,"template-found-files")
-             acc = 0;
+           // EditorUI.unblock()
+            
         })    
     }
     

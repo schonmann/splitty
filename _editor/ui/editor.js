@@ -13,7 +13,11 @@ var EditorUI = (()=> {
     }
     
     self.actionBoxValue = () => _("optionValue").value
-    
+    self.block = () => document.getElementById("optionValue").disabled = true
+    self.unblock = () => {
+        document.getElementById("optionValue").disabled = false
+        document.getElementById("optionValue").focus()
+    }
     self.setActionText = (value) => {
         _("optionValue").value = value 
         _("optionValue").focus()

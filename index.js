@@ -81,6 +81,7 @@ io.on('connection', (socket) => {
             path ="./" + params.join("/")
         }
         dirs = ls('-R', path)
+        console.log(path)
         if(dirs.length > 0){
             dirs = find(path).filter((file) => file.match(data.text))
         }
