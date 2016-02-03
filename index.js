@@ -11,7 +11,10 @@ var editor       = serveStatic(__dirname)
 var fs           = require("fs")
 var sys          = require('sys')
 const spawn      = require('child_process').spawn
+const cache      = require('./app/cache/cache')
 require('shelljs/global');
+
+
 var child;
 const config = {
     host_path:pwd(),
@@ -80,9 +83,17 @@ io.on('connection', (socket) => {
             params = params.slice(0,params.length-1)
             path ="./" + params.join("/")
         }
-        dirs = ls('-R', path)
-        console.log(path)
+        if(cache.hasKey(path)){
+          console.log(path + " from cache")
+          dirs = cache.get(path)   
+        }
+        else {
+            
+            dirs = ls('-R', path)
+        }
         if(dirs.length > 0){
+            if(!cache.hasKey(path))cache.put(path,dirs)
+            console.log(path + " to cache")
             dirs = find(path).filter((file) => file.match(data.text))
         }
         else {
@@ -91,6 +102,8 @@ io.on('connection', (socket) => {
         socket.emit("find",dirs.slice(0,50))
         
     })
+    
+    
     socket.on('command',(data) =>{
         var child = exec(data.command, {async:true, silent:true});
         child.stdout.on('data', (data) => {

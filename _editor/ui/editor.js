@@ -26,9 +26,18 @@ var EditorUI = (()=> {
     
     
     self.onEnterOption = (value) => {       
+        
         var ret = currentActionContext.execute(value);
         if(ret < 0 || typeof(ret) === "undefined")
             self.closeInputBox()
+    }
+    
+    self.onChange = (value) => {
+        if(typeof(currentActionContext["onchange"]) !== "undefined") {
+            var ret = currentActionContext.onchange(value);
+            if(ret < 0 || typeof(ret) === "undefined")
+                self.closeInputBox()    
+        }
     }
     
     self.onkeyup = (value) => { 

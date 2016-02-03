@@ -138,6 +138,10 @@ Ctrl+Shift-S, Command+Shift-S => input[text] split editor open a specific file o
         else EditorUI.onkeyup(document.getElementById("optionValue").value)
     });
     
+    document.getElementById("optionValue").addEventListener("change",(event) =>{
+        EditorUI.onChange(document.getElementById("optionValue").value)
+    });
+    
     
     editor.on("focus", function() { 
         setTimeout(EditorUI.closeInputBox,100)
