@@ -13,11 +13,6 @@ var sys          = require('sys')
 const spawn      = require('child_process').spawn
 require('shelljs/global');
 var child;
-
-console.log(userArgs)
-console.log(__dirname)
-console.log(pwd())
-
 const config = {
     host_path:pwd(),
     port:"8000"
@@ -72,8 +67,32 @@ io.on('connection', (socket) => {
     })
 
     socket.on("find",(data) => {
-        var out = find('./').filter((file) => file.match(data.text))
-        socket.emit("find",out.slice(0,10))
+        var parts = data.text.split("/")
+        var out = []
+        var params = "./"
+        var searchTerm = "*"
+        var dirs = ["./"]
+        var path = parts[0]
+        if(parts.length > 1){
+            params = parts
+            params = params.filter((e) => e != "")
+            searchTerm = params[params.length - 1]
+            params = params.slice(0,params.length-1)
+            
+            path ="./" + params.join("/")
+        }
+        console.log("path: " + path)
+        dirs = ls('-R', path)
+        if(dirs.length > 0){
+            console.log("easy find")
+            dirs = find(path).filter((file) => file.match(data.text))
+        }
+        else {
+            console.log("hard find")
+            dirs = find("./").filter((file) => file.match(data.text))
+        }
+        socket.emit("find",dirs.slice(0,50))
+        
     })
     socket.on('command',(data) =>{
         var child = exec(data.command, {async:true, silent:true});

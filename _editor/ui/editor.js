@@ -12,7 +12,12 @@ var EditorUI = (()=> {
         _("optionValue").focus()
     }
     
-    self.setActionText = (value) => _("optionValue").value = value
+    self.actionBoxValue = () => _("optionValue").value
+    
+    self.setActionText = (value) => {
+        _("optionValue").value = value 
+        _("optionValue").focus()
+    }
     self.getActionText = () => _("optionValue").value
     
     
@@ -25,6 +30,10 @@ var EditorUI = (()=> {
     self.onkeyup = (value) => { 
         if(typeof(currentActionContext["onkeyup"]) !== "undefined")
             currentActionContext.onkeyup(value)
+    }
+    
+    self.onEscape = () => {
+        self.closeInputBox()
     }
     
     self.openFile = () => {
@@ -52,6 +61,13 @@ var EditorUI = (()=> {
     } 
     self.setLabelAction = (value) => {
         _("spanDescription").innerHTML = "&nbsp;" + value + " >"
+    }
+    
+    self.renderOutputAction = (data,template) => {
+        if( _('header').style.height == "0px") return
+        document.getElementById('ctxout').style.display = "block"
+        Template.render(data,template,"ctxout") 
+        
     }
     
     return self

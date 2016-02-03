@@ -1,6 +1,6 @@
 var FileAction = (()=>{
     var self = {};
-    
+    var fileRegex = /\w\.\w/gi
     function renderOpenFiles(){
          var ctx = {};
         ctx.files = FileUtils.getOpenedFiles()        
@@ -16,11 +16,29 @@ var FileAction = (()=>{
     self.openSelectedFile = (file) => FileUtils.open("/"+file)
     
     self.execute = (value) => {
-     self.openSelectedFile(value)   
+     if(fileRegex.exec(value) != null)    
+        self.openSelectedFile(value)
+      else {
+         EditorUI.setActionText(value+"/")
+         self.findFiles()
+         return 1
+      }
+         
+    }
+    var acc = 0
+    var oldValue = ""
+    self.onkeyup = (value) => {
+        if(value == "") return
+        if(acc == 0 || acc > 8){
+            setTimeout(()=>{
+               self.findFiles()
+            },700)
+        }
+        acc++;
     }
     
-    self.onkeyup = (value) => {
-        Shell.find(value, (founds) => {
+    self.findFiles = () => {
+        Shell.find(EditorUI.actionBoxValue(), (founds) => {
             var ctx = {};
             ctx.files = [];
             founds.each((elem,i)=>{
@@ -29,15 +47,13 @@ var FileAction = (()=>{
                 obj.path = elem
                 ctx.files.push(obj)    
             })
-            document.getElementById('ctxout').style.display = "block"
-            Template.render(ctx,"template-found-files","ctxout") 
-        })
+            EditorUI.renderOutputAction(ctx,"template-found-files")
+             acc = 0;
+        })    
     }
     
     self.init = (txtValue) => txtValue.value = ""
         
-    
-    
     self.getLabelAction = () => "open"
     
     self.executeAction = (e , value) => {

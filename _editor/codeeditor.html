@@ -134,6 +134,7 @@ Ctrl+Shift-S, Command+Shift-S => input[text] split editor open a specific file o
     
     document.getElementById("optionValue").addEventListener("keyup",(event) =>{
         if(event.keyCode === 13) EditorUI.onEnterOption(document.getElementById("optionValue").value)
+        else if(event.keyCode === 27) EditorUI.onEscape(document.getElementById("optionValue").value)
         else EditorUI.onkeyup(document.getElementById("optionValue").value)
     });
     
