@@ -78,17 +78,13 @@ io.on('connection', (socket) => {
             params = params.filter((e) => e != "")
             searchTerm = params[params.length - 1]
             params = params.slice(0,params.length-1)
-            
             path ="./" + params.join("/")
         }
-        console.log("path: " + path)
         dirs = ls('-R', path)
         if(dirs.length > 0){
-            console.log("easy find")
             dirs = find(path).filter((file) => file.match(data.text))
         }
         else {
-            console.log("hard find")
             dirs = find("./").filter((file) => file.match(data.text))
         }
         socket.emit("find",dirs.slice(0,50))
