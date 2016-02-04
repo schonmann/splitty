@@ -33,7 +33,7 @@ var server = http.createServer((req, res) => {
   if(isWebEditor(req)){      
     editor(req,res,done)
   }else if(isHelp(req)){
-	serve(req, res, done)
+	editor(req, res, done)
   }else{
     serve(req, res, done)
   }
