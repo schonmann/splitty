@@ -1,0 +1,52 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/_editor/css/style.css"/>
+    <style>
+	#editor {
+		background: #272822;
+		color: #F8F8F2;
+		font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+	}
+  </style>
+</head>
+<body>
+<div id="masterHead">
+<div id="header" class="blackGradient">    
+    <span id="spanDescription"></span>
+    <span>
+        <input tabindex="1" type="text" id="optionValue" class="textBox"  />
+    </span>
+    <span class="closeButton" onclick="javascript:EditorUI.closeInputBox()"> x </span>
+</div>
+<div id="ctxout"></div>
+</div>    
+<div id="editor">
+<p>"Hello Node IT!!";<br/><br/>
+
+Welcome:<br/><br/>
+
+Node IT is a small and lightweight code editor based on Ace and a simple static http server.
+It's focused on web and webapp development you can programming on the left side and see your
+app on the right side, or other html page as you configure.</p>
+
+Shortcuts:<br/>
+<br/>
+Ctrl+Shift-P, Command+Shift-P => input[0..100] Resize right side window<br/>
+Ctrl+Shift-B, Command+Shift-B => input[text] Show bing result for the input on the right side<br/>
+Ctrl+Shift-O, Command+Shift-O => input[text] Open File by name<br/>
+Ctrl+Shift-Z, Command+Shift-Z => input[text] Execute terminal commands<br/>
+Ctrl-L, Command-L => input[text] Configure which page was showed on the right side<br/>
+Ctrl+Shift-S, Command+Shift-S => input[text] split editor open a specific file on the right side<br/>
+Ctrl+Shift-H, Command+Shift-H => show help</p>
+        
+      
+</div>
+<div id="footer" style="background-color:#6B6B6B">
+    <ul id="bottombar">
+        
+    </ul>
+</div> 
+
+</body>
+</html>
