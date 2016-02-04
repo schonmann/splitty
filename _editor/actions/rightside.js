@@ -25,5 +25,13 @@ var RightSideAction = (()=>{
             frame.setAttribute('src',src)
         }
     })
+	
+	Shortcut.bindEvent("refresh right side",{mac:"Ctrl+Shift-H", win:"Ctrl+Shift-H"},{
+        action:()=>{
+            var frame = window.parent.document.getElementById('rightSideFrame')
+            var src = frame.getAttribute('src')
+            frame.setAttribute('src','/_help/')
+        }
+    })
     return self;
 })();

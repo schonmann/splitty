@@ -32,6 +32,8 @@ var server = http.createServer((req, res) => {
   var done = finalhandler(req, res)
   if(isWebEditor(req)){      
     editor(req,res,done)
+  }else if(isHelp(req)){
+	serve(req, res, done)
   }else{
     serve(req, res, done)
   }
@@ -40,6 +42,10 @@ var io = require('socket.io')(server)
 
 function isWebEditor(request){        
     return request.url.indexOf("_editor") > 0;
+}
+
+function isHelp(request){        
+    return request.url.indexOf("_help") > 0;
 }
 
 function getFileSeparator(){
