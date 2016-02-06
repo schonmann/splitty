@@ -12,13 +12,20 @@ var TerminalAction = (()=>{
         return 1
     }  
     
+    self.escape = (html) => {
+        return document.createElement('div')
+            .appendChild(document.createTextNode(html))
+            .parentNode
+            .innerHTML
+    }
+
     
     self.exec = (value) => {
         Shell.exec(value, (stdout) => {
             var ctxout = document.getElementById('ctxout')
             ctxout.focus()
             ctxout.style.display = "block"
-            ctxout.innerHTML = "<pre>"+Shell.stdio()+"</pre>"
+            ctxout.innerHTML = "<pre>"+self.escape(Shell.stdio())+"</pre>"
         })
         document.getElementById('optionValue').value = ""
     }
