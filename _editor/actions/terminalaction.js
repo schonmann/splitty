@@ -1,6 +1,7 @@
 var TerminalAction = (()=>{
     var self = {}
     self.execute = (value) => {
+        if (value.trim() == "") return 1
         if(value.startsWith("alias:")){
             self.defineAlias(value)
             document.getElementById('optionValue').value = ""
