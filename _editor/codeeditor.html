@@ -148,7 +148,8 @@ Ctrl+Shift-H, Command+Shift-H => show help
         setTimeout(EditorUI.closeInputBox,100)
     });
     
-    
+    if (window.top.document.getElementById('rightSideFrame').getAttribute('src') == "")
+        editor.focus()    
     
 </script>
     
