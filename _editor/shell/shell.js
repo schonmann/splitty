@@ -13,14 +13,16 @@ var Shell = (function(){
 
     self.exec = (command,callback) => exec(command,callback)
     
+    self.outputCallback = (data)=>{
+        stdioBuffer.push(data)
+        if (typeof(stdioCallback) == "function")
+            stdioCallback(data)
+        
+    }
+    
     self.bind = () => {
-        socket.on("stdout",(data)=>{
-            stdioBuffer.push(data)
-            if (typeof(stdioCallback) == "function")
-                stdioCallback(data)
-            
-        })
-        socket.on("stderr",(data)=>stderrBuffer.push(data))
+        socket.on("stdout", self.outputCallback)
+        socket.on("stderr", self.outputCallback)
     }
     
     self.clear = () => stdioBuffer = []

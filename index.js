@@ -116,6 +116,10 @@ io.on('connection', (socket) => {
             var buff = new Buffer(data);            
             socket.emit("stdout",buff.toString("utf-8"))
         });
+        child.stderr.on('data', (data) => {
+            var buff = new Buffer(data);            
+            socket.emit("stderr",buff.toString("utf-8"))
+        });
     })
     
     
