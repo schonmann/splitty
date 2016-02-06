@@ -19,7 +19,8 @@ var FileAction = (()=>{
      if(fileRegex.exec(value) != null)    
         self.openSelectedFile(value)
       else {
-         EditorUI.setActionText(value+"/")
+         if (value.length && value.charAt(value.length - 1) != "/")
+            EditorUI.setActionText(value+"/")
          self.findFiles()
          return 1
       }
