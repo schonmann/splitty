@@ -3,6 +3,10 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="/_editor/css/style.css"/>
     <style>
+    body{
+        margin:0px;
+        padding:0px;
+    }
 	#editor {
 		background: #272822;
 		color: white;
@@ -19,10 +23,14 @@
         background-color: #000;
         color:white;
     }
-    td[colspan="2"]{
+    td[colspan]{
         background-color: #737373;
         color:white;
         padding:5px;
+    }
+    a{
+        text-decoration: none;
+        color:red;
     }
   </style>
 </head>
@@ -62,7 +70,7 @@
         </tr>
         <tr>
            <td colspan="2">
-              Move to previous open file
+              Move to the previous opened file
            </td> 
         </tr>
         
@@ -72,7 +80,7 @@
         </tr>
         <tr>
            <td colspan="2">
-              Move to next the opened file
+              Move to the next opened file
            </td> 
         </tr>
         
@@ -147,7 +155,22 @@
         </tr>
     </tbody>
 </table>
-
+<br />
+<table>
+    <thead>
+        <tr><td colspan="3">User defined Aliases</td></tr>
+        <tr>
+            <td colspan="2">Alias</td>
+            <td colspan="1">Command</td>
+        </tr>
+    </thead>
+    <tbody id="aliases">
+       
+    </tbody>
+</table>
+<br/>
+Do you need another help?
+look at: <a  target="_blank" href="http://shortty.github.io/nodeit">NodeIt website</a>
 <br/>
 Help with ACE Editor?
 <br/>
@@ -158,7 +181,31 @@ look at: <a  target="_blank" href="https://github.com/ajaxorg/ace/wiki/Default-K
     <ul id="bottombar">
         <li>Help</li>
     </ul>
-</div> 
-
+</div>
+<script src="/_editor/utils/array-utils.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(event) { 
+        var p = document.getElementById('aliases');
+        var str = "";
+        for(tag in window.localStorage){
+            if(tag.indexOf("$$nodeit$$alias$$") >= 0){
+                var alias = tag.split("$$").last();
+                var command = window.localStorage[tag]
+                str = str + 
+                            "<tr>"+
+                            "<td><a href='javascript:removeAlias(\""+alias+"\")'>x</a></td>" +
+                            "<td>" + alias + "</td>"+
+                            "<td>" + command + "</td>"+
+                            "</tr>";
+            }
+        }
+        p.innerHTML = str
+        
+    });
+    function removeAlias(alias){
+        delete window.localStorage["$$nodeit$$alias$$"+alias]
+        window.location.reload()
+    }
+</script>
 </body>
 </html>
