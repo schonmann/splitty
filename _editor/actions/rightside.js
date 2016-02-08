@@ -31,7 +31,7 @@ var RightSideAction = (()=>{
             var frame = window.parent.document.getElementById('rightSideFrame')
             var src = frame.getAttribute('src')
             frame.setAttribute('src','/_help/')
-            ProportionAction.execute("20")
+            ProportionAction.execute("19")
         }
     })
     return self;
