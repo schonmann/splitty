@@ -44,9 +44,7 @@ var TerminalAction = (()=>{
             }
             toExec.push(alias);
         });
-        console.log(toExec)
         var shellCommand = toExec.join(" && ");
-        console.log(shellCommand)
         return shellCommand;
     };
     
