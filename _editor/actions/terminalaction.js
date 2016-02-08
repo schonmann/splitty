@@ -5,8 +5,8 @@ var TerminalAction = (()=>{
         if(value.startsWith("alias:")){
             self.defineAlias(value)
             document.getElementById('optionValue').value = ""
-        }else if(NodeIT.hasGlobal(value)){
-            self.exec(NodeIT.global(value))    
+        }else if(self.hasAlias(value)){
+            self.exec(self.getAlias(value))    
         }else{
             self.exec(value)
         }
@@ -30,9 +30,14 @@ var TerminalAction = (()=>{
         })
         document.getElementById('optionValue').value = ""
     }
+    
+    self.hasAlias = (alias) => NodeIT.hasGlobal("alias$$"+alias)
+    self.getAlias = (alias) => NodeIT.global("alias$$"+alias)
+    
+    
     self.defineAlias = (value) => {
         var alias = value.replace("alias:","").trim().split("=")
-        NodeIT.global(alias[0],alias[1])
+        NodeIT.global("alias$$"+alias[0].trim(),alias[1].trim())
     }
     self.onkeyup = (value) => {}
     self.init = (txtBox) => {txtBox.value = ""}
