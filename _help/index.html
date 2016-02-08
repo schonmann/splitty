@@ -185,7 +185,11 @@ look at: <a  target="_blank" href="https://github.com/ajaxorg/ace/wiki/Default-K
 <script src="/_editor/utils/array-utils.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function(event) { 
-        var p = document.getElementById('aliases');
+        printAliases()
+    });
+    
+    function printAliases(){
+       var p = document.getElementById('aliases');
         var str = "";
         for(tag in window.localStorage){
             if(tag.indexOf("$$nodeit$$alias$$") >= 0){
@@ -200,11 +204,12 @@ look at: <a  target="_blank" href="https://github.com/ajaxorg/ace/wiki/Default-K
             }
         }
         p.innerHTML = str
-        
-    });
+         
+    }
+    
     function removeAlias(alias){
         delete window.localStorage["$$nodeit$$alias$$"+alias]
-        window.location.reload()
+        printAliases()
     }
 </script>
 </body>
