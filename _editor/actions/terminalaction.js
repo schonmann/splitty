@@ -34,18 +34,19 @@ var TerminalAction = (()=>{
     };
     self.compile = (command) => {
         /*This method compiles command and aliases indentifying alias params*/
-        
         var commands = command.split("&&");
         var toExec = [];
         commands.each((cmd) => {
-            var tokens = self.tokenizeCommand(command);
+            var tokens = self.tokenizeCommand(cmd);
             var alias = self.getAlias(tokens[0]);
             for(var i = 1; i < tokens.length; i++){
                 alias = alias.replace("$"+i,tokens[i]);
             }
             toExec.push(alias);
         });
+        console.log(toExec)
         var shellCommand = toExec.join(" && ");
+        console.log(shellCommand)
         return shellCommand;
     };
     
