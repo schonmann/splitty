@@ -54,12 +54,14 @@ var TerminalAction = (()=>{
         for(var c = 0; c < command.length; c++){
             if(command[c]=="\""){
                 index = c + 1
-                while(command[index] != "\""){
+                currentToken = "\""
+                while(command[index] != "\"" && index < command.length){
                     currentToken += command[index]
                     index++
                 }
+                if(currentToken === "\"")continue
                 if(currentToken !== "")
-                    tokens.push(currentToken)
+                    tokens.push(currentToken+"\"")
                 currentToken = ""
                 c = index
             }
