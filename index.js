@@ -111,6 +111,8 @@ io.on('connection', (socket) => {
     
     
     socket.on('command',(data) =>{
+        if(typeof(data.command) === "undefined") return;
+        
         var child = exec(data.command, {async:true, silent:true});
         console.log("exec: "+ data.command)
         child.stdout.on('data', (data) => {
