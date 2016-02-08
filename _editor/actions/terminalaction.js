@@ -22,6 +22,7 @@ var TerminalAction = (()=>{
 
     
     self.exec = (value) => {
+        ctxout.innerHTML = ""
         Shell.exec(value, (stdout) => {
             var ctxout = document.getElementById('ctxout')
             ctxout.focus()
