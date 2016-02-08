@@ -27,7 +27,7 @@ var FileAction = (()=>{
          
     }   
     var typingTimer;
-    var doneTypingInterval = 700;
+    var doneTypingInterval = 800;
     self.onkeyup = (value) => {        
         clearTimeout(typingTimer);
         typingTimer = setTimeout(self.findFiles,doneTypingInterval)
