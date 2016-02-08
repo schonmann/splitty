@@ -59,7 +59,7 @@ var TerminalAction = (()=>{
                     currentToken += command[index]
                     index++
                 }
-                if(currentToken === "\"")continue
+                if(currentToken === "\"")continue;
                 if(currentToken !== "")
                     tokens.push(currentToken+"\"")
                 currentToken = ""
@@ -78,13 +78,13 @@ var TerminalAction = (()=>{
         return tokens
     }
     
-    self.hasAlias = (alias) => NodeIT.hasGlobal("alias$$"+alias)
-    self.getAlias = (alias) => NodeIT.global("alias$$"+alias)
+    self.hasAlias = (alias) => NodeIT.hasGlobal("alias$$"+alias);
+    self.getAlias = (alias) => NodeIT.global("alias$$"+alias);
     
     
     self.defineAlias = (value) => {
-        var alias = value.replace("alias:","").trim().split("=")
-        NodeIT.global("alias$$"+alias[0].trim(),alias[1].trim())
+        var alias = value.replace("alias:","").trim().split("=");
+        NodeIT.global("alias$$"+alias[0].trim(),alias[1].trim());
     }
     self.onkeyup = (value) => {}
     self.init = (txtBox) => {txtBox.value = ""}
