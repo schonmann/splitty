@@ -26,12 +26,12 @@ var RightSideAction = (()=>{
         }
     })
 	
-	Shortcut.bindEvent("refresh right side",{mac:"Ctrl+Shift-H", win:"Ctrl+Shift-H"},{
+	Shortcut.bindEvent("refresh right side",{mac:"Command+Shift-H", win:"Ctrl+Shift-H"},{
         action:()=>{
             var frame = window.parent.document.getElementById('rightSideFrame')
             var src = frame.getAttribute('src')
             frame.setAttribute('src','/_help/')
-            ProportionAction.execute("50")
+            ProportionAction.execute("20")
         }
     })
     return self;

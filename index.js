@@ -95,7 +95,7 @@ io.on('connection', (socket) => {
         }
         else {
             
-            dirs = ls('-R', path)
+            dirs = ls(path)
         }
         if(dirs.length > 0){
             if(!cache.hasKey(path))cache.put(path,dirs)

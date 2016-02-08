@@ -6,12 +6,27 @@
 	#editor {
 		background: #272822;
 		color: #F8F8F2;
-		font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+		font: 11px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+		overflow: auto;
 	}
+	table{
+	   font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace; 
+	   color:white;
+	   width:100%;
+	   padding:0px;
+	}
+	table tr:nth-child(odd) {
+        background-color: #ccc;
+        color:black;
+    }
+    td[colspan="2"]{
+        background-color: white;
+        color:black;
+        padding:5px;
+    }
   </style>
 </head>
 <body>
-<div id="masterHead">
 <div id="header" class="blackGradient">    
     <span id="spanDescription"></span>
     <span>
@@ -19,32 +34,129 @@
     </span>
     <span class="closeButton" onclick="javascript:EditorUI.closeInputBox()"> x </span>
 </div>
-<div id="ctxout"></div>
-</div>    
 <div id="editor">
-<p>"Hello Node IT!!";<br/><br/>
-
-Welcome:<br/><br/>
-
-Node IT is a small and lightweight code editor based on Ace and a simple static http server.
-It's focused on web and webapp development you can programming on the left side and see your
-app on the right side, or other html page as you configure.</p>
-
-Shortcuts:<br/>
-<br/>
-Ctrl+Shift-P, Command+Shift-P => input[0..100] Resize right side window<br/>
-Ctrl+Shift-B, Command+Shift-B => input[text] Show bing result for the input on the right side<br/>
-Ctrl+Shift-O, Command+Shift-O => input[text] Open File by name<br/>
-Ctrl+Shift-Z, Command+Shift-Z => input[text] Execute terminal commands<br/>
-Ctrl-L, Command-L => input[text] Configure which page was showed on the right side<br/>
-Ctrl+Shift-S, Command+Shift-S => input[text] split editor open a specific file on the right side<br/>
-Ctrl+Shift-H, Command+Shift-H => show help</p>
+<table>
+    <thead>
+    <tr>
+        <td colspan="2" align="center">Plataforms</td>
+    </tr>
+    <tr>
+        <td>Mac</td>
+        <td>Windows/Linux</td>
+    </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Command+Shift-O</td>
+            <td>Ctrl+Shift-O</td>
+        </tr>
+        <tr>
+           <td colspan="2">
+               Open File
+           </td> 
+        </tr>
         
+         <tr>
+            <td>Option-Left</td>
+            <td>Alt-Left</td>
+        </tr>
+        <tr>
+           <td colspan="2">
+              Move to previous open file
+           </td> 
+        </tr>
+        
+        <tr>
+            <td>Option-Right</td>
+            <td>Alt-Right</td>
+        </tr>
+        <tr>
+           <td colspan="2">
+              Move to next the opened file
+           </td> 
+        </tr>
+        
+        <tr>
+            <td>Command+Shift-B</td>
+            <td>Ctrl+Shift-B</td>
+        </tr>
+        <tr>
+           <td colspan="2">
+              Execute Bing search
+           </td> 
+        </tr>
+        
+        <tr>
+            <td>Command+Shift-P</td>
+            <td>Ctrl+Shift-P</td>
+        </tr>
+        <tr>
+           <td colspan="2">
+              Set right side size in %
+           </td> 
+        </tr>
+        
+        <tr>
+            <td>Command-L</td>
+            <td>Ctrl-L</td>
+        </tr>
+        <tr>
+           <td colspan="2">
+              Set right side URL
+           </td> 
+        </tr>
+        
+        <tr>
+            <td>Command+Shift-L</td>
+            <td>Ctrl+Shift-L</td>
+        </tr>
+        <tr>
+           <td colspan="2">
+              Refresh right side
+           </td> 
+        </tr>
+        
+        <tr>
+            <td>Command+Shift-S</td>
+            <td>Ctrl+Shift-S</td>
+        </tr>
+        <tr>
+           <td colspan="2">
+              Open file at right side
+           </td> 
+        </tr>
+        
+        <tr>
+            <td>Command+Shift-Z</td>
+            <td>Ctrl+Shift-Z</td>
+        </tr>
+        <tr>
+           <td colspan="2">
+              Execute shell command
+           </td> 
+        </tr>
+        
+        <tr>
+            <td>Command+Shift-H</td>
+            <td>Ctrl+Shift-H</td>
+        </tr>
+        <tr>
+           <td colspan="2">
+              Help page
+           </td> 
+        </tr>
+    </tbody>
+</table>
+
+<br/>
+Help with ACE Editor?
+<br/>
+look at: <a  target="_blank" href="https://github.com/ajaxorg/ace/wiki/Default-Keyboard-Shortcuts">Ace keyboard bindings</a>
       
 </div>
 <div id="footer" style="background-color:#6B6B6B">
     <ul id="bottombar">
-        
+        <li>Help</li>
     </ul>
 </div> 
 
