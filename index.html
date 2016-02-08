@@ -39,6 +39,11 @@
       ga('create', 'UA-73114810-1', 'auto');
       ga('send', 'pageview');
     </script>
+    <style>
+        table tr:nth-child(odd) {
+            background-color: gray;
+        }
+    </style>
   </head>
 
   <body>
@@ -133,10 +138,24 @@ Execute shell commands</h3>
 <p>
     You can execute shell commands by input your command
     in the action box and
-    see the stdio from process
+    see the stdio from process. 
 </p>
 <img src="images/img6.png"/>
 <br/>
+<br/>
+
+<h3>
+<a  class="anchor" href="#designer-templates" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>
+Define your own shell commands aliases</h3>
+
+<p>
+    You can define alias for the shell commands at the shell command box
+    by Pressing Ctrl+Shift-Z or Command+Shift-Z and input your new alias
+    like $ > alias: gs = git status . 
+    Press enter and Pahhhhh you have an new alias. 
+    To use it you must open the shell command box and type your new alias 
+    like $ > gs
+</p>
 <br/>
 
 <h3>
@@ -211,103 +230,113 @@ Installing</h3>
 </pre>
 
 <table>
+    <thead>
     <tr>
-        <th>Hotkey</th>
-        <th>Platform</th>
-        <th>Action</th>
+        <td>Mac</td>
+        <td>Windows/Linux</td>
     </tr>
-    <tr>
-        <td>Command+Shift-O</td>
-        <td align="center">Mac</td>
-        <td rowspan="2">Open File</td>
-    </tr>
-    <tr>
-        <td>Ctrl+Shift-O</td>
-        <td align="center">Win + Lnux</td>
-    </tr>
-    <tr>
-        <td>Option-Left</td>
-        <td align="center">Mac</td>
-        <td rowspan="2">Move to previous open file</td>
-    </tr>
-    <tr>
-        <td>Alt-Left</td>
-        <td align="center">Win + Linux</td>
-    </tr>
-    <tr>
-        <td>Option-Right</td>
-        <td align="center">Mac</td>
-        <td rowspan="2">Move to next the opened file</td>
-    </tr>
-    <tr>
-        <td>Alt-Right</td>
-        <td align="center">Win + Linux</td>
-    </tr>
-    <tr>
-        <td>Command+Shift-B</td>
-        <td align="center">Mac</td>
-        <td rowspan="2">Execute Bing search</td>
-    </tr>
-    <tr>
-        <td>Ctrl+Shift-B</td>
-        <td align="center">Win + Linux</td>
-    </tr>
-    <tr>
-        <td>Command+Shift-P</td>
-        <td align="center">Mac</td>
-        <td rowspan="2">Set right side size in %</td>
-    </tr>
-    <tr>
-        <td>Ctrl+Shift-P</td>
-        <td align="center">Win + Linux</td>
-    </tr>
-    <tr>
-        <td>Command-L</td>
-        <td align="center">Mac</td>
-        <td rowspan="2">Set right side URL</td>
-    </tr>
-    <tr>
-        <td>Ctrl-L</td>
-        <td align="center">Win + Linux</td>
-    </tr>
-    <tr>
-        <td>Command+Shift-L</td>
-        <td align="center">Mac</td>
-        <td rowspan="2">Refresh right side</td>
-    </tr>
-    <tr>
-        <td>Ctrl+Shift-L</td>
-        <td align="center">Win + Linux</td>
-    </tr>
-    <tr>
-        <td>Command+Shift-S</td>
-        <td align="center">Mac</td>
-        <td rowspan="2">Open file at right side</td>
-    </tr>
-    <tr>
-        <td>Ctrl+Shift-S</td>
-        <td align="center">Win + Linux</td>
-    </tr>
-    <tr>
-        <td>Command+Shift-Z</td>
-        <td align="center">Mac</td>
-        <td rowspan="2">Execute shell command</td>
-    </tr>
-    <tr>
-        <td>Ctrl+Shift-Z</td>
-        <td align="center">Win + Linux</td>
-    </tr>
-    
-    <tr>
-        <td>Command+Shift-H</td>
-        <td align="center">Mac</td>
-        <td rowspan="2">Show nodeit help on the right side</td>
-    </tr>
-    <tr>
-        <td>Ctrl+Shift-H</td>
-        <td align="center">Win + Linux</td>
-    </tr>
-    
+    </thead>
+    <tbody>
+        <tr>
+            <td>Command+Shift-O</td>
+            <td>Ctrl+Shift-O</td>
+        </tr>
+        <tr>
+           <td colspan="2">
+               Open File
+           </td> 
+        </tr>
+        
+         <tr>
+            <td>Option-Left</td>
+            <td>Alt-Left</td>
+        </tr>
+        <tr>
+           <td colspan="2">
+              Move to the previous opened file
+           </td> 
+        </tr>
+        
+        <tr>
+            <td>Option-Right</td>
+            <td>Alt-Right</td>
+        </tr>
+        <tr>
+           <td colspan="2">
+              Move to the next opened file
+           </td> 
+        </tr>
+        
+        <tr>
+            <td>Command+Shift-B</td>
+            <td>Ctrl+Shift-B</td>
+        </tr>
+        <tr>
+           <td colspan="2">
+              Execute Bing search
+           </td> 
+        </tr>
+        
+        <tr>
+            <td>Command+Shift-P</td>
+            <td>Ctrl+Shift-P</td>
+        </tr>
+        <tr>
+           <td colspan="2">
+              Set right side size in %
+           </td> 
+        </tr>
+        
+        <tr>
+            <td>Command-L</td>
+            <td>Ctrl-L</td>
+        </tr>
+        <tr>
+           <td colspan="2">
+              Set right side URL
+           </td> 
+        </tr>
+        
+        <tr>
+            <td>Command+Shift-X</td>
+            <td>Ctrl+Shift-X</td>
+        </tr>
+        <tr>
+           <td colspan="2">
+              Refresh right side
+           </td> 
+        </tr>
+        
+        <tr>
+            <td>Command+Shift-S</td>
+            <td>Ctrl+Shift-S</td>
+        </tr>
+        <tr>
+           <td colspan="2">
+              Open file at right side
+           </td> 
+        </tr>
+        
+        <tr>
+            <td>Command+Shift-Z</td>
+            <td>Ctrl+Shift-Z</td>
+        </tr>
+        <tr>
+           <td colspan="2">
+              Execute shell command
+           </td> 
+        </tr>
+        
+        <tr>
+            <td>Command+Shift-H</td>
+            <td>Ctrl+Shift-H</td>
+        </tr>
+        <tr>
+           <td colspan="2">
+              Help page
+           </td> 
+        </tr>
+    </tbody>
 </table>
 
 
