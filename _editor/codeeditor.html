@@ -2,6 +2,8 @@
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" href="/_editor/css/style.css"/>
+  <link rel="stylesheet" href="/_editor/css/ionicons.min.css"/>
+  <link rel="stylesheet" href="/_editor/utils/treeview/treeview.css"/>
 </head>
 <body>
 <div id="masterHead">
@@ -24,15 +26,17 @@ It's focused on web and webapp development you can programming on the left side 
 app on the right side, or other html page as you configure.
 
 Type Command+Shift-H for Mac or Ctrl+Shift-H for Windows/Linux to show help commands
-        
-      
 </div>
 <div id="footer" style="background-color:#6B6B6B">
-    <ul id="bottombar">
+    <div id="toolbar">
+    </div>
+    <div id="fileList">
+        <ul id="bottombar">
         
-    </ul>
-</div>  
-
+        </ul>    
+    </div>
+    
+</div>
 <script type="text/javascript">
     const NodeIT = (()=>{
         var actions = [];
@@ -86,7 +90,9 @@ Type Command+Shift-H for Mac or Ctrl+Shift-H for Windows/Linux to show help comm
 <script src="/_editor/utils/handlebars-v4.0.5.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/utils/templates.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/utils/array-utils.js" type="text/javascript" charset="utf-8"></script>
+<script src="/_editor/utils/treeview/treeview.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/utils/events.js" type="text/javascript" charset="utf-8"></script>
+<script src="/_editor/toolbar/toolbar.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/file/fileutils.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/shell/shell.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/utils/shortcut.js" type="text/javascript" charset="utf-8"></script>
@@ -96,6 +102,8 @@ Type Command+Shift-H for Mac or Ctrl+Shift-H for Windows/Linux to show help comm
 <script src="/_editor/actions/proportionaction.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/actions/terminalaction.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/actions/splitaction.js" type="text/javascript" charset="utf-8"></script>
+<script src="/_editor/toolbar/openfiletree.js" type="text/javascript" charset="utf-8"></script>
+<script src="/_editor/modules/loader.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/ui/editor.js" type="text/javascript" charset="utf-8"></script>
 
 
@@ -115,9 +123,12 @@ Type Command+Shift-H for Mac or Ctrl+Shift-H for Windows/Linux to show help comm
     document.addEventListener("DOMContentLoaded", function(event) { 
         socket.emit("config")
         socket.on("config",(config)=>{
-            NodeIT.setConfig(config)
-            NodeIT.startup()
-        })
+            NodeIT.setConfig(config);
+            NodeIT.startup();
+            Toolbar.render();
+        });
+        window.socket = socket;
+        window.editor = editor;
     });
     
     FileUtils.setup(editor,socket);        
@@ -169,5 +180,13 @@ Type Command+Shift-H for Mac or Ctrl+Shift-H for Windows/Linux to show help comm
         {{/each}}        
     </ul>
 </script> 
+<script type="text/handlebars" id="toolbar-commands">
+    <ul>
+        {{#each . }}
+        <li><i class="{{icon}}" title="{{title}}" onclick="javascript:{{action}}"></i></li>
+        {{/each}}
+    </ul>
+</script>
+
 </body>
 </html>

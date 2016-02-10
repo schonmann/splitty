@@ -18,7 +18,25 @@ body{
     transition: height 0.3s;  
     overflow: hidden;
 }
-
+#toolbar {
+    float: left;
+    margin-left:2px;
+    font-size:21px;
+    margin-right:2px;
+    color:#4D4D4D;
+    
+}
+#toolbar ul li i {
+    cursor:pointer;
+}
+#toolbar ul li i:hover {
+    color:black;
+}
+#toolbar ul {
+    list-style: none;
+    padding:0px;
+    margin:0px;
+}
 .textBox {
     padding: 5px;
     width: 60%;
@@ -49,6 +67,7 @@ li,input:focus{
 .blackGradient {
     background: #F1F1F1;
 }
+
 
 
 #bottombar{

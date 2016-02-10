@@ -18,7 +18,9 @@ require('shelljs/global');
 var child;
 const config = {
     host_path:pwd(),
-    port:"8000"
+    port:"8000",
+    platform:process.platform,
+    workspace:process.cwd()
 }
 userArgs.forEach((param)=>{
  var map = param.split("=")
@@ -60,7 +62,13 @@ io.on('connection', (socket) => {
                             + data.filePath,data.lines.join(getFileSeparator())))
     
     socket.on('openFile', (filePath) => {
-        fs.readFile(process.cwd()+filePath, "utf-8", (err, data) => {
+        
+        var path = config.workspace + filePath;
+        if(filePath.indexOf(config.workspace) >= 0){
+            path = filePath;
+        }        
+        console.log("Open File: " + path)
+        fs.readFile(path, "utf-8", (err, data) => {
           if (err)  socket.emit("stderr",err)
           else {
               var fd = {}

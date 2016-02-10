@@ -4,7 +4,7 @@ var FileAction = (()=>{
     function renderOpenFiles(){
          var ctx = {};
         ctx.files = FileUtils.getOpenedFiles()        
-        Template.render(ctx,"template-footer","footer")
+        Template.render(ctx,"template-footer","fileList")
         editor.focus()
     }
     
