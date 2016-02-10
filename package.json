@@ -1,14 +1,14 @@
 {
-  "name": "nodeit",
-  "version": "1.0.9",
-  "description": "Nodeit is a simple static file server with a embedded text editor based on ACE. NodeIT is focused to speed up the web development  allowing the programmer to use de ACE editor on the left side and see the result on the right side of the same browser tab.",
+  "name": "splitty",
+  "version": "1.0.0",
+  "description": "Splitty is a simple static file server with a embedded text editor based on ACE. Splitty is focused to speed up the web development  allowing the programmer to use de ACE editor on the left side and see the result on the right side of the same browser tab.",
   "scripts": {
     "test": "mocha"
   },
   "main":"./index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shortty/nodeit.git"
+    "url": "git+https://github.com/shortty/splitty.git"
   },
   "keywords": [
     "node",
@@ -21,9 +21,9 @@
   "author": "Philippe Moneda philippemoneda@gmail.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/shortty/nodeit/issues"
+    "url": "https://github.com/shortty/splitty/issues"
   },
-  "homepage": "http://shortty.github.io/nodeit/",
+  "homepage": "http://shortty.github.io/splitty/",
   "dependencies": {
     "mocha": "2.3.4",
 		"serve-static":"1.10.0",
@@ -34,7 +34,7 @@
   },
 	"preferGlobal": true,
 	"bin": {
-        "nodeit": "index.js",
+        "splitty": "index.js",
         "_editor":"_editor/"
     }
 }
