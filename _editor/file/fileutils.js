@@ -37,7 +37,8 @@ var FileUtils = (function(){
     
     function save(e){
         if(openedFiles[currentFile] && openedFiles[currentFile].fileName){
-            Events.fire(EVENTS.FILE_SAVE,editor.getSession().doc.$lines.join("\r\n"))            
+            Events.fire(EVENTS.FILE_SAVE,editor.getSession().doc.$lines.join("\r\n")) 
+            console.log(openedFiles[currentFile].fileName)
             _socket.emit('fileSave', {filePath: openedFiles[currentFile].fileName, lines: editor.getSession().doc.$lines})    
         }
         

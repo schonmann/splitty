@@ -57,14 +57,18 @@ function getFileSeparator(){
 }
 
 io.on('connection', (socket) => {
-    socket.on('fileSave',
-                    (data) => fs.writeFile(process.cwd() 
-                            + data.filePath,data.lines.join(getFileSeparator())))
+    socket.on('fileSave',(data) => {
+        var path = config.workspace + data.filePath;
+        if(data.filePath.startsWith(config.workspace)){
+            path = data.filePath;
+        }
+        fs.writeFile(path,data.lines.join(getFileSeparator()))
+    });
     
     socket.on('openFile', (filePath) => {
         
         var path = config.workspace + filePath;
-        if(filePath.indexOf(config.workspace) >= 0){
+        if(filePath.startsWith(config.workspace)){
             path = filePath;
         }        
         console.log("Open File: " + path)
