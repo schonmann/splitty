@@ -73,7 +73,7 @@ function ItemNode(){
       if(this.label.indexOf("/") > 0){
         //directory  
         var span = document.createElement("span")
-        span.setAttribute("style","margin-right:3px;cursor:pointer;")
+        span.setAttribute("style","margin-right:3px;cursor:pointer;display:inline-table;")
         var elI = document.createElement("i");
         if(!this.opened){
             elI.setAttribute("class","ion-arrow-right-b");    
