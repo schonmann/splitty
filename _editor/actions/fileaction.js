@@ -16,11 +16,14 @@ var FileAction = (()=>{
     self.openSelectedFile = (file) => FileUtils.open("/"+file)
     
     self.execute = (value) => {
-     if(fileRegex.exec(value) != null)    
+     fileRegex.lastIndex = 0;  
+     if(fileRegex.exec(value) !== null){
         self.openSelectedFile(value)
+     }
       else {
-         if (value.length && value.charAt(value.length - 1) != "/")
-            EditorUI.setActionText(value+"/")
+         if (value.length && value.charAt(value.length - 1) != "/"){
+            EditorUI.setActionText(value+"/") 
+         }
          self.findFiles()
          return 1
       }
