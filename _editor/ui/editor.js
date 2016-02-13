@@ -26,7 +26,7 @@ var EditorUI = (()=> {
     
     
     self.onEnterOption = (value) => {       
-        
+        console.log(value);
         var ret = currentActionContext.execute(value);
         if(ret < 0 || typeof(ret) === "undefined")
             self.closeInputBox()
@@ -60,6 +60,7 @@ var EditorUI = (()=> {
         var list = _('ctxout')
         list.innerHTML = ""
         list.style.display = "none"
+        _("optionValue").value = ""
         editor.focus()    
     }    
     self.setupContext = (context) => {

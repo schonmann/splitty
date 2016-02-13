@@ -38,10 +38,7 @@ var FileTree = (()=>{
     };
     
     self.openFile = (node) => {
-        console.log(node);
-        console.log("open: " + node.toPath());
         FileUtils.open(node.toPath());
-        
     };
     
     self.compileTree = (root,files) => {          
