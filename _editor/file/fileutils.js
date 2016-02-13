@@ -7,7 +7,8 @@ var FileUtils = (function(){
     var currentFile = 0
     
     const ACE_SESSION_MAP = {
-        "js":"javascript"
+        "js":"javascript",
+        "hs":"haskell"
     }
     
     const EVENTS = {FILE_OPEN:"FILE OPEN",FILE_CLOSE:"FILE CLOSE", FILE_SAVE:"FILE SAVE"}
