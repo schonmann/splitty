@@ -474,3 +474,15 @@ img::-moz-selection {
 body {
     webkit-tap-highlight-color: #222;
 }
+
+.screenshot{
+    position:absolute;
+    background-color: white;
+    z-index:5000;
+    height:600px;
+    top:1500px;
+    box-shadow: 3px 3px 15px #000;
+    left:5%;
+    right:5%;
+    
+}
