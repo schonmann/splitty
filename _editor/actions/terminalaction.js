@@ -84,13 +84,13 @@ var TerminalAction = (()=>{
         return tokens;
     };
     
-    self.hasAlias = (alias) => NodeIT.hasGlobal("alias$$"+alias);
-    self.getAlias = (alias) => NodeIT.global("alias$$"+alias);
+    self.hasAlias = (alias) => Splitty.hasGlobal("alias$$"+alias);
+    self.getAlias = (alias) => Splitty.global("alias$$"+alias);
     
     
     self.defineAlias = (value) => {
         var alias = value.replace("alias:","").trim().split("=");
-        NodeIT.global("alias$$"+alias[0].trim(),alias[1].trim());
+        Splitty.global("alias$$"+alias[0].trim(),alias[1].trim());
     };
     self.onkeyup = (value) => {};
     

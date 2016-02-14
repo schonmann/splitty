@@ -25,7 +25,8 @@ var FileUtils = (function(){
     
     self.bind = () => {
         bindChangeAce()        
-        _socket.on("openFile", (fd)=>{
+        _socket.on("openFile", (crypt_fd)=>{         
+            var fd = Splitty.decrypt(crypt_fd);
             openedFiles.push(fd)
             fd.current = true
             currentFile = openedFiles.length - 1
@@ -40,7 +41,7 @@ var FileUtils = (function(){
         if(openedFiles[currentFile] && openedFiles[currentFile].fileName){
             Events.fire(EVENTS.FILE_SAVE,editor.getSession().doc.$lines.join("\r\n")) 
             console.log(openedFiles[currentFile].fileName)
-            _socket.emit('fileSave', {filePath: openedFiles[currentFile].fileName, lines: editor.getSession().doc.$lines})    
+            _socket.emit('fileSave',Splitty.encrypt({filePath: openedFiles[currentFile].fileName, lines: editor.getSession().doc.$lines}));    
         }
         
     }
@@ -97,7 +98,7 @@ var FileUtils = (function(){
     }
     
     self.open = (filename) => {
-        _socket.emit("openFile",filename)
+        _socket.emit("openFile",Splitty.encrypt({"filename":filename}));
     }
     
     self.getOpenedFiles = () => openedFiles

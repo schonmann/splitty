@@ -66,7 +66,7 @@ var FileAction = (()=>{
     
     self.startup = ()=>{
         
-        var appParams = NodeIT.params()
+        var appParams = Splitty.params()
         if(typeof(appParams["openFile"]) === "undefined") return
         const fileToOpen = appParams["openFile"]
         ProportionAction.execute("0")
@@ -90,7 +90,7 @@ var FileAction = (()=>{
     })
     
     
-    NodeIT.register(self)
+    Splitty.register(self)
     return self;
 })();
 

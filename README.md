@@ -21,7 +21,7 @@ Using
 ====================
 Serve static files
 
-        $ splitty port=8000
+        $ splitty [port=8000] [key=passphrase_AES_security]
         
 After start all the files in directory can be 
 accessed in the browser
@@ -33,3 +33,5 @@ Open Splitty Editor
 
         $ splitty
 Open browser at http://localhost:8000/_editor
+
+

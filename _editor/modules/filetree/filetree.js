@@ -9,7 +9,7 @@ var FileTree = (()=>{
         div.setAttribute("class","filetree-window");
         body.appendChild(div);
         self.root = new ItemNode();
-        self.root.label = NodeIT.config().host_path + "/";
+        self.root.label = Splitty.config().host_path + "/";
         self.root.userLabel =  "/";
         self.root.opened = true;
         Shell.exec("ls -F",(stdout) => {

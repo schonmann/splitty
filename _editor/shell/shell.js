@@ -21,8 +21,14 @@ var Shell = (function(){
     }
     
     self.bind = () => {
-        socket.on("stdout", self.outputCallback)
-        socket.on("stderr", self.outputCallback)
+        socket.on("stdout", (data) => {
+            var resp = Splitty.decrypt(data);
+            self.outputCallback(resp.stdout);
+        });
+        socket.on("stderr", (data) => {
+            var resp = Splitty.decrypt(data);
+            self.outputCallback(resp.stderr);
+        });
     }
     
     self.clear = () => stdioBuffer = []
@@ -38,14 +44,17 @@ var Shell = (function(){
     }
     
     self.find = (value,callback) => {
-        socket.emit("find", {text:value})
-        socket.on("find",callback)
+        socket.emit("find", Splitty.encrypt({text:value}));
+        socket.on("find",(data)=>{
+            var resp = Splitty.decrypt(data);
+            callback(resp.founded);
+        });
     }
     
     function exec(cmd,callback){ 
         stdioBuffer = []
         stdioCallback = callback
-        socket.emit("command", {command:cmd}) 
+        socket.emit("command",  Splitty.encrypt({command:cmd})); 
     }
     
     return self

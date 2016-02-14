@@ -2,7 +2,7 @@ var ProportionAction = (()=>{
     var self = {};
     
     self.execute = (value) => {
-        NodeIT.prop("proportion",value)
+        Splitty.prop("proportion",value)
         var frame = window.parent.document.getElementById("rightSideFrame")
         var editor = window.parent.document.getElementById("frameEditor")
         frame.setAttribute('width',value + '%')
@@ -14,12 +14,12 @@ var ProportionAction = (()=>{
     
     
     self.startup = () => {
-        if(NodeIT.hasProp("proportion")){
-            self.execute(NodeIT.prop("proportion"))
+        if(Splitty.hasProp("proportion")){
+            self.execute(Splitty.prop("proportion"))
         }
     }
      
     Shortcut.bindEvent("proportion",{win: "Ctrl+Shift-P", mac: "Command+Shift-P"},self)
-    NodeIT.register(self)
+    Splitty.register(self)
     return self;
 })();
