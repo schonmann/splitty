@@ -1,6 +1,6 @@
 {
   "name": "splitty",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Splitty is a simple static file server with a embedded text editor based on ACE. Splitty is focused to speed up the web development  allowing the programmer to use de ACE editor on the left side and see the result on the right side of the same browser tab.",
   "scripts": {
     "test": "mocha"
@@ -29,9 +29,10 @@
     "mocha": "2.3.4",
 		"serve-static":"1.10.0",
 		"finalhandler":"0.4.1",
-	  "request":"2.67.0",
+	    "request":"2.67.0",
 		"socket.io":"1.3.7",		
-    "shelljs":"0.5.3"  
+        "shelljs":"0.5.3",
+        "crypto-js":"3.1.6"
   },
 	"preferGlobal": true,
 	"bin": {
