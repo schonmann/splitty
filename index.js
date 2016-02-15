@@ -2,20 +2,20 @@
 
 
 var userArgs     = process.argv.slice(2);
-var http         = require('http')
-var finalhandler = require('finalhandler')
-var serveStatic  = require('serve-static')
-var request      = require('request')
-var serve        = serveStatic("./")
-var editor       = serveStatic(__dirname)
-var fs           = require("fs")
-var sys          = require('sys')
-const spawn      = require('child_process').spawn
+var http         = require('http');
+var finalhandler = require('finalhandler');
+var serveStatic  = require('serve-static');
+var request      = require('request');
+var serve        = serveStatic("./");
+var editor       = serveStatic(__dirname);
+var fs           = require("fs");
+var sys          = require('sys');
+const spawn      = require('child_process').spawn;
 const cache      = require('./app/cache/cache')
 require('shelljs/global');
 
 var CryptoJS = require("crypto-js");
-var aes_key = "624dfb626f66ac58f35422b191e02e79"; //default key
+var aes_key = guid();
 
 var child;
 const config = {
@@ -23,19 +23,21 @@ const config = {
     port:"8000",
     platform:process.platform,
     workspace:process.cwd(),
-    key:genKey(aes_key)
+    key:aes_key
     
 }
 userArgs.forEach((param)=>{
  var map = param.split("=")
  if(map[0] === "key"){
-     aes_key =genKey(map[1]);
+     aes_key = map[1];
      map[1] = aes_key;
  }
  config[map[0]] = map[1];
 })
-
+console.log("       ");
+console.log("Put this key in the splitty editor...");
 console.log("key: " + config.key);
+config.key = genKey(aes_key);
 
 var server = http.createServer((req, res) => {
   var done = finalhandler(req, res)
@@ -96,9 +98,7 @@ io.on('connection', (socket) => {
         })
     })
 
-    socket.on("find",(crypt_data) => {
-        console.log("find");
-        console.log(crypt_data);
+    socket.on("find",(crypt_data) => {     
         var data = decrypt(crypt_data);
         var parts = data.text.split("/")
         var out = []
@@ -155,6 +155,12 @@ io.on('connection', (socket) => {
 });
 
 
+
+
+
+
+
+
 function encrypt(message){
     if(typeof(message) !== "string"){
         message = JSON.stringify(message);   
@@ -171,6 +177,15 @@ function genKey(baseKey){
     return CryptoJS.MD5(CryptoJS.MD5(baseKey).toString()).toString()
 }
 
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
 
 server.listen(config["port"])
 
