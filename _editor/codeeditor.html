@@ -67,18 +67,18 @@ Type Command+Shift-H for Mac or Ctrl+Shift-H for Windows/Linux to show help comm
         }
         self.prop = (prop,value) => {
             if(typeof(value) !== "undefined"){
-                localStorage["$$nodeit$$"+configuration.host_path+"$$"+prop] = value    
-            }else return localStorage["$$nodeit$$"+configuration.host_path+"$$"+prop]
+                localStorage["$$splitty$$"+configuration.host_path+"$$"+prop] = value    
+            }else return localStorage["$$splitty$$"+configuration.host_path+"$$"+prop]
             
         }
         self.global = (prop,value) => {
             if(typeof(value) !== "undefined"){
-                localStorage["$$nodeit$$"+prop] = value    
-            }else return localStorage["$$nodeit$$"+prop]
+                localStorage["$$splitty$$"+prop] = value    
+            }else return localStorage["$$splitty$$"+prop]
             
         }
-        self.hasProp = (prop) => typeof(localStorage["$$nodeit$$"+configuration.host_path+"$$"+prop]) !== "undefined"
-        self.hasGlobal = (prop) => typeof(localStorage["$$nodeit$$"+prop]) !== "undefined"
+        self.hasProp = (prop) => typeof(localStorage["$$splitty$$"+configuration.host_path+"$$"+prop]) !== "undefined"
+        self.hasGlobal = (prop) => typeof(localStorage["$$splitty$$"+prop]) !== "undefined"
         
         self.setConfig = (config) => configuration = config
         self.config = () => configuration
@@ -176,12 +176,16 @@ Type Command+Shift-H for Mac or Ctrl+Shift-H for Windows/Linux to show help comm
     function genKey(baseKey){
         return CryptoJS.MD5(CryptoJS.MD5(baseKey).toString()).toString()
     }
-    var key = prompt("Please enter with access key");
-    console.log(key);
-    if (key != null && key != "") {
-        Splitty.setKey(genKey(key));
-    }
     
+    var _key = Splitty.params()["key"];
+    if(typeof(_key)!== "undefined"){
+        Splitty.setKey(genKey(_key));
+    }else{
+        var key = prompt("Please enter with access key");
+        if (key != null && key != "") {
+            Splitty.setKey(genKey(key));
+        }
+    }
     startupEditor();
     
 </script>    

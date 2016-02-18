@@ -37,6 +37,8 @@ userArgs.forEach((param)=>{
 console.log("       ");
 console.log("Put this key in the splitty editor...");
 console.log("key: " + config.key);
+console.log("To open splitty editor go to");
+console.log("http://localhost:"+config.port+"/_editor?key="+config.key);
 config.key = genKey(aes_key);
 
 var server = http.createServer((req, res) => {

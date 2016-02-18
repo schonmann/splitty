@@ -1,46 +1,46 @@
 var FileUtils = (function(){
     
-    var self = {}
-    var _editor = null
-    var _socket = null
-    var openedFiles = []
-    var currentFile = 0
+    var self = {};
+    var _editor = null;
+    var _socket = null;
+    var openedFiles = [];
+    var currentFile = 0;
     
     const ACE_SESSION_MAP = {
         "js":"javascript",
         "hs":"haskell"
-    }
+    };
     
-    const EVENTS = {FILE_OPEN:"FILE OPEN",FILE_CLOSE:"FILE CLOSE", FILE_SAVE:"FILE SAVE"}
-    Events.register(EVENTS.FILE_OPEN)
-    Events.register(EVENTS.FILE_CLOSE)
-    Events.register(EVENTS.FILE_SAVE)
+    const EVENTS = {FILE_OPEN:"FILE OPEN",FILE_CLOSE:"FILE CLOSE", FILE_SAVE:"FILE SAVE"};
+    Events.register(EVENTS.FILE_OPEN);
+    Events.register(EVENTS.FILE_CLOSE);
+    Events.register(EVENTS.FILE_SAVE);
     
     
-    self.events = EVENTS
+    self.events = EVENTS;
     
-    self.setEditor = (editor) => _editor = editor
+    self.setEditor = (editor) => _editor = editor;
     
-    self.setSocket = (socket) => _socket = socket
+    self.setSocket = (socket) => _socket = socket;
     
     self.bind = () => {
-        bindChangeAce()        
+        bindChangeAce();
         _socket.on("openFile", (crypt_fd)=>{         
             var fd = Splitty.decrypt(crypt_fd);
-            openedFiles.push(fd)
-            fd.current = true
-            currentFile = openedFiles.length - 1
-            self.openInEditor(fd)
-            Events.fire(EVENTS.FILE_OPEN,fd)
-        })
-    }
+            openedFiles.push(fd);
+            fd.current = true;
+            fd.unduStack = [];
+            currentFile = openedFiles.length - 1;
+            self.openInEditor(fd);
+            Events.fire(EVENTS.FILE_OPEN,fd);
+        });
+    };
     
-    var bindChangeAce = () =>_editor.env.document.on("change",save)
+    var bindChangeAce = () =>_editor.env.document.on("change",save);
     
     function save(e){
         if(openedFiles[currentFile] && openedFiles[currentFile].fileName){
-            Events.fire(EVENTS.FILE_SAVE,editor.getSession().doc.$lines.join("\r\n")) 
-            console.log(openedFiles[currentFile].fileName)
+            Events.fire(EVENTS.FILE_SAVE,editor.getSession().doc.$lines.join("\r\n"));
             _socket.emit('fileSave',Splitty.encrypt({filePath: openedFiles[currentFile].fileName, lines: editor.getSession().doc.$lines}));    
         }
         
@@ -49,12 +49,12 @@ var FileUtils = (function(){
     var unbindingChangeAce = () => _editor.session.removeListener('change',save);
     
     var protectedChangeAce = (callback) => {
-        unbindingChangeAce()
+        unbindingChangeAce();
         if(typeof(callback) === "function"){
-            callback()
+            callback();
         }
-        bindChangeAce()
-    }
+        bindChangeAce();
+    };
     
     self.openInEditor = (fd) => {
         if(!fd) return
