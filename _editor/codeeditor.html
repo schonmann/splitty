@@ -193,6 +193,9 @@ Type Command+Shift-H for Mac or Ctrl+Shift-H for Windows/Linux to show help comm
     <ul id="bottombar">
         {{#each files}}
             <li class="bottomItem current_{{current}}" >
+            {{#if dirty}}
+                <span>*</span>
+            {{/if}}
             <span onclick="FileUtils.openByIndex({{inc @index}})">{{name}}</span>&nbsp
             <span onclick="FileUtils.closeByIndex({{inc @index}})" class="close-file">x</span></li>
         {{/each}}        

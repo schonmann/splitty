@@ -1,19 +1,20 @@
 var FileAction = (()=>{
     var self = {};
-    var fileRegex = /\w\.\w/gi
+    var fileRegex = /\w\.\w/gi;
     function renderOpenFiles(){
          var ctx = {};
-        ctx.files = FileUtils.getOpenedFiles()        
-        Template.render(ctx,"template-footer","fileList")
-        editor.focus()
+        ctx.files = FileUtils.getOpenedFiles();
+        Template.render(ctx,"template-footer","fileList");
+        editor.focus();
     }
     
-    Events.when(FileUtils.events.FILE_OPEN, renderOpenFiles)
-    Events.when(FileUtils.events.FILE_CLOSE, renderOpenFiles)
+    Events.when(FileUtils.events.FILE_OPEN, renderOpenFiles);
+    Events.when(FileUtils.events.FILE_CLOSE, renderOpenFiles);
+    Events.when(FileUtils.events.FILE_DIRTY, renderOpenFiles);
     
    
     
-    self.openSelectedFile = (file) => FileUtils.open("/"+file)
+    self.openSelectedFile = (file) => FileUtils.open("/"+file);
     
     self.execute = (value) => {
      fileRegex.lastIndex = 0;  
@@ -48,49 +49,52 @@ var FileAction = (()=>{
                 obj.path = elem
                 ctx.files.push(obj)    
             })
-            EditorUI.renderOutputAction(ctx,"template-found-files")
-        })    
-    }
+            EditorUI.renderOutputAction(ctx,"template-found-files");
+        });
+    };
     
-    self.init = (txtValue) => txtValue.value = ""
+    self.init = (txtValue) => txtValue.value = "";
         
-    self.getLabelAction = () => "open"
+    self.getLabelAction = () => "open";
     
     self.executeAction = (e , value) => {
-        var nextEl = document.querySelector('[tabindex="'+(parseInt(e.target.getAttribute("tabindex")) + 1)+'"]')
-        var nextPrev = document.querySelector('[tabindex="'+(parseInt(e.target.getAttribute("tabindex")) - 1)+'"]')
-        var exec =  e.keyCode == 13 && EditorUI.onEnterOption(value)
-        exec = exec || (e.keyCode == 40 && nextEl && nextEl.focus()) || (e.keyCode == 38 && nextPrev && nextPrev.focus())
+        var nextEl = document.querySelector('[tabindex="'+(parseInt(e.target.getAttribute("tabindex")) + 1)+'"]');
+        var nextPrev = document.querySelector('[tabindex="'+(parseInt(e.target.getAttribute("tabindex")) - 1)+'"]');
+        var exec =  e.keyCode == 13 && EditorUI.onEnterOption(value);
+        exec = exec || (e.keyCode == 40 && nextEl && nextEl.focus()) || (e.keyCode == 38 && nextPrev && nextPrev.focus());
         return exec;        
-    }   
+    };
     
     self.startup = ()=>{
-        
-        var appParams = Splitty.params()
-        if(typeof(appParams["openFile"]) === "undefined") return
-        const fileToOpen = appParams["openFile"]
-        ProportionAction.execute("0")
-        self.openSelectedFile(fileToOpen)
-        
-    }
+        var appParams = Splitty.params();
+        if(typeof(appParams.openFile) === "undefined") return;
+        const fileToOpen = appParams.openFile;
+        ProportionAction.execute("0");
+        self.openSelectedFile(fileToOpen);
+    };
         
     
-    Shortcut.bindEvent("open",{mac:"Command+Shift-O", win:"Ctrl+Shift-O"},self)
+    Shortcut.bindEvent("open",{mac:"Command+Shift-O", win:"Ctrl+Shift-O"},self);
     
     
     Shortcut.bindEvent("open next",{mac:"Option-Left", win:"Alt-Left"},{
         action:()=> {
-            FileUtils.openByIndex(FileUtils.currentFileIndex())
+            FileUtils.openByIndex(FileUtils.currentFileIndex());
         }
-    })
+    });
     Shortcut.bindEvent("open previous",{mac:"Option-Right", win:"Alt-Right"},{
         action:()=>{
-            FileUtils.openByIndex(FileUtils.currentFileIndex() + 2)
+            FileUtils.openByIndex(FileUtils.currentFileIndex() + 2);
         }
-    })
+    });
     
+    Shortcut.bindEvent("save file",{mac:"Command+S", win:"Ctrl+S"},{
+        action:()=>{
+           FileUtils.save();
+        }
+    });
     
-    Splitty.register(self)
+    Splitty.register(self);
     return self;
 })();
 

@@ -11,10 +11,12 @@ var FileUtils = (function(){
         "hs":"haskell"
     };
     
-    const EVENTS = {FILE_OPEN:"FILE OPEN",FILE_CLOSE:"FILE CLOSE", FILE_SAVE:"FILE SAVE"};
+    const EVENTS = {FILE_OPEN:"FILE OPEN",FILE_CLOSE:"FILE CLOSE", FILE_SAVE:"FILE SAVE", FILE_DIRTY:"FILE DIRTY"};
     Events.register(EVENTS.FILE_OPEN);
     Events.register(EVENTS.FILE_CLOSE);
     Events.register(EVENTS.FILE_SAVE);
+    Events.register(EVENTS.FILE_DIRTY);
+    
     
     
     self.events = EVENTS;
@@ -29,24 +31,33 @@ var FileUtils = (function(){
             var fd = Splitty.decrypt(crypt_fd);
             openedFiles.push(fd);
             fd.current = true;
-            fd.unduStack = [];
+            fd.undoStack = [];
+            fd.dirty = false;
             currentFile = openedFiles.length - 1;
             self.openInEditor(fd);
             Events.fire(EVENTS.FILE_OPEN,fd);
         });
     };
     
-    var bindChangeAce = () =>_editor.env.document.on("change",save);
+    var bindChangeAce = () =>_editor.env.document.on("change",needToSave);
     
-    function save(e){
+    function needToSave(e){
+        var fd = openedFiles[self.currentFileIndex()];
+        fd.dirty = true;
+        Events.fire(EVENTS.FILE_DIRTY,fd);
+    }
+    
+    function save(){
         if(openedFiles[currentFile] && openedFiles[currentFile].fileName){
             Events.fire(EVENTS.FILE_SAVE,editor.getSession().doc.$lines.join("\r\n"));
             _socket.emit('fileSave',Splitty.encrypt({filePath: openedFiles[currentFile].fileName, lines: editor.getSession().doc.$lines}));    
+            openedFiles[currentFile].dirty = false;
+            Events.fire(EVENTS.FILE_DIRTY,openedFiles[currentFile]);
         }
         
     }
     
-    var unbindingChangeAce = () => _editor.session.removeListener('change',save);
+    var unbindingChangeAce = () => _editor.session.removeListener('change',needToSave);
     
     var protectedChangeAce = (callback) => {
         unbindingChangeAce();
@@ -56,58 +67,57 @@ var FileUtils = (function(){
         bindChangeAce();
     };
     
+    self.save = () => save();
+    
     self.openInEditor = (fd) => {
-        if(!fd) return
-        openedFiles.first((e)=> e.current === true ).current = false
+        if(!fd) return;
+        openedFiles.first((e)=> e.current === true ).current = false;
         protectedChangeAce(()=> {
             fd.current = true;
-            var mode = fd.extension
+            var mode = fd.extension;
             if(ACE_SESSION_MAP[fd.extension])
-                mode = ACE_SESSION_MAP[fd.extension]
+                mode = ACE_SESSION_MAP[fd.extension];
             _editor.getSession().setMode("ace/mode/"+mode);
-            _editor.setValue(fd.data)
-            _editor.gotoLine(1)    
-        })
-        Events.fire(EVENTS.FILE_OPEN,fd)
-    }
+            _editor.setValue(fd.data);
+            _editor.gotoLine(1);
+        });
+        Events.fire(EVENTS.FILE_OPEN,fd);
+    };
     
     self.openByIndex = (index) => {  
-        if(openedFiles.empty() || openedFiles.length < index)return
-        
-        if(index <= 0) currentFile = 0
-        else if(index > openedFiles.length) currentFile = openedFiles.length
-        else currentFile = index - 1
+        if(openedFiles.empty() || openedFiles.length < index)return;
+        if(index <= 0) currentFile = 0;
+        else if(index > openedFiles.length) currentFile = openedFiles.length;
+        else currentFile = index - 1;
         if(openedFiles.length >= currentFile)
-            self.openInEditor(openedFiles[currentFile])
-    }
+            self.openInEditor(openedFiles[currentFile]);
+    };
     
     self.closeByIndex = (index) => {
-        var toClose = openedFiles[index-1]
-        var isCurrent = toClose.current 
-        openedFiles.removeAt(index-1)
-        currentFile = 0
+        var toClose = openedFiles[index-1];
+        var isCurrent = toClose.current; 
+        openedFiles.removeAt(index-1);
+        currentFile = 0;
         if(isCurrent && openedFiles.length > 0){
             openedFiles[0].current = true;
-            
-            self.openInEditor(openedFiles[0])            
+            self.openInEditor(openedFiles[0]);
         }else if(openedFiles.empty()){
-            protectedChangeAce(() => _editor.setValue(""))
-            
+            protectedChangeAce(() => _editor.setValue(""));
         }
-        Events.fire(EVENTS.FILE_CLOSE,toClose)
-    }
+        Events.fire(EVENTS.FILE_CLOSE,toClose);
+    };
     
     self.open = (filename) => {
         _socket.emit("openFile",Splitty.encrypt({"filename":filename}));
-    }
+    };
     
-    self.getOpenedFiles = () => openedFiles
+    self.getOpenedFiles = () => openedFiles;
     
     self.setup = (editor,socket) =>{
-        self.setEditor(editor)
-        self.setSocket(socket)
-        self.bind()
-    }
+        self.setEditor(editor);
+        self.setSocket(socket);
+        self.bind();
+    };
     self.currentFileIndex = () => currentFile
     Events.when(EVENTS.FILE_SAVE,(file) => openedFiles[currentFile].data = file)
     
