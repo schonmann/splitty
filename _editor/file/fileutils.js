@@ -31,7 +31,7 @@ var FileUtils = (function(){
             var fd = Splitty.decrypt(crypt_fd);
             openedFiles.push(fd);
             fd.current = true;
-            fd.undoStack = [];
+            fd.undoStack = null;
             fd.dirty = false;
             currentFile = openedFiles.length - 1;
             self.openInEditor(fd);
@@ -44,6 +44,7 @@ var FileUtils = (function(){
     function needToSave(e){
         var fd = openedFiles[self.currentFileIndex()];
         fd.dirty = true;
+        fd.data = editor.getSession().doc.$lines.join("\n");
         Events.fire(EVENTS.FILE_DIRTY,fd);
     }
     
@@ -80,6 +81,7 @@ var FileUtils = (function(){
             _editor.getSession().setMode("ace/mode/"+mode);
             _editor.setValue(fd.data);
             _editor.gotoLine(1);
+            
         });
         Events.fire(EVENTS.FILE_OPEN,fd);
     };

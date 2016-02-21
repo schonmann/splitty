@@ -19,36 +19,36 @@ var FileAction = (()=>{
     self.execute = (value) => {
      fileRegex.lastIndex = 0;  
      if(fileRegex.exec(value) !== null){
-        self.openSelectedFile(value)
+        self.openSelectedFile(value);
      }
       else {
          if (value.length && value.charAt(value.length - 1) != "/"){
-            EditorUI.setActionText(value+"/") 
+            EditorUI.setActionText(value+"/");
          }
-         self.findFiles()
-         return 1
+         self.findFiles();
+         return 1;
       }
          
-    }   
+    }; 
     var typingTimer;
     var doneTypingInterval = 800;
     self.onkeyup = (value) => {        
         clearTimeout(typingTimer);
-        typingTimer = setTimeout(self.findFiles,doneTypingInterval)
-    }
+        typingTimer = setTimeout(self.findFiles,doneTypingInterval);
+    };
     
     self.findFiles = () => {
-        var value = EditorUI.actionBoxValue()
-        if(value == "") return;
+        var value = EditorUI.actionBoxValue();
+        if(value === "") return;
         Shell.find(value, (founds) => {
             var ctx = {};
             ctx.files = [];
             founds.each((elem,i)=>{
                 var obj = {};
-                obj.name = elem.split("/").last()
-                obj.path = elem
-                ctx.files.push(obj)    
-            })
+                obj.name = elem.split("/").last();
+                obj.path = elem;
+                ctx.files.push(obj);
+            });
             EditorUI.renderOutputAction(ctx,"template-found-files");
         });
     };
@@ -84,6 +84,7 @@ var FileAction = (()=>{
     });
     Shortcut.bindEvent("open previous",{mac:"Option-Right", win:"Alt-Right"},{
         action:()=>{
+            //ler a stack undo
             FileUtils.openByIndex(FileUtils.currentFileIndex() + 2);
         }
     });

@@ -201,7 +201,7 @@ look at: <a  target="_blank" href="https://github.com/ajaxorg/ace/wiki/Default-K
        var p = document.getElementById('aliases');
         var str = "";
         for(tag in window.localStorage){
-            if(tag.indexOf("$$nodeit$$alias$$") >= 0){
+            if(tag.indexOf("$$splitty$$alias$$") >= 0){
                 var alias = tag.split("$$").last();
                 var command = window.localStorage[tag]
                 str = str + 
@@ -217,7 +217,7 @@ look at: <a  target="_blank" href="https://github.com/ajaxorg/ace/wiki/Default-K
     }
     
     function removeAlias(alias){
-        delete window.localStorage["$$nodeit$$alias$$"+alias]
+        delete window.localStorage["$$splitty$$alias$$"+alias]
         printAliases()
     }
 </script>
