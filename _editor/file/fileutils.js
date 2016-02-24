@@ -33,7 +33,7 @@ var FileUtils = (function(){
             fd.current = true;
             fd.dirty = false;
             fd.session = ace.createEditSession(fd.data,getMode(fd.extension));
-            fd.session.on("change",needToSave);
+            
             fd.pos = {};
             fd.pos.row = 1;
             fd.pos.column = 1;
@@ -47,16 +47,22 @@ var FileUtils = (function(){
         });
     };
     
-    var bindChangeAce = () =>_editor.session.on("change",needToSave);
+    var bindChangeAce = (session) => {
+        if(typeof(session) !== "undefined"){
+           session.on('change',needToSave);
+       }else{
+          _editor.session.on('change',needToSave);   
+       }
+    }
     
     function needToSave(e){
         var fd = openedFiles[self.currentFileIndex()];
         protectedChangeAce(()=>{
             fd.pos = clone(_editor.getCursorPosition());
             fd.pos.row = fd.pos.row + 1;
-            fd.pos.column = fd.pos.column + 1; 
+            fd.pos.column = fd.pos.column + 1;
+            fd.dirty = true;
         });
-        fd.dirty = true;
         fd.data = editor.getSession().doc.$lines.join("\n");
         Events.fire(EVENTS.FILE_DIRTY,fd);
     }
@@ -71,14 +77,21 @@ var FileUtils = (function(){
         
     }
     
-    var unbindingChangeAce = () => _editor.session.removeListener('change',needToSave);
+    var unbindingChangeAce = (session) => {
+       if(typeof(session) !== "undefined"){
+           session.removeListener('change',needToSave);
+       }else{
+        _editor.session.removeListener('change',needToSave);   
+       }
+        
+    }
     
-    var protectedChangeAce = (callback) => {
-        unbindingChangeAce();
+    var protectedChangeAce = (callback,session) => {
+        unbindingChangeAce(session);
         if(typeof(callback) === "function"){
             callback();
         }
-        bindChangeAce();
+        bindChangeAce(session);
     };
     
     self.save = () => save();
@@ -92,11 +105,10 @@ var FileUtils = (function(){
         return JSON.parse(JSON.stringify(obj));
     }
     self.openInEditor = (fd) => {
-        if(!fd) return;
-        var prev = openedFiles.first((e)=> e.current === true );
-        prev.current = false;
-        
         protectedChangeAce(()=> {
+            if(!fd) return;
+            var prev = openedFiles.first((e)=> e.current === true );
+            prev.current = false;
             //save state change
             prev.undoManager = {};
             prev.undoManager.$undoStack = clone(_editor.session.$undoManager.$undoStack);
@@ -104,23 +116,24 @@ var FileUtils = (function(){
             prev.undoManager.dirtyCounter = clone(_editor.session.$undoManager.dirtyCounter);
             fd.current = true;
             
-            _editor.session.$undoManager.reset();
+            //_editor.session.$undoManager.reset();
             var mode = getMode(fd.extension);
             if(fd.session){
                 _editor.setSession(fd.session);
             }
             _editor.getSession().setMode(mode);
             _editor.setValue(fd.data);
-            _editor.session.$undoManager.reset();
+            //_editor.session.$undoManager.reset();
             _editor.session.$undoManager.$undoStack = clone(fd.undoManager.$undoStack);
             _editor.session.$undoManager.$redoStack = clone(fd.undoManager.$redoStack);
             _editor.session.$undoManager.dirtyCounter = clone(fd.undoManager.dirtyCounter);
             if(fd.pos.row > 0)
                 _editor.gotoLine(fd.pos.row,fd.pos.column);
             else
-                _editor.gotoLine(1,1);
-        });
-        Events.fire(EVENTS.FILE_OPEN,fd);
+                _editor.gotoLine(1);
+            Events.fire(EVENTS.FILE_OPEN,fd);
+        },fd.session);
+        
     };
     
     self.openByIndex = (index) => {  
