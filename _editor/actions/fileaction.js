@@ -84,7 +84,6 @@ var FileAction = (()=>{
     });
     Shortcut.bindEvent("open previous",{mac:"Option-Right", win:"Alt-Right"},{
         action:()=>{
-            //ler a stack undo
             FileUtils.openByIndex(FileUtils.currentFileIndex() + 2);
         }
     });

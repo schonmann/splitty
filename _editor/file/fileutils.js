@@ -33,16 +33,26 @@ var FileUtils = (function(){
             fd.current = true;
             fd.undoStack = null;
             fd.dirty = false;
+            fd.session = ace.createEditSession(fd.data,getMode(fd.extension));
+            fd.session.on("change",needToSave);
+            fd.pos = {};
+            fd.pos.row = 1;
+            fd.pos.column = 1;
             currentFile = openedFiles.length - 1;
             self.openInEditor(fd);
             Events.fire(EVENTS.FILE_OPEN,fd);
         });
     };
     
-    var bindChangeAce = () =>_editor.env.document.on("change",needToSave);
+    var bindChangeAce = () =>_editor.session.on("change",needToSave);
     
     function needToSave(e){
         var fd = openedFiles[self.currentFileIndex()];
+        protectedChangeAce(()=>{
+            fd.pos = clone(_editor.getCursorPosition());
+            fd.pos.row = fd.pos.row + 1;
+            fd.pos.column = fd.pos.column + 1; 
+        });
         fd.dirty = true;
         fd.data = editor.getSession().doc.$lines.join("\n");
         Events.fire(EVENTS.FILE_DIRTY,fd);
@@ -70,17 +80,29 @@ var FileUtils = (function(){
     
     self.save = () => save();
     
+    function getMode(ext){
+        if(ACE_SESSION_MAP[ext])
+            return "ace/mode/" + ACE_SESSION_MAP[ext];
+        return "ace/mode/" + ext;
+    }
+    function clone(obj){
+        return JSON.parse(JSON.stringify(obj));
+    }
     self.openInEditor = (fd) => {
         if(!fd) return;
         openedFiles.first((e)=> e.current === true ).current = false;
         protectedChangeAce(()=> {
             fd.current = true;
-            var mode = fd.extension;
-            if(ACE_SESSION_MAP[fd.extension])
-                mode = ACE_SESSION_MAP[fd.extension];
-            _editor.getSession().setMode("ace/mode/"+mode);
+            var mode = getMode(fd.extension);
+            if(fd.session){
+                _editor.setSession(fd.session);
+            }
+            _editor.getSession().setMode(mode);
             _editor.setValue(fd.data);
-            _editor.gotoLine(1);
+            if(fd.pos.row > 0)
+                _editor.gotoLine(fd.pos.row,fd.pos.column);
+            else
+                _editor.gotoLine(1,1);
             
         });
         Events.fire(EVENTS.FILE_OPEN,fd);
