@@ -31,13 +31,16 @@ var FileUtils = (function(){
             var fd = Splitty.decrypt(crypt_fd);
             openedFiles.push(fd);
             fd.current = true;
-            fd.undoStack = null;
             fd.dirty = false;
             fd.session = ace.createEditSession(fd.data,getMode(fd.extension));
             fd.session.on("change",needToSave);
             fd.pos = {};
             fd.pos.row = 1;
             fd.pos.column = 1;
+            fd.undoManager = {};
+            fd.undoManager.$undoStack = [];
+            fd.undoManager.$redoStack = [];
+            fd.undoManager.dirtyCounter  = 0;
             currentFile = openedFiles.length - 1;
             self.openInEditor(fd);
             Events.fire(EVENTS.FILE_OPEN,fd);
@@ -90,20 +93,32 @@ var FileUtils = (function(){
     }
     self.openInEditor = (fd) => {
         if(!fd) return;
-        openedFiles.first((e)=> e.current === true ).current = false;
+        var prev = openedFiles.first((e)=> e.current === true );
+        prev.current = false;
+        
         protectedChangeAce(()=> {
+            //save state change
+            prev.undoManager = {};
+            prev.undoManager.$undoStack = clone(_editor.session.$undoManager.$undoStack);
+            prev.undoManager.$redoStack = clone(_editor.session.$undoManager.$redoStack);
+            prev.undoManager.dirtyCounter = clone(_editor.session.$undoManager.dirtyCounter);
             fd.current = true;
+            
+            _editor.session.$undoManager.reset();
             var mode = getMode(fd.extension);
             if(fd.session){
                 _editor.setSession(fd.session);
             }
             _editor.getSession().setMode(mode);
             _editor.setValue(fd.data);
+            _editor.session.$undoManager.reset();
+            _editor.session.$undoManager.$undoStack = clone(fd.undoManager.$undoStack);
+            _editor.session.$undoManager.$redoStack = clone(fd.undoManager.$redoStack);
+            _editor.session.$undoManager.dirtyCounter = clone(fd.undoManager.dirtyCounter);
             if(fd.pos.row > 0)
                 _editor.gotoLine(fd.pos.row,fd.pos.column);
             else
                 _editor.gotoLine(1,1);
-            
         });
         Events.fire(EVENTS.FILE_OPEN,fd);
     };
