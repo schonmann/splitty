@@ -16,6 +16,8 @@ var ProportionAction = (()=>{
     self.startup = () => {
         if(Splitty.hasProp("proportion")){
             self.execute(Splitty.prop("proportion"))
+        }else if(Splitty.params()["proportion"]){
+            self.execute(Splitty.params()["proportion"])
         }
     }
      

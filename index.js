@@ -38,7 +38,8 @@ console.log("       ");
 console.log("Put this key in the splitty editor...");
 console.log("key: " + config.key);
 console.log("To open splitty editor go to");
-console.log("http://localhost:"+config.port+"/_editor?key="+config.key);
+var splitty_url = "http://localhost:"+config.port+"/_editor?key="+config.key+"&proportion=0";
+console.log(splitty_url);
 config.key = genKey(aes_key);
 
 var server = http.createServer((req, res) => {
@@ -188,6 +189,27 @@ function guid() {
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
     s4() + '-' + s4() + s4() + s4();
 }
+
+function isOSX(){
+    return config.platform === "darwin";
+}
+function isWindows(){
+    return config.platform === "win";
+}
+function isLinux(){
+    return config.platform === "linux";
+}
+
+
+console.log(config.platform);
+if(isOSX()){
+    exec("open \"" + splitty_url + "\"", {async:true, silent:true});    
+}else if(isWindows()){
+    exec("explorer \"" + splitty_url + "\"", {async:true, silent:true});    
+}else{
+    //TODO Linux
+}
+
 
 server.listen(config["port"])
 
