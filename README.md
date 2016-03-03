@@ -28,10 +28,12 @@ Serve static files
         $ splitty [port=8000] [key=passphrase_AES_security]
             Put this key in the splitty editor...
             key: 9c4d43c0-c780-cba3-48ec-156e5d5417fd
+            To open splitty editor go to
+            http://localhost:8000/_editor?key=9c4d43c0-c780-cba3-48ec-156e5d5417fd&proportion=0
 
             
-Copy the key string and put on the prompt of the splitty editor
-After start all the files in directory can be 
+After run splitty your default web browser will be open at splitty editor url
+After splitty is running, all the files in directory can be 
 accessed in the browser
 For example, if you have a file index.html at the root you 
 can access http://localhost:8000/index.html
@@ -40,6 +42,8 @@ can access http://localhost:8000/index.html
 Open Splitty Editor
 
         $ splitty
-Open browser at http://localhost:8000/_editor
+Wait untul splitty open your browser at aplitty editor page
+OR
+Open browser at http://localhost:8000/_editor?key=9c4d43c0-c780-cba3-48ec-156e5d5417fd&proportion=0
 
 
