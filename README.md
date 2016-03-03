@@ -42,8 +42,6 @@ can access http://localhost:8000/index.html
 Open Splitty Editor
 
         $ splitty
-Wait untul splitty open your browser at aplitty editor page
-OR
-Open browser at http://localhost:8000/_editor?key=9c4d43c0-c780-cba3-48ec-156e5d5417fd&proportion=0
+Wait until splitty open your browser at aplitty editor page
 
 
