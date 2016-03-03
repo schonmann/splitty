@@ -42,6 +42,6 @@ can access http://localhost:8000/index.html
 Open Splitty Editor
 
         $ splitty
-Wait until splitty open your browser at aplitty editor page
+Wait until splitty open your browser at splitty editor page
 
 
