@@ -194,7 +194,7 @@ function isOSX(){
     return config.platform === "darwin";
 }
 function isWindows(){
-    return config.platform === "win";
+    return config.platform.startsWith("win");
 }
 function isLinux(){
     return config.platform === "linux";
