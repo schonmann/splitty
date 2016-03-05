@@ -97,6 +97,13 @@ Type Command+Shift-H for Mac or Ctrl+Shift-H for Windows/Linux to show help comm
         }
         
         
+        self.isWindows = ()=>{
+        	return configuration.platform.startsWith("win");
+        }
+        self.isUnix = ()=>{
+        	return !self.isWindows();
+        }
+        
         return self;
     })();
     
@@ -120,6 +127,7 @@ Type Command+Shift-H for Mac or Ctrl+Shift-H for Windows/Linux to show help comm
 <script src="/_editor/actions/proportionaction.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/actions/terminalaction.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/actions/splitaction.js" type="text/javascript" charset="utf-8"></script>
+<script src="/_editor/actions/createFileAction.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/toolbar/openfiletree.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/modules/loader.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/ui/editor.js" type="text/javascript" charset="utf-8"></script>

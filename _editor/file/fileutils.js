@@ -8,7 +8,8 @@ var FileUtils = (function(){
     
     const ACE_SESSION_MAP = {
         "js":"javascript",
-        "hs":"haskell"
+        "hs":"haskell",
+        "txt":"text"
     };
     
     const EVENTS = {FILE_OPEN:"FILE OPEN",FILE_CLOSE:"FILE CLOSE", FILE_SAVE:"FILE SAVE", FILE_DIRTY:"FILE DIRTY"};
