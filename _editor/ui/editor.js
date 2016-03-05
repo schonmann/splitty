@@ -26,7 +26,6 @@ var EditorUI = (()=> {
     
     
     self.onEnterOption = (value) => {       
-        console.log(value);
         var ret = currentActionContext.execute(value);
         if(ret < 0 || typeof(ret) === "undefined")
             self.closeInputBox()

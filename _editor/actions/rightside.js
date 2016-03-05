@@ -1,6 +1,6 @@
 var RightSideAction = (()=>{
     var self = {};
-    
+    self.stack = [];
     self.execute = (value) => {
         self.setUrl(value)
         ProportionAction.execute("50")

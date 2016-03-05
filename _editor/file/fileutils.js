@@ -26,14 +26,12 @@ var FileUtils = (function(){
     self.setSocket = (socket) => _socket = socket;
     
     self.bind = () => {
-        bindChangeAce();
         _socket.on("openFile", (crypt_fd)=>{         
             var fd = Splitty.decrypt(crypt_fd);
             openedFiles.push(fd);
             fd.current = true;
             fd.dirty = false;
             fd.session = ace.createEditSession(fd.data,getMode(fd.extension));
-            
             fd.pos = {};
             fd.pos.row = 1;
             fd.pos.column = 1;
@@ -43,24 +41,36 @@ var FileUtils = (function(){
             fd.undoManager.dirtyCounter  = 0;
             currentFile = openedFiles.length - 1;
             self.openInEditor(fd);
-            Events.fire(EVENTS.FILE_OPEN,fd);
         });
     };
     
     var bindChangeAce = (session) => {
         if(typeof(session) !== "undefined"){
            session.on('change',needToSave);
+           session.on('changeSelection',changeCursor);
        }else{
-          _editor.session.on('change',needToSave);   
+          _editor.session.on('change',needToSave);
+          _editor.on('changeSelection',changeCursor);
        }
+       
+    }
+    
+    var bindChangeSelection = (session) => {
+        _editor.on('changeSelection',changeCursor);
+    }
+    
+    function changeCursor(){
+        var fd = openedFiles[self.currentFileIndex()];
+        if(fd){
+            fd.pos = clone(_editor.getCursorPosition());
+            fd.pos.row = fd.pos.row + 1;
+            fd.pos.column = fd.pos.column + 1;
+        }
     }
     
     function needToSave(e){
         var fd = openedFiles[self.currentFileIndex()];
         protectedChangeAce(()=>{
-            fd.pos = clone(_editor.getCursorPosition());
-            fd.pos.row = fd.pos.row + 1;
-            fd.pos.column = fd.pos.column + 1;
             fd.dirty = true;
         });
         fd.data = editor.getSession().doc.$lines.join("\n");
@@ -80,10 +90,11 @@ var FileUtils = (function(){
     var unbindingChangeAce = (session) => {
        if(typeof(session) !== "undefined"){
            session.removeListener('change',needToSave);
+           session.removeListener('changeSelection',changeCursor);
        }else{
-        _editor.session.removeListener('change',needToSave);   
+        _editor.session.removeListener('change',needToSave);
        }
-        
+       _editor.removeListener('changeSelection',changeCursor); 
     }
     
     var protectedChangeAce = (callback,session) => {
@@ -91,6 +102,7 @@ var FileUtils = (function(){
         if(typeof(callback) === "function"){
             callback();
         }
+        //bindChangeSelection(session);
         bindChangeAce(session);
     };
     
@@ -115,15 +127,12 @@ var FileUtils = (function(){
             prev.undoManager.$redoStack = clone(_editor.session.$undoManager.$redoStack);
             prev.undoManager.dirtyCounter = clone(_editor.session.$undoManager.dirtyCounter);
             fd.current = true;
-            
-            //_editor.session.$undoManager.reset();
             var mode = getMode(fd.extension);
             if(fd.session){
                 _editor.setSession(fd.session);
             }
             _editor.getSession().setMode(mode);
             _editor.setValue(fd.data);
-            //_editor.session.$undoManager.reset();
             _editor.session.$undoManager.$undoStack = clone(fd.undoManager.$undoStack);
             _editor.session.$undoManager.$redoStack = clone(fd.undoManager.$redoStack);
             _editor.session.$undoManager.dirtyCounter = clone(fd.undoManager.dirtyCounter);
@@ -131,8 +140,9 @@ var FileUtils = (function(){
                 _editor.gotoLine(fd.pos.row,fd.pos.column);
             else
                 _editor.gotoLine(1);
-            Events.fire(EVENTS.FILE_OPEN,fd);
+             Events.fire(EVENTS.FILE_OPEN,fd);
         },fd.session);
+       
         
     };
     
@@ -141,8 +151,11 @@ var FileUtils = (function(){
         if(index <= 0) currentFile = 0;
         else if(index > openedFiles.length) currentFile = openedFiles.length;
         else currentFile = index - 1;
-        if(openedFiles.length >= currentFile)
-            self.openInEditor(openedFiles[currentFile]);
+        if(openedFiles.length >= currentFile){
+            var fd = openedFiles[currentFile];
+            self.openInEditor(fd);
+        }
+            
     };
     
     self.closeByIndex = (index) => {
@@ -172,6 +185,9 @@ var FileUtils = (function(){
     };
     self.currentFileIndex = () => currentFile
     Events.when(EVENTS.FILE_SAVE,(file) => openedFiles[currentFile].data = file)
+    Events.when(EVENTS.FILE_OPEN,(fd) => {
+        bindChangeSelection(fd.session);
+    });
     
     return self
 })()
