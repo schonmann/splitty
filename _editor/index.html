@@ -5,14 +5,22 @@
     body{
         margin:0px;
     }
+    .gpu {
+        -webkit-transform: translateZ(0);
+        -moz-transform: translateZ(0);
+        -ms-transform: translateZ(0);
+        -o-transform: translateZ(0);
+        transform: translateZ(0);
+   /* Other transform properties here */
+    }
   </style>
 </head>
 
  <body>
-    <iframe id="frameEditor" src="/_editor/codeeditor.html" width="100%" style="float: left;border: none;height:100%;-webkit-transition: width 1s;
+    <iframe id="frameEditor" class="gpu" src="/_editor/codeeditor.html" width="100%" style="float: left;border: none;height:100%;-webkit-transition: width 1s;
     transition: width 1s;" allowTransparency="true"></iframe>
     <div>
-        <iframe  id="rightSideFrame" src="http://shortty.github.io/splitty/" target="_top" width="0%" style="float: right;border: none;height:100%;-webkit-transition: width 1s;
+        <iframe  id="rightSideFrame" class="gpu" src="http://shortty.github.io/splitty/" target="_top" width="0%" style="float: right;border: none;height:100%;-webkit-transition: width 1s;
     transition: width 1s;" allowTransparency="true"></iframe> 
     </div>   
     </body>
