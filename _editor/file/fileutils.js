@@ -189,5 +189,10 @@ var FileUtils = (function(){
         bindChangeSelection(fd.session);
     });
     
+    self.close = () => {
+        self.closeByIndex(self.currentFileIndex()+1);
+    };
+    
+    
     return self
 })()

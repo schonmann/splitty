@@ -94,6 +94,12 @@ var FileAction = (()=>{
         }
     });
     
+    Shortcut.bindEvent("close file",{mac:"Option+Shift-Q", win:"Alt+Shift-Q"},{
+        action:()=>{
+           FileUtils.close();
+        }
+    });
+    
     Splitty.register(self);
     return self;
 })();
