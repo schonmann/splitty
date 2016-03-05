@@ -68,8 +68,8 @@ Type Command+Shift-H for Mac or Ctrl+Shift-H for Windows/Linux to show help comm
         }
         self.prop = (prop,value) => {
             if(typeof(value) !== "undefined"){
-                localStorage["$$splitty$$"+configuration.host_path+"$$"+prop] = value    
-            }else return localStorage["$$splitty$$"+configuration.host_path+"$$"+prop]
+                localStorage["$$splitty$$"+configuration.host_path+"$$"+prop] = value;
+            }else return localStorage["$$splitty$$"+configuration.host_path+"$$"+prop];
             
         }
         self.global = (prop,value) => {

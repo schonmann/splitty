@@ -1,16 +1,19 @@
 var RightSideAction = (()=>{
     var self = {};
-    self.stack = [];
     self.execute = (value) => {
-        var rightSideObj = {};
-        rightSideObj.url = value;
-        rightSideObj.width = 40;
-        self.stack.push(rightSideObj);
-        
+        var map = Splitty.prop("rightside");
+        if(!map){
+            map = {};
+        }else{
+            map = JSON.parse(map);
+        }
+        if(!map[value]){
+            map[value] = 40;    
+        }
         self.setUrl(value);
-        ProportionAction.execute("40");
+        ProportionAction.execute(map[value]);
+        Splitty.prop("rightside",JSON.stringify(map));
     };
-    
     
     self.setUrl = (url) => {
        var doc = window.parent.document;
