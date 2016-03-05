@@ -14,8 +14,11 @@ var ProportionAction = (()=>{
         Splitty.prop("proportion",value);
         var frame = window.parent.document.getElementById("rightSideFrame");
         var editor = window.parent.document.getElementById("frameEditor");
-        frame.setAttribute('width',value + '%');
-        editor.setAttribute('width',(100 - parseInt(value)) + '%');
+        setTimeout(()=>{
+            frame.setAttribute('width',value + '%');
+            editor.setAttribute('width',(100 - parseInt(value)) + '%');    
+        },300);
+        
     };
     self.onkeyup = (value) => {};
     self.init = (txtValue) => {txtValue.value = ""};
