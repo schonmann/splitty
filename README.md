@@ -11,6 +11,7 @@ Requirements
 Installing from Source
 ====================
 Download or clone the code of nodeit and then execute the follow steps:
+
         $ git clone https://github.com/shortty/splitty.git
         $ cd SPLITTY_PATH_DOWNLOAD
         $ npm install
