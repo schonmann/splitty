@@ -44,6 +44,19 @@ var FileUtils = (function(){
             self.openInEditor(fd);
         });
     };
+    self.getStoreOpenedFiles = () => {
+        var opened = Splitty.prop("localFilesOpended");
+        if(!opened){
+            return [];
+        }else{
+            return JSON.parse(opened); 
+        }
+    };
+    
+    self.saveLocalOpenedFiles = (files) => {
+        Splitty.prop("localFilesOpended",JSON.stringify(files));
+    };
+    
     
     var bindChangeAce = (session) => {
         if(typeof(session) !== "undefined"){
@@ -179,6 +192,19 @@ var FileUtils = (function(){
     
     self.getOpenedFiles = () => openedFiles;
     
+    self.pushLocalFile = (fileName) => {
+        var localFiles = self.getStoreOpenedFiles();
+        if(localFiles.empty((f) => f === fileName)){
+            localFiles.push(fileName);
+            self.saveLocalOpenedFiles(localFiles);    
+        }
+    };
+    self.removeLocalFile = (fileName) => {
+        var localFiles = self.getStoreOpenedFiles();
+        localFiles.seekAndDestroy(fileName);
+        self.saveLocalOpenedFiles(localFiles);
+    };
+    
     self.setup = (editor,socket) =>{
         self.setEditor(editor);
         self.setSocket(socket);
@@ -186,14 +212,25 @@ var FileUtils = (function(){
     };
     self.currentFileIndex = () => currentFile
     Events.when(EVENTS.FILE_SAVE,(file) => openedFiles[currentFile].data = file)
+    
     Events.when(EVENTS.FILE_OPEN,(fd) => {
+        self.pushLocalFile(fd.fileName);
         bindChangeSelection(fd.session);
+    });
+    
+    Events.when(EVENTS.FILE_CLOSE,(fd) => {
+        self.removeLocalFile(fd.fileName);
     });
     
     self.close = () => {
         self.closeByIndex(self.currentFileIndex()+1);
     };
     
+    self.startup = () => {
+        var localFiles = self.getStoreOpenedFiles();
+        localFiles.each((file)=>self.open(file));
+    };
     
+    Splitty.register(self);
     return self
 })()

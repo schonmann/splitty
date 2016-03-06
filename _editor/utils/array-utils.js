@@ -51,8 +51,11 @@ Array.prototype.equals = function (array) {
 Array.prototype.seekAndDestroy = function (w) {
     var founds = [];
     for (var i = 0; i < this.length; i++) {
-        if (w(this[i])) {
-            this.removeFirst(this[i]);
+        if (typeof(w) === "function" && w(this[i])) {
+            this.removeAt(i);
+            i--;
+        }else if(this[i]===w){
+            this.removeAt(i);
             i--;
         }
     }
@@ -169,5 +172,27 @@ Array.prototype.findIndex = function (callback) {
                 return i;
             }
         }
+    }
+};
+
+Array.prototype.groupBy = function (key) {
+    if(typeof(key) === "function" || typeof(key) === "string"){
+        var array = [];
+        for (var i = 0; i < this.length; i++) {
+            var position, keyValue;
+            if(typeof(key) === "string"){
+                if(this[i][key] === undefined) throw "Invalid key arg";
+                keyValue = this[i][key];
+            }else{
+                keyValue = key(this[i]);
+            }
+            position = array.findIndex(function (x) { return x.Key === keyValue });
+            if (position !== undefined) {
+                array[position].Values.push(this[i]);
+            } else {
+                array.push({ Key: keyValue, Values: [this[i]] });
+            }
+        }
+        return array;
     }
 };
