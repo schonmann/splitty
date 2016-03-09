@@ -98,5 +98,13 @@ var TerminalAction = (()=>{
     self.getLabelAction = () => "$";
         
     Shortcut.bindEvent("terminal",{win: "Ctrl+Shift-Z", mac: "Command+Shift-Z"},self);
+    Shortcut.bindEvent("right side terminal",{mac:"Command+Shift-C", win:"Ctrl+Shift-C"},{
+        action:()=>{
+            var frame = window.parent.document.getElementById('rightSideFrame');
+            var src = frame.getAttribute('src');
+            frame.setAttribute('src','/_terminal/');
+            ProportionAction.execute("36");
+        }
+    });
     return self;
 })();
