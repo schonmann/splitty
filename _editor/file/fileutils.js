@@ -176,10 +176,12 @@ var FileUtils = (function(){
         var toClose = openedFiles[index-1];
         var isCurrent = toClose.current; 
         openedFiles.removeAt(index-1);
-        currentFile = 0;
+        currentFile = index - 2;
+        if(currentFile < 0) currentFile = 0;
+        console.log("abrir " + currentFile);
         if(isCurrent && openedFiles.length > 0){
-            openedFiles[0].current = true;
-            self.openInEditor(openedFiles[0]);
+            openedFiles[currentFile].current = true;
+            self.openInEditor(openedFiles[currentFile]);
         }else if(openedFiles.empty()){
             protectedChangeAce(() => _editor.setValue(""));
         }
