@@ -48,7 +48,7 @@ var server = http.createServer((req, res) => {
     editor(req,res,done);
   }else if(isHelp(req)){
     editor(req, res, done);
-  }else if(){
+  }else if(isTerminal(req)){
     editor(req,res,done);
   }else{
     serve(req, res, done)
