@@ -45,9 +45,11 @@ config.key = genKey(aes_key);
 var server = http.createServer((req, res) => {
   var done = finalhandler(req, res)
   if(isWebEditor(req)){      
-    editor(req,res,done)
+    editor(req,res,done);
   }else if(isHelp(req)){
-	editor(req, res, done)
+    editor(req, res, done);
+  }else if(){
+    editor(req,res,done);
   }else{
     serve(req, res, done)
   }
@@ -60,6 +62,9 @@ function isWebEditor(request){
 
 function isHelp(request){        
     return request.url.indexOf("_help") > 0;
+}
+function isTerminal(request){
+   return request.url.indexOf("_terminal") > 0;
 }
 
 function getFileSeparator(){
