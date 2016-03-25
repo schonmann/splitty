@@ -4,8 +4,9 @@ Splitty is a simple static file server with an embedded text editor based on ACE
 
 Requirements
 ====================
-1. Node JS 4+
-2. NPM
+1. Python 2.7+
+2. Node JS 4+
+3. NPM
 
 
 Installing from Source
@@ -19,7 +20,7 @@ Download or clone the code of splitty and then execute the following steps:
 
 Installing from NPM
 ====================
-        $ npm install [-g] splitty
+        $ npm install -g splitty
 
 
 Using
