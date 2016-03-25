@@ -1,6 +1,12 @@
 #! /usr/bin/env node
 
 
+verifyNodeVersion();
+
+
+
+
+
 var userArgs     = process.argv.slice(2);
 var http         = require('http');
 var finalhandler = require('finalhandler');
@@ -204,7 +210,20 @@ function isWindows(){
 function isLinux(){
     return config.platform === "linux";
 }
-
+function verifyNodeVersion(){
+    var version = process.version;
+    version     = version.replace("v","");
+    var parts   = version.split(".");
+    var majorVersion  = parseInt(parts[0]);
+    var middleVersion = parseInt(parts[1]);
+    var minorVersion  = parseInt(parts[2]);
+    if(majorVersion < 4){
+        console.log("Your current node version is not supported!");
+        console.log("node version: " + process.version);
+        console.log("Please, update you node to 4+ version");
+        process.exit();
+    }
+};
 
 console.log(config.platform);
 if(isOSX()){
