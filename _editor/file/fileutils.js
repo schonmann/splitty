@@ -111,12 +111,12 @@ var FileUtils = (function(){
         openedFiles.removeAt(index-1);
         currentFile = index - 2;
         if(currentFile < 0) currentFile = 0;
-        console.log("abrir " + currentFile);
         if(isCurrent && openedFiles.length > 0){
             openedFiles[currentFile].current = true;
             self.openInEditor(openedFiles[currentFile]);
         }else if(openedFiles.empty()){
-            protectedChangeAce(() => _editor.setValue(""));
+            var session = ace.createEditSession("","text");
+            _editor.setSession(session);
         }
         Events.fire(EVENTS.FILE_CLOSE,toClose);
     };

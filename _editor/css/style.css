@@ -80,7 +80,6 @@ li,input:focus{
     font-size: 13px;
     font-family: monospace;
     padding-top: 4px;
-    width:200%;
 }
 #bottombar li{
     /*float:left;*/
