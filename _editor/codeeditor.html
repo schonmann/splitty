@@ -37,77 +37,7 @@ Type Command+Shift-H for Mac or Ctrl+Shift-H for Windows/Linux to show help comm
     </div>
     
 </div>
-<script type="text/javascript">
-    const Splitty = (()=>{
-        var actions = [];
-        var self = {};
-        var configuration = null;
-        var aes_key = "2c6a999e72cacf2b76c4b555787001c6";
-        self.setKey = (key) => aes_key = key;
-        self.register =  (module) => actions.push(module)
-        self.startup  = () => {
-            actions.each((module)=>{
-                if(typeof module["startup"] === "function"){
-                    module.startup()
-                }
-            })
-        }
-        const  transformToAssocArray = ( prmstr ) => {
-            var params = {}
-            var prmarr = prmstr.split("&")
-            for ( var i = 0; i < prmarr.length; i++) {
-                var tmparr = prmarr[i].split("=")
-                params[tmparr[0]] = tmparr[1]
-            }
-            return params
-        }
-        self.params = () => {
-            var prmstr = window.parent.location.search.substr(1)
-            return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {}
-        }
-        self.prop = (prop,value) => {
-            if(typeof(value) !== "undefined"){
-                localStorage["$$splitty$$"+configuration.host_path+"$$"+prop] = value;
-            }else return localStorage["$$splitty$$"+configuration.host_path+"$$"+prop];
-            
-        }
-        self.global = (prop,value) => {
-            if(typeof(value) !== "undefined"){
-                localStorage["$$splitty$$"+prop] = value    
-            }else return localStorage["$$splitty$$"+prop]
-            
-        }
-        self.hasProp = (prop) => typeof(localStorage["$$splitty$$"+configuration.host_path+"$$"+prop]) !== "undefined"
-        self.hasGlobal = (prop) => typeof(localStorage["$$splitty$$"+prop]) !== "undefined"
-        
-        self.setConfig = (config) => configuration = config
-        self.config = () => configuration
-        
-        self.encrypt = (message) => {
-            if(typeof(message) !== "string"){
-                message = JSON.stringify(message);   
-            }
-            return CryptoJS.AES.encrypt(message, aes_key).toString();
-        }
-        self.decrypt = (message) => {
-            var bytes  = CryptoJS.AES.decrypt(message, aes_key);
-            var plaintext = bytes.toString(CryptoJS.enc.Utf8);
-            return JSON.parse(plaintext);
-        }
-        
-        
-        self.isWindows = ()=>{
-        	return configuration.platform.startsWith("win");
-        }
-        self.isUnix = ()=>{
-        	return !self.isWindows();
-        }
-        
-        return self;
-    })();
-    
-</script>
-
+<script type="text/javascript" src="/_editor/splitty.js"></script>
 <script src="/_editor/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/src-min-noconflict/ext-language_tools.js"></script>
 <script src="/_editor/utils/crypto-js/crypto-js.js"></script>
@@ -130,74 +60,8 @@ Type Command+Shift-H for Mac or Ctrl+Shift-H for Windows/Linux to show help comm
 <script src="/_editor/toolbar/openfiletree.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/modules/loader.js" type="text/javascript" charset="utf-8"></script>
 <script src="/_editor/ui/editor.js" type="text/javascript" charset="utf-8"></script>
-
-
-
 <script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>  
-<script type="text/javascript">
-    function startupEditor(){
-        ace.require("ace/ext/language_tools");
-        window.editor = ace.edit("editor");
-        window.editor.setTheme("ace/theme/monokai");
-        window.editor.getSession().setMode("ace/mode/text");
-        window.editor.setOptions({
-            enableBasicAutocompletion: true,
-            enableSnippets: true,
-            enableLiveAutocompletion: false,
-            showPrintMargin:false
-        });
-        window.socket = io();
-        document.addEventListener("DOMContentLoaded", function(event) { 
-            window.socket.emit("config")
-            window.socket.on("config",(crypt_config)=>{
-                var config = Splitty.decrypt(crypt_config);
-                Splitty.setConfig(config);
-                Splitty.startup();
-                Toolbar.render();
-            });           
-        });
-
-        FileUtils.setup(window.editor,window.socket);        
-        Shell.setup(window.editor,window.socket);
-        Shortcut.setup(window.editor);
-        window.editor.$blockScrolling = Infinity
-
-        document.getElementById("optionValue").addEventListener("keyup",(event) =>{
-            if(event.keyCode === 13) EditorUI.onEnterOption(document.getElementById("optionValue").value)
-            else if(event.keyCode === 27) EditorUI.onEscape(document.getElementById("optionValue").value)
-            else EditorUI.onkeyup(document.getElementById("optionValue").value)
-        });
-
-        document.getElementById("optionValue").addEventListener("change",(event) =>{
-            EditorUI.onChange(document.getElementById("optionValue").value)
-        });
-
-
-        window.editor.on("focus", function() { 
-            setTimeout(EditorUI.closeInputBox,100)
-        });
-
-        if (window.top.document.getElementById('rightSideFrame').getAttribute('src') == "")
-            window.editor.focus()    
-        }
-</script>
-<script type="text/javascript">
-    function genKey(baseKey){
-        return CryptoJS.MD5(CryptoJS.MD5(baseKey).toString()).toString()
-    }
-    
-    var _key = Splitty.params()["key"];
-    if(typeof(_key)!== "undefined"){
-        Splitty.setKey(genKey(_key));
-    }else{
-        var key = prompt("Please enter with access key");
-        if (key != null && key != "") {
-            Splitty.setKey(genKey(key));
-        }
-    }
-    startupEditor();
-    
-</script>    
+<script type="text/javascript" src="/_editor/main.js"></script>    
 <script type="text/handlebars" id="template-footer">
     <ul id="bottombar">
         {{#each files}}
