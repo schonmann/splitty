@@ -77,7 +77,10 @@ var EditorUI = (()=> {
     }
     
     self.renderOutputAction = (data,template) => {
-        if( _('header').style.height == "0px") return
+        if( _('header').style.height == "0px") {
+            document.getElementById('ctxout').style.display = "none";    
+            return;
+        }
         document.getElementById('ctxout').style.display = "block"
         Template.render(data,template,"ctxout") 
         

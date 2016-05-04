@@ -25,6 +25,9 @@ var TerminalAction = (()=>{
     self.exec = (value) => {
         ctxout.innerHTML = "";
         Shell.exec(value, (stdout) => {
+             if(document.getElementById('header').style.height == "0px"){
+                 return;
+             }
             var ctxout = document.getElementById('ctxout');
             ctxout.focus();
             ctxout.style.display = "block";
