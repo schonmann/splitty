@@ -84,6 +84,8 @@ function ItemNode(){
         span.appendChild(elI);
         span.addEventListener("click",this.onOpen.bind(this));
         firstLi.appendChild(span);
+        
+        
       }
       else if(this.label.endsWith("*")){
           //exec file          
@@ -104,6 +106,26 @@ function ItemNode(){
       spanLabel.setAttribute("style","cursor:pointer;")
       
       firstLi.appendChild(spanLabel);
+      if(this.label.indexOf("/") > 0){
+          //add create file icon button
+          var createFile = document.createElement("i");
+          createFile.setAttribute("class","ion-plus-circled");
+          createFile.style.marginLeft = '10px';
+          createFile.style.display = "none";
+          createFile.directory = this.toPath();
+          createFile.onclick = function(){
+              alert("Criar arquivo no diretorio: " + this.directory);
+          };
+          
+          firstLi.appendChild(createFile);
+          firstLi.onmouseenter = function(){
+            createFile.style.display = "";  
+          };
+          firstLi.onmouseleave = function(){
+            createFile.style.display = "none";  
+          };
+          
+      }
       ul.appendChild(firstLi);
       if(!this.opened) return ul;
      
