@@ -114,7 +114,7 @@ function ItemNode(){
           createFile.style.display = "none";
           createFile.directory = this.toPath();
           createFile.onclick = function(){
-              alert("Criar arquivo no diretorio: " + this.directory);
+              alert("Create file at: " + this.directory);
           };
           
           firstLi.appendChild(createFile);
