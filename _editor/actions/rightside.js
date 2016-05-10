@@ -53,7 +53,7 @@ var RightSideAction = (()=>{
             var frame = window.parent.document.getElementById('rightSideFrame');
             var src = frame.getAttribute('src');
             frame.setAttribute('src','/_help/');
-            ProportionAction.execute("19");
+            ProportionAction.execute("40");
         }
     });
     Shortcut.bindEvent("hide right side",{mac:"Option+Shift+Right", win:"Alt+Shift+Right"},{

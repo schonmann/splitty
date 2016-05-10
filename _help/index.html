@@ -7,30 +7,49 @@
         margin:0px;
         padding:0px;
     }
+    .headerCell{
+        padding:5px;
+    }
+    h1,h2{
+        color:black;
+    }
+    #searchBox{
+        padding: 8px;
+        border-radius:15px;
+        border:1px solid gray;
+        width:300px;
+    }
 	#editor {
-		background: #272822;
-		color: white;
-		font: 11px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+		background: #FFF;
+		color: gray;
+		font-family: Sans-Serif;
+		/*font: 11px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;*/
 		overflow: auto;
+		padding:5px;
 	}
 	table{
-	   font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace; 
-	   color:white;
+	   font-family: Sans-Serif;
+	   color:gray;
 	   width:100%;
 	   padding:0px;
+	   border:none;
+	   font-size:13px;
 	}
 	table tr:nth-child(odd) {
-        background-color: #000;
-        color:white;
+        
+        color:#000;
     }
     td[colspan]{
-        background-color: #737373;
-        color:white;
+        
+        color:#000;
         padding:5px;
     }
     a{
         text-decoration: none;
         color:red;
+    }
+    .cell{
+        padding:5px;
     }
   </style>
 <script type="text/javascript">
@@ -43,14 +62,14 @@
     });
     
     shortcutList.push({
-        descriptionEN:"Move to the previous opened file",
+        descriptionEN:"Move to the previous opened File",
         descriptionPT_BR:"Move para o arquivo aberto do lado esquerdo",
         mac:"Option-Left",
         other:"Alt-Left"
     });
     
     shortcutList.push({
-        descriptionEN:"Move to the next opened file",
+        descriptionEN:"Move to the next opened File",
         descriptionPT_BR:"Move para o arquivo aberto do lado direito",
         mac:"Option-Right",
         other:"Alt-Right"
@@ -85,7 +104,7 @@
     });
     
     shortcutList.push({
-        descriptionEN:"Open file at right side",
+        descriptionEN:"Open File at right side",
         descriptionPT_BR:"Abre um arquivo no lado direito",
         mac:"Command+Shift-S",
         other:"Ctrl+Shift-S"
@@ -113,7 +132,7 @@
     });
     
     shortcutList.push({
-        descriptionEN:"Close file",
+        descriptionEN:"Close File",
         descriptionPT_BR:"Fechar arquivo",
         mac:"Command+Shift-Q",
         other:"Ctrl+Shift-Q"
@@ -127,7 +146,7 @@
     });
     
     shortcutList.push({
-        descriptionEN:"New file",
+        descriptionEN:"New File",
         descriptionPT_BR:"Novo arquivo",
         mac:"Command+Shift-M",
         other:"Ctrl+Shift-M"
@@ -180,206 +199,32 @@
     <span class="closeButton" onclick="javascript:EditorUI.closeInputBox()"> x </span>
 </div>
 <div id="editor">
+<h2>Shortcuts</h2>
 <table>
     <thead>
     <tr>
-        <td colspan="2" align="center">Platforms</td>
+        <td colspan="3" align="center">
+            <input id="searchBox" type="text" placeholder="Search" onkeyup="filterShortcuts(this.value,'descriptionEN')"/>
+        </td>
     </tr>
-    <tr>
-        <td>Mac</td>
-        <td>Windows/Linux</td>
+    <tr >
+        <td class="cell" style="font-weight:bolder">Description</td>
+        <td class="cell" style="font-weight:bolder">Mac</td>
+        <td class="cell" style="font-weight:bolder">Windows/Linux</td>
     </tr>
     </thead>
-    <tbody>
-        <tr>
-            <td>Command+Shift-O</td>
-            <td>Ctrl+Shift-O</td>
-        </tr>
-        <tr>
-           <td colspan="2">
-               Open File
-           </td> 
-        </tr>
-        
-         <tr>
-            <td>Option-Left</td>
-            <td>Alt-Left</td>
-        </tr>
-        <tr>
-           <td colspan="2">
-              Move to the previous opened file
-           </td> 
-        </tr>
-        
-        <tr>
-            <td>Option-Right</td>
-            <td>Alt-Right</td>
-        </tr>
-        <tr>
-           <td colspan="2">
-              Move to the next opened file
-           </td> 
-        </tr>
-        
-        <tr>
-            <td>Command+Shift-B</td>
-            <td>Ctrl+Shift-B</td>
-        </tr>
-        <tr>
-           <td colspan="2">
-              Execute Bing search
-           </td> 
-        </tr>
-        
-        <tr>
-            <td>Command+Shift-P</td>
-            <td>Ctrl+Shift-P</td>
-        </tr>
-        <tr>
-           <td colspan="2">
-              Set right side size in %
-           </td> 
-        </tr>
-        
-        <tr>
-            <td>Command-L</td>
-            <td>Ctrl-L</td>
-        </tr>
-        <tr>
-           <td colspan="2">
-              Set right side URL
-           </td> 
-        </tr>
-        
-        <tr>
-            <td>Command+Shift-X</td>
-            <td>Ctrl+Shift-X</td>
-        </tr>
-        <tr>
-           <td colspan="2">
-              Refresh right side
-           </td> 
-        </tr>
-        
-        <tr>
-            <td>Command+Shift-S</td>
-            <td>Ctrl+Shift-S</td>
-        </tr>
-        <tr>
-           <td colspan="2">
-              Open file at right side
-           </td> 
-        </tr>
-        
-        <tr>
-            <td>Command+Shift-Z</td>
-            <td>Ctrl+Shift-Z</td>
-        </tr>
-        <tr>
-           <td colspan="2">
-              Execute shell command
-           </td> 
-        </tr>
-        
-        <tr>
-            <td>Command+Shift-H</td>
-            <td>Ctrl+Shift-H</td>
-        </tr>
-        <tr>
-           <td colspan="2">
-              Help page
-           </td> 
-        </tr>
-         <tr>
-            <td>Command-S</td>
-            <td>Ctrl-S</td>
-        </tr>
-        <tr>
-           <td colspan="2">
-              Save File
-           </td> 
-        </tr>
-         <tr>
-            <td>Option+Shift-Q</td>
-            <td>Alt+Shift-Q</td>
-        </tr>
-        <tr>
-           <td colspan="2">
-              Close File
-           </td> 
-        </tr>
-         <tr>
-            <td>Command-<</td>
-            <td>Ctrl-<</td>
-        </tr>
-        <tr>
-           <td colspan="2">
-              Open Ace Options
-           </td> 
-        </tr>
-         <tr>
-            <td>Command+Shift-M</td>
-            <td>Ctrl+Shift-M</td>
-        </tr>
-        <tr>
-           <td colspan="2">
-              Create new File
-           </td> 
-        </tr>
-         <tr>
-            <td>Option+Shift-Left</td>
-            <td>Alt+Shift-Left</td>
-        </tr>
-        <tr>
-           <td colspan="2">
-              Show right side
-           </td> 
-        </tr>
-         <tr>
-            <td>Option+Shift-Right</td>
-            <td>Alt+Shift-Right</td>
-        </tr>
-        <tr>
-           <td colspan="2">
-              Hide right side
-           </td> 
-        </tr>
-         <tr>
-            <td>Option+Shift-Up</td>
-            <td>Alt+Shift-Up</td>
-        </tr>
-        <tr>
-           <td colspan="2">
-              Move next right side page
-           </td> 
-        </tr>
-         <tr>
-            <td>Option+Shift-Down</td>
-            <td>Alt+Shift-Down</td>
-        </tr>
-        <tr>
-           <td colspan="2">
-              Move previous right side page
-           </td> 
-        </tr>
-         <tr>
-            <td>Command+Shift-C</td>
-            <td>Ctrl+Shift-C</td>
-        </tr>
-        <tr>
-           <td colspan="2">
-              Open dedicated terminal
-           </td> 
-        </tr>
+    <tbody id="tbody">
+       
     </tbody>
 </table>
 <br />
+<h2>User defined Aliases</h2>
 <table>
     <thead>
-        <tr><td colspan="3">User defined Aliases</td></tr>
+        
         <tr>
-            <td colspan="2">Alias</td>
-            <td colspan="1">Command</td>
+            <td colspan="2" class="cell" style="font-weight:bolder">Alias</td>
+            <td colspan="1" class="cell" style="font-weight:bolder">Command</td>
         </tr>
     </thead>
     <tbody id="aliases">
@@ -404,6 +249,7 @@ look at: <a  target="_blank" href="https://github.com/ajaxorg/ace/wiki/Default-K
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function(event) { 
         printAliases()
+        renderMenuItens(shortcutList);
     });
     
     function printAliases(){
@@ -415,9 +261,9 @@ look at: <a  target="_blank" href="https://github.com/ajaxorg/ace/wiki/Default-K
                 var command = window.localStorage[tag]
                 str = str + 
                             "<tr>"+
-                            "<td><a href='javascript:removeAlias(\""+alias+"\")'>x</a></td>" +
-                            "<td>" + alias + "</td>"+
-                            "<td>" + command + "</td>"+
+                            "<td width='10px'><a href='javascript:removeAlias(\""+alias+"\")'>x</a></td>" +
+                            "<td style='font-size:16px;'>" + alias + "</td>"+
+                            "<td style='font-size:16px;'>" + command + "</td>"+
                             "</tr>";
             }
         }
@@ -429,6 +275,37 @@ look at: <a  target="_blank" href="https://github.com/ajaxorg/ace/wiki/Default-K
         delete window.localStorage["$$splitty$$alias$$"+alias]
         printAliases()
     }
+    
+    function filterShortcuts(query,key){
+        var result = [];
+        if(query === ""){
+            result = shortcutList;
+        }
+        else{
+            for(var i = 0; i<shortcutList.length;i++){
+                var current = shortcutList[i];
+                if(current[key] && current[key].indexOf(query) >= 0){
+                    result.push(current);
+                }
+            }
+        }
+        renderMenuItens(result);
+    }
+    
+    function renderMenuItens(list){
+        var str = "";
+        for(var i = 0; i<list.length;i++){
+            var current = list[i];
+                str += "<tr>";
+                str += "<td class='cell'>"+current.descriptionEN+"</td>";
+                str += "<td class='cell'>"+current.mac+"</td>";
+                str += "<td class='cell'>"+current.other+"</td>";
+                str += "</tr>";
+        }
+        document.getElementById("tbody").innerHTML = str;
+    }
+    
+    
 </script>
 </body>
 </html>
