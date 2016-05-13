@@ -124,20 +124,18 @@ function ItemNode(){
                          {icon:"ion-close-circled",style:"color:red;",label:"cancel"}],
                   callback:function(buttonID){
                       var name = document.getElementById('txtCreateNewFile').value;
+                      var fileName = createFile.directory+name;
                       try{
                           switch (buttonID) {
                               case 0:
                                   assertFileNameNotEmpty(name);
-                                  var fileName = createFile.directory+name;
                                   CreateFileAction.createFile(fileName,(e)=>{
                                      FileAction.openSelectedFile(fileName); 
                                   });
                                   break;
                               case 1:
                                   assertFileNameNotEmpty(name);
-                                  var fileName = createFile.directory+name;
                                   CreateFileAction.mkdir(fileName,()=>{
-                                      console.log(fileName);
                                      FileAction.openSelectedFile(fileName); 
                                   });
                                   break;
