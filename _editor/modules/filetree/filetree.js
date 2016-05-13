@@ -125,19 +125,20 @@ function ItemNode(){
                   callback:function(buttonID){
                       var name = document.getElementById('txtCreateNewFile').value;
                       var fileName = createFile.directory+name;
+                      function _callback(){
+                         FileAction.openSelectedFile(fileName); 
+                         FileTree.close();
+                         FileTree.open();
+                      }
                       try{
                           switch (buttonID) {
                               case 0:
                                   assertFileNameNotEmpty(name);
-                                  CreateFileAction.createFile(fileName,(e)=>{
-                                     FileAction.openSelectedFile(fileName); 
-                                  });
+                                  CreateFileAction.createFile(fileName,_callback);
                                   break;
                               case 1:
                                   assertFileNameNotEmpty(name);
-                                  CreateFileAction.mkdir(fileName,()=>{
-                                     FileAction.openSelectedFile(fileName); 
-                                  });
+                                  CreateFileAction.mkdir(fileName,_callback);
                                   break;
                               default:
                                   // code
