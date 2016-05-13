@@ -9,7 +9,8 @@ var FileUtils = (function(){
     const ACE_SESSION_MAP = {
         "js":"javascript",
         "hs":"haskell",
-        "txt":"text"
+        "txt":"text",
+        "tmpl":"handlebars"
     };
     
     const EVENTS = {FILE_OPEN:"FILE OPEN",FILE_CLOSE:"FILE CLOSE", FILE_SAVE:"FILE SAVE", FILE_DIRTY:"FILE DIRTY"};
