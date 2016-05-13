@@ -116,7 +116,43 @@ function ItemNode(){
           createFile.directory = this.toPath();
           createFile.nodeTree = this;
           createFile.onclick = function(){
-              Modal.show("teste",this.directory);
+              Modal.show({
+                  title:"Create File or Folder",
+                  body:getHTMLFromCreateFilePopUp(this.directory),
+                  icons:[{icon:"ion-document-text",label:"new file"},
+                         {icon:"ion-folder",label:"new folder"},
+                         {icon:"ion-close-circled",style:"color:red;",label:"cancel"}],
+                  callback:function(buttonID){
+                      var name = document.getElementById('txtCreateNewFile').value;
+                      
+                      switch (buttonID) {
+                          case 0:
+                              if(name === ""){
+                                  alert("Name cannot be empty");
+                                  return -1;
+                              }
+                              var fileName = createFile.directory+name;
+                              CreateFileAction.createFile(fileName,(e)=>{
+                                 console.log(fileName); 
+                                 FileAction.openSelectedFile(fileName); 
+                              });
+                              break;
+                          case 1:
+                              if(name === ""){
+                                  alert("Name cannot be empty");
+                                  return -1;
+                              }
+                              var fileName = createFile.directory+name;
+                              CreateFileAction.mkdir(fileName,()=>{
+                                  console.log(fileName);
+                                 FileAction.openSelectedFile(fileName); 
+                              });
+                              break;
+                          default:
+                              // code
+                      }
+                  }
+              });
               
           };
           
@@ -141,7 +177,13 @@ function ItemNode(){
       return ul;
   };
 }
-
+function getHTMLFromCreateFilePopUp(rootDirectory){
+    var html = "";
+    html +="<input type='text' class='splitty-input-text' id='txtCreateNewFile' placeholder='Name' />";
+    html += "<label style='color: #555555;line-height: 3;font-size: 0.8em;font-family: sans-serif;font-weight: 400;'";
+    html +=" for='txtCreateNewFile'>Path: "+rootDirectory+"</label>";
+    return html;
+}
 var FileTree = (()=>{
     var self = {};
     var body = document.getElementsByTagName('body')[0];

@@ -23,7 +23,7 @@
     top: 10px;
     height:630px;
     background-color: #424242;
-    z-index: 1000;
+    z-index: 4;
     border: 1px solid #5A5252;
     overflow: hidden;
     opacity: .99;

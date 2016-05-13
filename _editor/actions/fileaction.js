@@ -14,7 +14,14 @@ var FileAction = (()=>{
     
    
     
-    self.openSelectedFile = (file) => FileUtils.open("/"+file);
+    self.openSelectedFile = (file) => {
+        if(file.startsWith("/")){
+            FileUtils.open(file);
+        }else{
+            FileUtils.open("/"+file)
+        }
+        
+    };
     
     self.execute = (value) => {
      fileRegex.lastIndex = 0;  

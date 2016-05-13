@@ -206,3 +206,18 @@ iframe, object, embed {
     background-color: #323232;
     border-bottom:3px solid #FF7B00;
 }
+.splitty-icon{
+    color:#4E4E4E;
+}
+.splitty-icon:hover{
+    color:#FF7B00;
+}
+
+
+.splitty-input-text{
+    padding: 10px;
+    border: 1px solid #eee;
+    width: 100%;
+    font-size: 1em;
+    color: #4D4D4D;
+}
