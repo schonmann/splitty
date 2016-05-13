@@ -27,6 +27,7 @@ Module.new("Modal",function(){
             body.appendChild(div);
             div.modalContext = options;
             Template.render(options,"modal","modal-module"+idx);
+            self.onload();
         };
         
         self.hide = () =>{
@@ -56,6 +57,12 @@ Module.new("Modal",function(){
                 self.hide();
             }
             
+        };
+        self.onload = () => {
+            var div = modalStack.last();
+            if(div.modalContext.onload){
+                div.modalContext.onload();
+            }
         }
         return self;   
    })(); 
