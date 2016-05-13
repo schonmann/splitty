@@ -1,0 +1,23 @@
+<div class="modal-wall">
+        <div class="modal-header">
+            {{{title}}}
+        </div>
+        <div class="modal-body">
+            {{{body}}}
+        </div>
+        <div class="modal-footer">
+            {{#each buttons}}
+                <button class="btn-default" onclick="Modal.processClick({{@index}})">{{{.}}}</button>
+            {{/each}}
+            {{#each icons}}
+                <div class="icon-container">
+                    <div class="icon-part">
+                        <i class="splitty-icon {{icon}}" style="{{style}} font-size:3em;margin-right:10px;" onclick="Modal.processClick({{@index}})"></i>    
+                    </div>
+                    <div class="label-part">
+                        {{label}}
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+</div>

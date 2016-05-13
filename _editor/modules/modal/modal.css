@@ -1,0 +1,45 @@
+.modal-overlay{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(91, 91, 91, 0.5);
+    left: 0px;
+    top: 0px;
+    z-index: 10;
+}
+.modal-wall{
+    background-color: white;
+    position: relative;
+    margin:10% auto;
+    width:50%;
+    box-shadow: 3px 3px 10px #000;
+    font-family: Sans-Serif;
+}
+.modal-header{
+    position: relative;
+    margin:0px;
+    padding:15px;
+    font-weight: bolder;
+}
+.modal-body{
+    padding:5px;
+    
+}
+.modal-footer{
+    border-top: 1px solid #EBEBEB;
+    padding: 9px;
+    text-align: right;
+
+}
+.icon-container{
+    display: inline-table;
+    text-align: center;
+    margin-left: 20px;
+}
+.icon-container i{
+    cursor: pointer;
+}
+.label-part{
+    font-size: 0.9em;
+}
+    

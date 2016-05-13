@@ -124,32 +124,29 @@ function ItemNode(){
                          {icon:"ion-close-circled",style:"color:red;",label:"cancel"}],
                   callback:function(buttonID){
                       var name = document.getElementById('txtCreateNewFile').value;
-                      
-                      switch (buttonID) {
-                          case 0:
-                              if(name === ""){
-                                  alert("Name cannot be empty");
-                                  return -1;
-                              }
-                              var fileName = createFile.directory+name;
-                              CreateFileAction.createFile(fileName,(e)=>{
-                                 console.log(fileName); 
-                                 FileAction.openSelectedFile(fileName); 
-                              });
-                              break;
-                          case 1:
-                              if(name === ""){
-                                  alert("Name cannot be empty");
-                                  return -1;
-                              }
-                              var fileName = createFile.directory+name;
-                              CreateFileAction.mkdir(fileName,()=>{
-                                  console.log(fileName);
-                                 FileAction.openSelectedFile(fileName); 
-                              });
-                              break;
-                          default:
-                              // code
+                      try{
+                          switch (buttonID) {
+                              case 0:
+                                  assertFileNameNotEmpty(name);
+                                  var fileName = createFile.directory+name;
+                                  CreateFileAction.createFile(fileName,(e)=>{
+                                     FileAction.openSelectedFile(fileName); 
+                                  });
+                                  break;
+                              case 1:
+                                  assertFileNameNotEmpty(name);
+                                  var fileName = createFile.directory+name;
+                                  CreateFileAction.mkdir(fileName,()=>{
+                                      console.log(fileName);
+                                     FileAction.openSelectedFile(fileName); 
+                                  });
+                                  break;
+                              default:
+                                  // code
+                          }
+                      }catch(e){
+                          alert(e);
+                          return -1;
                       }
                   }
               });
@@ -176,6 +173,9 @@ function ItemNode(){
       ul.appendChild(childLi);
       return ul;
   };
+}
+function assertFileNameNotEmpty(fileName){
+    if(fileName === "") throw "File name cannot be empty";
 }
 function getHTMLFromCreateFilePopUp(rootDirectory){
     var html = "";
