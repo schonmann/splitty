@@ -177,7 +177,7 @@ function assertFileNameNotEmpty(fileName){
 }
 function getHTMLFromCreateFilePopUp(rootDirectory){
     var html = "";
-    html +="<input type='text' class='splitty-input-text' id='txtCreateNewFile' placeholder='Name' />";
+    html +="<input type='text' class='splitty-input-text' id='txtCreateNewFile' placeholder='Name' autofocus />";
     html += "<label style='color: #555555;line-height: 3;font-size: 0.8em;font-family: sans-serif;font-weight: 400;'";
     html +=" for='txtCreateNewFile'>Path: "+rootDirectory+"</label>";
     return html;
