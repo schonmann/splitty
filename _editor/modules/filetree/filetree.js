@@ -4,6 +4,7 @@ function ItemNode(){
   this.opened = true;
   this.parentNode = null;
   this.div = null;
+  this.editNode = false;
   this.userLabel = null;
   this.isRoot = function(){
       return this.itemNodes.length > 0;
@@ -113,8 +114,10 @@ function ItemNode(){
           createFile.style.marginLeft = '10px';
           createFile.style.display = "none";
           createFile.directory = this.toPath();
+          createFile.nodeTree = this;
           createFile.onclick = function(){
-              alert("Create file at: " + this.directory);
+              Modal.show("teste",this.directory);
+              
           };
           
           firstLi.appendChild(createFile);

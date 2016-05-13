@@ -1,9 +1,22 @@
+var Module = (()=>{
+    var self = {};
+    self.new = (moduleName,moduleCode) => {
+        window[moduleName] = moduleCode();
+        Loader.loadFinished(moduleName);
+    };
+    return self;
+})();
+
+
 var Loader = (()=>{
     var self = {};
     var cache = {};
+    var currentLoadModule = "";
+    var initCallbacks = {};
+    
     self.load = (partialName) => {
         if(typeof(cache[partialName]) !== "undefined") return self;
-        
+        currentLoadModule = partialName;
         var fileref=document.createElement('script');
             fileref.setAttribute("type","text/javascript");
             fileref.async = false;
@@ -27,12 +40,20 @@ var Loader = (()=>{
                   template.setAttribute("id",partialName);
                   template.innerHTML = xhttp.responseText;
                 document.getElementsByTagName("body")[0].appendChild(template);
-                cache[partialName] = true;
               }
+              cache[partialName] = true;
          };
          return self;
     };
-    
+    self.then = (callback) => {
+        if(!initCallbacks[currentLoadModule]) initCallbacks[currentLoadModule] = [];
+        initCallbacks[currentLoadModule].push(callback);
+    };
+    self.loadFinished = (moduleName) => {
+        if(initCallbacks[moduleName]){
+            initCallbacks[moduleName].each((callback)=> callback());
+        }
+    };
     self.exec = (entrypoint) => {
         var partialName = entrypoint.split(".")[0].toLowerCase();
         if(typeof(cache[partialName]) === "undefined") {
@@ -45,7 +66,6 @@ var Loader = (()=>{
         }else{
             eval(entrypoint);    
         }
-        
     };
     
     return self;

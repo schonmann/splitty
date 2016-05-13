@@ -182,3 +182,27 @@ iframe, object, embed {
     overflow-y: scroll;
     margin-top: -24px;
 }
+
+
+
+.btn-default{
+    padding-left: 20px;
+    border-radius: 0px;
+    font-size: 14px;
+    border: none;
+    background-color: #4E4E4E;
+    color: #FF7B00;
+    padding-right: 20px;
+    padding-bottom: 8px;
+    padding-top: 8px;
+    font-family: arial;
+    border-bottom:3px solid #4E4E4E;
+}
+.btn-default:focus{
+    border:none;
+    outline: white;
+}
+.btn-default:hover{
+    background-color: #323232;
+    border-bottom:3px solid #FF7B00;
+}

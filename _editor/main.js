@@ -39,6 +39,8 @@ function startupEditor(){
         window.editor.on("focus", function() { 
             setTimeout(EditorUI.closeInputBox,100)
         });
+        
+        Loader.load("modal");
 
 if (window.top.document.getElementById('rightSideFrame').getAttribute('src') == "")
     window.editor.focus()    
