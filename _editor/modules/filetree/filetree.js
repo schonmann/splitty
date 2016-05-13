@@ -114,7 +114,6 @@ function ItemNode(){
           createFile.style.marginLeft = '10px';
           createFile.style.display = "none";
           createFile.directory = this.toPath();
-          createFile.nodeTree = this;
           createFile.onclick = function(){
               Modal.show({
                   title:"Create File or Folder",
