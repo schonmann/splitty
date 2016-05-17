@@ -119,7 +119,7 @@ var FileAction = (()=>{
     };
     self.deleteRecursive = (name,callback) => {
         if(Splitty.isUnix()){
-            Shell.exec("rm -rf" + name + " && ls .",callback);
+            Shell.exec("rm -rf " + name + " && ls .",callback);
         }else{
             Shell.exec("RD /S /Q" + value + " && dir .",callback);
         }
@@ -131,6 +131,14 @@ var FileAction = (()=>{
             Shell.exec("type nul > " + value + " && dir .",callback);
         }
     };
+    self.renameFile = (name,oldName,callback) => {
+        if(Splitty.isUnix()){
+            Shell.exec("mv " + oldName + " " + name + " && ls .",callback);
+        }else{
+            //TODO implement Windows version
+        }
+    };
+    
     Splitty.register(self);
     return self;
 })();

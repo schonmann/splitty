@@ -116,8 +116,12 @@ function ItemNode(){
       }
       
       rootSpan.appendChild(spanLabel);
+      
       firstLi.appendChild(rootSpan);
-      addActionButtons(this,rootSpan);
+      if(this.userLabel !== "/")
+      {
+        addActionButtons(this,rootSpan);
+      }
       ul.appendChild(firstLi);
       if(!this.opened) return ul;
       var childLi = document.createElement("li");      
@@ -135,7 +139,7 @@ function addActionButtons(node,label){
     appendActionButtons(node,actionDiv);
     label.appendChild(actionDiv);
     label.onmouseenter = function(){
-      actionDiv.style.display = "";  
+      actionDiv.style.display = "inline-table";  
     };
     label.onmouseleave = function(){
       actionDiv.style.display = "none";  
@@ -164,7 +168,7 @@ function createDeleteFileFolderButton(node){
   deleteFile.onclick = function(){
       Modal.show({
           title:"Delete",
-          body:'Do you want to delete: ' + this.directory + '?',
+          body:'Are you sure to delete ' + this.directory + '?',
           buttons:["Yes","No"],
           callback:function(buttonID){
               var fileName = deleteFile.directory;
@@ -234,33 +238,34 @@ function createAddFileFolderButton(node){
   return createFile;
 }
 function createRenameButton(node){
-  var createFile = createActionButton(node,"rename","ion-edit");
-  createFile.onclick = function(){
+  var renameFile = createActionButton(node,"rename","ion-edit");
+  function getFileName(){
+      var parts = renameFile.directory.split("/");
+      if(node.isDirectory()){
+          parts.pop();
+      }
+      return parts.last();
+  }
+  renameFile.onclick = function(){
       Modal.show({
           title:"Rename File or Folder",
-          body:getHTMLFromCreateFilePopUp(this.directory),
-          icons:[{icon:"ion-document-text",label:"new file"},
-                 {icon:"ion-folder",label:"new folder"},
+          body:"<input type='text' class='splitty-input-text' id='txtRenameFile' placeholder='Name' />",
+          icons:[{icon:"ion-edit",label:"rename"},
                  {icon:"ion-close-circled",style:"color:red;",label:"cancel"}],
           onload:function(){
-              document.getElementById('txtCreateNewFile').focus(); 
+              var textInput = document.getElementById('txtRenameFile');
+              textInput.focus();
+              var fileName = getFileName();
+              textInput.value = fileName;
           },
           callback:function(buttonID){
-              var name = document.getElementById('txtCreateNewFile').value;
-              var fileName = createFile.directory+name;
-              function _callback(){
-                 FileAction.openSelectedFile(fileName); 
-                 FileTree.appendChilds(createFile.node);
-              }
+              var name = document.getElementById('txtRenameFile').value;
+              var fileName = renameFile.directory.replace(getFileName(),"") + name;
               try{
                   switch (buttonID) {
                       case 0:
                           assertFileNameNotEmpty(name);
-                          FileAction.createFile(fileName,_callback);
-                          break;
-                      case 1:
-                          assertFileNameNotEmpty(name);
-                          FileAction.mkdir(fileName,_callback);
+                          FileAction.renameFile(fileName,renameFile.directory,()=>FileTree.appendChilds(renameFile.node.parentNode));
                           break;
                       default:
                           // code
@@ -273,7 +278,7 @@ function createRenameButton(node){
       });
       
   };
-  return createFile;
+  return renameFile;
 }
 function assertFileNameNotEmpty(fileName){
     if(fileName === "") throw "File name cannot be empty";
@@ -285,6 +290,7 @@ function getHTMLFromCreateFilePopUp(rootDirectory){
     html +=" for='txtCreateNewFile'>Path: "+rootDirectory+"</label>";
     return html;
 }
+
 var FileTree = (()=>{
     var self = {};
     var body = document.getElementsByTagName('body')[0];
