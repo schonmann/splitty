@@ -2,7 +2,7 @@ const Splitty = (()=>{
         var actions = [];
         var self = {};
         var configuration = null;
-        var aes_key = "2c6a999e72cacf2b76c4b555787001c6";
+        var aes_key = "";
         self.setKey = (key) => aes_key = key;
         self.register =  (module) => actions.push(module)
         self.startup  = () => {
@@ -55,7 +55,10 @@ const Splitty = (()=>{
             return JSON.parse(plaintext);
         }
         
-        
+        self.setup = ()=>{
+            var params = self.params();
+            self.setKey(params["key"]);
+        }
         self.isWindows = ()=>{
         	return configuration.platform.startsWith("win");
         }

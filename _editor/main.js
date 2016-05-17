@@ -1,4 +1,5 @@
 function startupEditor(){
+        Splitty.setup();
         ace.require("ace/ext/language_tools");
         window.editor = ace.edit("editor");
         window.editor.setTheme("ace/theme/monokai");
@@ -45,17 +46,4 @@ function startupEditor(){
 if (window.top.document.getElementById('rightSideFrame').getAttribute('src') == "")
     window.editor.focus()    
 }
-function genKey(baseKey){
-        return CryptoJS.MD5(CryptoJS.MD5(baseKey).toString()).toString()
-    }
-    
-    var _key = Splitty.params()["key"];
-    if(typeof(_key)!== "undefined"){
-        Splitty.setKey(genKey(_key));
-    }else{
-        var key = prompt("Please enter with access key");
-        if (key != null && key != "") {
-            Splitty.setKey(genKey(key));
-        }
-    }
 startupEditor();

@@ -106,22 +106,14 @@ function ItemNode(){
           this.type = "data";
           spanLabel.addEventListener("click",this.onClick.bind(this));
       }
-      
-      
-      
       if(this.userLabel !== null){
         spanLabel.innerHTML = this.userLabel;    
       }else{
           spanLabel.innerHTML = this.label;
       }
-      
       rootSpan.appendChild(spanLabel);
-      
       firstLi.appendChild(rootSpan);
-      if(this.userLabel !== "/")
-      {
-        addActionButtons(this,rootSpan);
-      }
+      addActionButtons(this,rootSpan);
       ul.appendChild(firstLi);
       if(!this.opened) return ul;
       var childLi = document.createElement("li");      
@@ -150,8 +142,12 @@ function appendActionButtons(node,actionDiv){
     if(node.isDirectory()){
         actionDiv.appendChild(createAddFileFolderButton(node));
     }
-    actionDiv.appendChild(createDeleteFileFolderButton(node));
-    actionDiv.appendChild(createRenameButton(node));
+    if(node.userLabel !== "/")
+    {
+        actionDiv.appendChild(createDeleteFileFolderButton(node));
+        actionDiv.appendChild(createRenameButton(node));    
+    }
+    
 }
 function createActionButton(node,title,icon){
   var actionButton = document.createElement("i");

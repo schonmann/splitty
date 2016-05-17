@@ -19,13 +19,23 @@ var CryptoJS = require("crypto-js");
 var aes_key = guid();
 
 var child;
-const config = {
-    host_path:pwd(),
-    port:"8000",
-    platform:process.platform,
-    workspace:process.cwd(),
-    key:aes_key
-};
+////////////////////////////////////////////////////////////////////////////////////
+//                          Config Splitty Params
+////////////////////////////////////////////////////////////////////////////////////
+var config = null;
+try{
+    config = JSON.parse(fs.readFileSync(".splitty.json", "utf-8"));
+}catch(e){
+    config = {};
+}
+config["host_path"] = pwd();
+config["platform"] = process.platform;
+config["workspace"] = process.cwd();
+if(!isDef(config["port"])) config["port"] = "8000";
+if(!isDef(config["bindAddress"])) config["bindAddress"] = "localhost";
+if(!isDef(config["key"])) config["key"] = aes_key;
+else aes_key = config["key"];
+
 userArgs.forEach((param)=>{
  var map = param.split("=");
  if(map[0] === "key"){
@@ -34,13 +44,9 @@ userArgs.forEach((param)=>{
  }
  config[map[0]] = map[1];
 });
-console.log("       ");
-console.log("Put this key in the splitty editor...");
-console.log("key: " + config.key);
-console.log("To open splitty editor go to");
-var splitty_url = "http://localhost:"+config.port+"/_editor?key="+config.key+"&proportion=0";
-console.log(splitty_url);
-config.key = genKey(aes_key);
+////////////////////////////////////////////////////////////////////////////////////
+
+//config.key = genKey(aes_key);
 
 var server = http.createServer((req, res) => {
   var done = finalhandler(req, res);
@@ -89,7 +95,6 @@ io.on('connection', (socket) => {
         if(filePath.startsWith(config.workspace)){
             path = filePath;
         }        
-        console.log("Open File: " + path);
         fs.readFile(path, "utf-8", (err, data) => {
           if (err)  socket.emit("stderr",encrypt({"stderr":err}));
           else {
@@ -137,13 +142,9 @@ io.on('connection', (socket) => {
     });
     
     socket.on('command',(crypt_data) =>{
-        console.log("comand");
-        console.log(crypt_data);
         var data = decrypt(crypt_data);
         if(typeof(data.command) === "undefined") return;
-        
         var child = exec(data.command, {async:true, silent:true});
-        console.log("exec: "+ data.command)
         child.stdout.on('data', (data) => {
             var buff = new Buffer(data);            
             socket.emit("stdout",encrypt({stdout:buff.toString("utf-8")}));
@@ -153,7 +154,6 @@ io.on('connection', (socket) => {
             socket.emit("stderr",encrypt({stderr:buff.toString("utf-8")}));
         });
     });
-    
     socket.on('config',()=>socket.emit("config",encrypt(config)));
 });
 
@@ -204,8 +204,28 @@ function verifyNodeVersion(){
         process.exit();
     }
 };
+function isDef(obj){
+    return typeof(obj) !== "undefined";
+}
+function listen(port) {
+  console.log(process.pid);
+  server.on("error",(err)=>{
+      config.port = port+1;
+      userArgs.push("port="+(config.port));
+      var instance = spawn("splitty",userArgs);
+      instance.stdout.on('data', (data) => {
+        console.log(data.toString("utf-8"));
+      });
+  });
+  server.listen(port, config["bindAddress"],()=>{
+    console.log(config);
+    console.log("       ");
+    console.log("To open splitty editor browse to");
+    var splitty_url = "http://localhost:"+config.port+"/_editor?key="+config.key+"&proportion=0";
+    console.log(splitty_url);
+    open(splitty_url);
+  });
+};
+listen(parseInt(config["port"]));
 
-console.log(config.platform);
-open(splitty_url);
 
-server.listen(config["port"]);
