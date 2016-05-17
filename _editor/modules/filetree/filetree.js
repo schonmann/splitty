@@ -165,7 +165,7 @@ function createActionButton(node,title,icon){
   return actionButton;
 }
 function createDeleteFileFolderButton(node){
-  var deleteFile = createActionButton(node,"delete file","ion-trash-b");
+  var deleteFile = createActionButton(node,"delete","ion-trash-b");
   deleteFile.onclick = function(){
       Modal.show({
           title:"Delete",
