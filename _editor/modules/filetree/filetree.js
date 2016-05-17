@@ -1,6 +1,7 @@
 function ItemNode(){
   this.label = "";
   this.itemNodes = [];
+  this.type = "";
   this.opened = true;
   this.parentNode = null;
   this.div = null;
@@ -41,14 +42,14 @@ function ItemNode(){
   
   this.root = function(){
       var parent = this;
-      while(parent.parentNode != null){parent = parent.parentNode;}
+      while(parent.parentNode !== null){parent = parent.parentNode;}
       return parent;
   };
     
   this.renderTreeView = function(){
       var root = this.root();
       root.div.innerHTML = "";
-      root.div.appendChild(root.render())
+      root.div.appendChild(root.render());
   };
     
   this.addOnOpenListener = function(callback){
@@ -60,10 +61,19 @@ function ItemNode(){
     
   this.onClick = function(callback){
       if(typeof(this.clickListener)=== "function")
-        this.clickListener(this)
+        this.clickListener(this);
   };
   this.clearChilds = function(){
       this.itemNodes = [];
+  };
+  this.isDirectory = function(){
+      return this.type === "directory";
+  };
+  this.isExecutable = function(){
+      return this.type === "exec";
+  };
+  this.isDataFile = function(){
+      return this.type === "data";
   };
   this.render = function(){      
       var icon = "";
@@ -71,58 +81,45 @@ function ItemNode(){
       var ul = document.createElement("ul");
       ul.setAttribute("style","margin:12px;");      
       var firstLi = document.createElement("li");
+      var rootSpan = document.createElement("span");
+      var spanLabel = document.createElement("span");
+      spanLabel.setAttribute("style","cursor:pointer;");
       if(this.label.indexOf("/") > 0){
-        //directory  
-        var span = document.createElement("span")
-        span.setAttribute("style","margin-right:3px;cursor:pointer;display:inline-table;")
+        this.type = "directory";
+        var span = document.createElement("span");
+        span.setAttribute("style","margin-right:3px;cursor:pointer;display:inline-table;");
         var elI = document.createElement("i");
         if(!this.opened){
             elI.setAttribute("class","ion-arrow-right-b");    
         }else{
             elI.setAttribute("class","ion-arrow-down-b");
         }  
-        
         span.appendChild(elI);
         span.addEventListener("click",this.onOpen.bind(this));
         firstLi.appendChild(span);
-        
-        
       }
       else if(this.label.endsWith("*")){
-          //exec file          
           this.label = this.label.replace("*","");
-          firstLi.addEventListener("click",this.onClick.bind(this));
+          this.type = "exec";
+          spanLabel.addEventListener("click",this.onClick.bind(this));
       }else{
-          //normal file
-          firstLi.addEventListener("click",this.onClick.bind(this));
+          this.type = "data";
+          spanLabel.addEventListener("click",this.onClick.bind(this));
       }
       
       
-      var spanLabel = document.createElement("span");
-      if(this.userLabel != null){
+      
+      if(this.userLabel !== null){
         spanLabel.innerHTML = this.userLabel;    
       }else{
           spanLabel.innerHTML = this.label;
       }
-      spanLabel.setAttribute("style","cursor:pointer;")
       
-      firstLi.appendChild(spanLabel);
-      if(this.label.indexOf("/") > 0){
-          //add create file icon button
-          var createFile = createAddFileFolderButton(this);
-          
-          firstLi.appendChild(createFile);
-          firstLi.onmouseenter = function(){
-            createFile.style.display = "";  
-          };
-          firstLi.onmouseleave = function(){
-            createFile.style.display = "none";  
-          };
-          
-      }
+      rootSpan.appendChild(spanLabel);
+      firstLi.appendChild(rootSpan);
+      addActionButtons(this,rootSpan);
       ul.appendChild(firstLi);
       if(!this.opened) return ul;
-     
       var childLi = document.createElement("li");      
       for(var i = 0; i< this.itemNodes.length; i++){
           var node = this.itemNodes[i];
@@ -132,40 +129,52 @@ function ItemNode(){
       return ul;
   };
 }
+function addActionButtons(node,label){
+    var actionDiv = document.createElement("span");
+    actionDiv.style.display = "none";
+    appendActionButtons(node,actionDiv);
+    label.appendChild(actionDiv);
+    label.onmouseenter = function(){
+      actionDiv.style.display = "";  
+    };
+    label.onmouseleave = function(){
+      actionDiv.style.display = "none";  
+    };
+}
 
+function appendActionButtons(node,actionDiv){
+    if(node.isDirectory()){
+        actionDiv.appendChild(createAddFileFolderButton(node));
+    }
+    actionDiv.appendChild(createDeleteFileFolderButton(node));
+}
+function createActionButton(title,icon){
+  var actionButton = document.createElement("i");
+  actionButton.setAttribute("class",icon);
+  actionButton.style.marginLeft = '8px';
+  actionButton.title=title;
+  actionButton.style.fontSize = "17px";
+  return actionButton;
+}
 function createDeleteFileFolderButton(node){
-  var deleteFile = document.createElement("i");
-  deleteFile.setAttribute("class","ion-trash-a");
-  deleteFile.style.marginLeft = '10px';
-  deleteFile.style.color = "red";
-  deleteFile.style.display = "none";
+  var deleteFile = createActionButton("delete file","ion-trash-b");
   deleteFile.directory = node.toPath();
   deleteFile.node = node;
   deleteFile.onclick = function(){
       Modal.show({
           title:"Delete",
-          body:'Delete ' + this.directory + '?',
+          body:'Do you want to delete: ' + this.directory + '?',
           buttons:["Yes","No"],
-          onload:function(){
-              document.getElementById('txtCreateNewFile').focus(); 
-          },
           callback:function(buttonID){
-              var name = document.getElementById('txtCreateNewFile').value;
-              var fileName = deleteFile.directory+name;
-              function _callback(){
-                 FileAction.openSelectedFile(fileName);
-                 FileTree.close();
-                 FileTree.open();
-              }
+              var fileName = deleteFile.directory;
               try{
                   switch (buttonID) {
                       case 0:
-                          assertFileNameNotEmpty(name);
-                          CreateFileAction.createFile(fileName,_callback);
-                          break;
-                      case 1:
-                          assertFileNameNotEmpty(name);
-                          CreateFileAction.mkdir(fileName,_callback);
+                          if(deleteFile.node.isDirectory()){
+                              FileAction.deleteRecursive(fileName,()=> FileTree.appendChilds(deleteFile.node.parentNode));
+                          }else{
+                              FileAction.delete(fileName,()=> FileTree.appendChilds(deleteFile.node.parentNode));
+                          }
                           break;
                       default:
                           // code
@@ -182,11 +191,7 @@ function createDeleteFileFolderButton(node){
 }
 
 function createAddFileFolderButton(node){
-  var createFile = document.createElement("i");
-  createFile.setAttribute("class","ion-plus-circled");
-  createFile.style.marginLeft = '10px';
-  createFile.style.color = "green";
-  createFile.style.display = "none";
+  var createFile = createActionButton("create file","ion-plus");
   createFile.directory = node.toPath();
   createFile.node = node;
   createFile.onclick = function(){
@@ -205,18 +210,16 @@ function createAddFileFolderButton(node){
               function _callback(){
                  FileAction.openSelectedFile(fileName); 
                  FileTree.appendChilds(createFile.node);
-                 //FileTree.close();
-                 //FileTree.open();
               }
               try{
                   switch (buttonID) {
                       case 0:
                           assertFileNameNotEmpty(name);
-                          CreateFileAction.createFile(fileName,_callback);
+                          FileAction.createFile(fileName,_callback);
                           break;
                       case 1:
                           assertFileNameNotEmpty(name);
-                          CreateFileAction.mkdir(fileName,_callback);
+                          FileAction.mkdir(fileName,_callback);
                           break;
                       default:
                           // code

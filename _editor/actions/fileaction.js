@@ -107,6 +107,30 @@ var FileAction = (()=>{
         }
     });
     
+    self.mkdir = (name,callback) => {
+        Shell.exec("mkdir " + name + " && ls",callback);
+    };
+    self.delete = (name,callback) => {
+        if(Splitty.isUnix()){
+            Shell.exec("rm " + name + " && ls .",callback);
+        }else{
+            Shell.exec("del " + value + " && dir .",callback);
+        }
+    };
+    self.deleteRecursive = (name,callback) => {
+        if(Splitty.isUnix()){
+            Shell.exec("rm -rf" + name + " && ls .",callback);
+        }else{
+            Shell.exec("RD /S /Q" + value + " && dir .",callback);
+        }
+    };
+    self.createFile = (name,callback) => {
+        if(Splitty.isUnix()){
+            Shell.exec("touch " + name + " && ls .",callback);
+        }else{
+            Shell.exec("type nul > " + value + " && dir .",callback);
+        }
+    };
     Splitty.register(self);
     return self;
 })();
