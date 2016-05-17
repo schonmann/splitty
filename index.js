@@ -206,12 +206,6 @@ function verifyNodeVersion(){
 };
 
 console.log(config.platform);
-if(isOSX()){
-    exec("open \"" + splitty_url + "\"", {async:true, silent:true});    
-}else if(isWindows()){
-    exec("explorer \"" + splitty_url + "\"", {async:true, silent:true});    
-}else{
-    open(splitty_url);
-}
+open(splitty_url);
 
 server.listen(config["port"]);
