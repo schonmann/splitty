@@ -84,7 +84,7 @@ function ItemNode(){
       var rootSpan = document.createElement("span");
       var spanLabel = document.createElement("span");
       spanLabel.setAttribute("style","cursor:pointer;");
-      if(this.label.indexOf("/") > 0){
+      if(this.label.indexOf("/") >= 0){
         this.type = "directory";
         var span = document.createElement("span");
         span.setAttribute("style","margin-right:3px;cursor:pointer;display:inline-table;");
@@ -147,6 +147,7 @@ function appendActionButtons(node,actionDiv){
         actionDiv.appendChild(createAddFileFolderButton(node));
     }
     actionDiv.appendChild(createDeleteFileFolderButton(node));
+    actionDiv.appendChild(createRenameButton(node));
 }
 function createActionButton(node,title,icon){
   var actionButton = document.createElement("i");
@@ -191,10 +192,52 @@ function createDeleteFileFolderButton(node){
 }
 
 function createAddFileFolderButton(node){
-  var createFile = createActionButton(node,"create file","ion-plus");
+  var createFile = createActionButton(node,"new","ion-plus");
   createFile.onclick = function(){
       Modal.show({
           title:"Create File or Folder",
+          body:getHTMLFromCreateFilePopUp(this.directory),
+          icons:[{icon:"ion-document-text",label:"new file"},
+                 {icon:"ion-folder",label:"new folder"},
+                 {icon:"ion-close-circled",style:"color:red;",label:"cancel"}],
+          onload:function(){
+              document.getElementById('txtCreateNewFile').focus(); 
+          },
+          callback:function(buttonID){
+              var name = document.getElementById('txtCreateNewFile').value;
+              var fileName = createFile.directory+name;
+              function _callback(){
+                 FileAction.openSelectedFile(fileName); 
+                 FileTree.appendChilds(createFile.node);
+              }
+              try{
+                  switch (buttonID) {
+                      case 0:
+                          assertFileNameNotEmpty(name);
+                          FileAction.createFile(fileName,_callback);
+                          break;
+                      case 1:
+                          assertFileNameNotEmpty(name);
+                          FileAction.mkdir(fileName,_callback);
+                          break;
+                      default:
+                          // code
+                  }
+              }catch(e){
+                  alert(e);
+                  return -1;
+              }
+          }
+      });
+      
+  };
+  return createFile;
+}
+function createRenameButton(node){
+  var createFile = createActionButton(node,"rename","ion-edit");
+  createFile.onclick = function(){
+      Modal.show({
+          title:"Rename File or Folder",
           body:getHTMLFromCreateFilePopUp(this.directory),
           icons:[{icon:"ion-document-text",label:"new file"},
                  {icon:"ion-folder",label:"new folder"},
