@@ -159,6 +159,7 @@ function createActionButton(node,title,icon){
   actionButton.style.marginLeft = '8px';
   actionButton.title=title;
   actionButton.style.fontSize = "17px";
+  actionButton.style.cursor = "pointer";
   actionButton.directory = node.toPath();
   actionButton.node = node;
   return actionButton;
@@ -168,8 +169,9 @@ function createDeleteFileFolderButton(node){
   deleteFile.onclick = function(){
       Modal.show({
           title:"Delete",
-          body:'Are you sure to delete ' + this.directory + '?',
-          buttons:["Yes","No"],
+          body:'Are you sure to delete <b>' + this.directory + '</b> ?',
+          icons:[{icon:"ion-android-delete",label:"delete"},
+                 {icon:"ion-close-circled",style:"color:red;",label:"cancel"}],
           callback:function(buttonID){
               var fileName = deleteFile.directory;
               try{
@@ -199,7 +201,7 @@ function createAddFileFolderButton(node){
   var createFile = createActionButton(node,"new","ion-plus");
   createFile.onclick = function(){
       Modal.show({
-          title:"Create File or Folder",
+          title:"New",
           body:getHTMLFromCreateFilePopUp(this.directory),
           icons:[{icon:"ion-document-text",label:"new file"},
                  {icon:"ion-folder",label:"new folder"},
@@ -248,7 +250,7 @@ function createRenameButton(node){
   }
   renameFile.onclick = function(){
       Modal.show({
-          title:"Rename File or Folder",
+          title:"Rename",
           body:"<input type='text' class='splitty-input-text' id='txtRenameFile' placeholder='Name' />",
           icons:[{icon:"ion-edit",label:"rename"},
                  {icon:"ion-close-circled",style:"color:red;",label:"cancel"}],
