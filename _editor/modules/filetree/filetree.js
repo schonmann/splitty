@@ -148,18 +148,18 @@ function appendActionButtons(node,actionDiv){
     }
     actionDiv.appendChild(createDeleteFileFolderButton(node));
 }
-function createActionButton(title,icon){
+function createActionButton(node,title,icon){
   var actionButton = document.createElement("i");
   actionButton.setAttribute("class",icon);
   actionButton.style.marginLeft = '8px';
   actionButton.title=title;
   actionButton.style.fontSize = "17px";
+  actionButton.directory = node.toPath();
+  actionButton.node = node;
   return actionButton;
 }
 function createDeleteFileFolderButton(node){
-  var deleteFile = createActionButton("delete file","ion-trash-b");
-  deleteFile.directory = node.toPath();
-  deleteFile.node = node;
+  var deleteFile = createActionButton(node,"delete file","ion-trash-b");
   deleteFile.onclick = function(){
       Modal.show({
           title:"Delete",
@@ -191,9 +191,7 @@ function createDeleteFileFolderButton(node){
 }
 
 function createAddFileFolderButton(node){
-  var createFile = createActionButton("create file","ion-plus");
-  createFile.directory = node.toPath();
-  createFile.node = node;
+  var createFile = createActionButton(node,"create file","ion-plus");
   createFile.onclick = function(){
       Modal.show({
           title:"Create File or Folder",
