@@ -109,50 +109,7 @@ function ItemNode(){
       firstLi.appendChild(spanLabel);
       if(this.label.indexOf("/") > 0){
           //add create file icon button
-          var createFile = document.createElement("i");
-          createFile.setAttribute("class","ion-plus-circled");
-          createFile.style.marginLeft = '10px';
-          createFile.style.display = "none";
-          createFile.directory = this.toPath();
-          createFile.onclick = function(){
-              Modal.show({
-                  title:"Create File or Folder",
-                  body:getHTMLFromCreateFilePopUp(this.directory),
-                  icons:[{icon:"ion-document-text",label:"new file"},
-                         {icon:"ion-folder",label:"new folder"},
-                         {icon:"ion-close-circled",style:"color:red;",label:"cancel"}],
-                  onload:function(){
-                      document.getElementById('txtCreateNewFile').focus(); 
-                  },
-                  callback:function(buttonID){
-                      var name = document.getElementById('txtCreateNewFile').value;
-                      var fileName = createFile.directory+name;
-                      function _callback(){
-                         FileAction.openSelectedFile(fileName); 
-                         FileTree.close();
-                         FileTree.open();
-                      }
-                      try{
-                          switch (buttonID) {
-                              case 0:
-                                  assertFileNameNotEmpty(name);
-                                  CreateFileAction.createFile(fileName,_callback);
-                                  break;
-                              case 1:
-                                  assertFileNameNotEmpty(name);
-                                  CreateFileAction.mkdir(fileName,_callback);
-                                  break;
-                              default:
-                                  // code
-                          }
-                      }catch(e){
-                          alert(e);
-                          return -1;
-                      }
-                  }
-              });
-              
-          };
+          var createFile = createAddFileFolderButton(this);
           
           firstLi.appendChild(createFile);
           firstLi.onmouseenter = function(){
@@ -174,6 +131,105 @@ function ItemNode(){
       ul.appendChild(childLi);
       return ul;
   };
+}
+
+function createDeleteFileFolderButton(node){
+  var deleteFile = document.createElement("i");
+  deleteFile.setAttribute("class","ion-trash-a");
+  deleteFile.style.marginLeft = '10px';
+  deleteFile.style.color = "red";
+  deleteFile.style.display = "none";
+  deleteFile.directory = node.toPath();
+  deleteFile.node = node;
+  deleteFile.onclick = function(){
+      Modal.show({
+          title:"Delete",
+          body:'Delete ' + this.directory + '?',
+          buttons:["Yes","No"],
+          onload:function(){
+              document.getElementById('txtCreateNewFile').focus(); 
+          },
+          callback:function(buttonID){
+              var name = document.getElementById('txtCreateNewFile').value;
+              var fileName = deleteFile.directory+name;
+              function _callback(){
+                 FileAction.openSelectedFile(fileName);
+                 FileTree.close();
+                 FileTree.open();
+              }
+              try{
+                  switch (buttonID) {
+                      case 0:
+                          assertFileNameNotEmpty(name);
+                          CreateFileAction.createFile(fileName,_callback);
+                          break;
+                      case 1:
+                          assertFileNameNotEmpty(name);
+                          CreateFileAction.mkdir(fileName,_callback);
+                          break;
+                      default:
+                          // code
+                  }
+              }catch(e){
+                  alert(e);
+                  return -1;
+              }
+          }
+      });
+      
+  };
+  return deleteFile;
+}
+
+function createAddFileFolderButton(node){
+  var createFile = document.createElement("i");
+  createFile.setAttribute("class","ion-plus-circled");
+  createFile.style.marginLeft = '10px';
+  createFile.style.color = "green";
+  createFile.style.display = "none";
+  createFile.directory = node.toPath();
+  createFile.node = node;
+  createFile.onclick = function(){
+      Modal.show({
+          title:"Create File or Folder",
+          body:getHTMLFromCreateFilePopUp(this.directory),
+          icons:[{icon:"ion-document-text",label:"new file"},
+                 {icon:"ion-folder",label:"new folder"},
+                 {icon:"ion-close-circled",style:"color:red;",label:"cancel"}],
+          onload:function(){
+              document.getElementById('txtCreateNewFile').focus(); 
+          },
+          callback:function(buttonID){
+              var name = document.getElementById('txtCreateNewFile').value;
+              var fileName = createFile.directory+name;
+              function _callback(){
+                 FileAction.openSelectedFile(fileName); 
+                 FileTree.appendChilds(createFile.node);
+                 //FileTree.close();
+                 //FileTree.open();
+              }
+              try{
+                  switch (buttonID) {
+                      case 0:
+                          assertFileNameNotEmpty(name);
+                          CreateFileAction.createFile(fileName,_callback);
+                          break;
+                      case 1:
+                          assertFileNameNotEmpty(name);
+                          CreateFileAction.mkdir(fileName,_callback);
+                          break;
+                      default:
+                          // code
+                  }
+              }catch(e){
+                  alert(e);
+                  return -1;
+              }
+          }
+      });
+      
+  };
+  return createFile;
 }
 function assertFileNameNotEmpty(fileName){
     if(fileName === "") throw "File name cannot be empty";
@@ -215,12 +271,12 @@ var FileTree = (()=>{
     
     self.appendChilds = (node) => {
         var command = "ls -F " + node.toPath();
-           Shell.exec(command,(stdout) => {
-               if(typeof(stdout) === "string"){
-                  node.clearChilds();
-                  node = self.compileTree(node,stdout.split(self.separator));
-                  node.renderTreeView()    
-               }
+        Shell.exec(command,(stdout) => {
+           if(typeof(stdout) === "string"){
+              node.clearChilds();
+              node = self.compileTree(node,stdout.split(self.separator));
+              node.renderTreeView()    
+           }
         });
     };
     
