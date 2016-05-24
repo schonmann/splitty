@@ -87,13 +87,13 @@ var TerminalAction = (()=>{
         return tokens;
     };
     
-    self.hasAlias = (alias) => Splitty.hasGlobal("alias$$"+alias);
-    self.getAlias = (alias) => Splitty.global("alias$$"+alias);
+    self.hasAlias = (alias) => Splitty.hasAlias(alias);
+    self.getAlias = (alias) => Splitty.getAlias(alias);
     
     
     self.defineAlias = (value) => {
         var alias = value.replace("alias:","").trim().split("=");
-        Splitty.global("alias$$"+alias[0].trim(),alias[1].trim());
+        Splitty.addAlias(alias[0].trim(),alias[1].trim());
     };
     self.onkeyup = (value) => {};
     

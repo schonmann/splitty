@@ -53,9 +53,6 @@ userArgs.forEach((param)=>{
 });
 
 ////////////////////////////////////////////////////////////////////////////////////
-
-//config.key = genKey(aes_key);
-
 var server = http.createServer((req, res) => {
   var done = finalhandler(req, res);
   if(isWebEditor(req)){      
@@ -69,22 +66,6 @@ var server = http.createServer((req, res) => {
   }
 });
 var io = require('socket.io')(server);
-
-function isWebEditor(request){        
-    return request.url.indexOf("_editor") > 0;
-}
-function isHelp(request){        
-    return request.url.indexOf("_help") > 0;
-}
-function isTerminal(request){
-   return request.url.indexOf("_terminal") > 0;
-}
-
-function getFileSeparator(){
-    var isWin = /^win/.test(process.platform);
-    if(isWin) return "\r\n";
-    return "\n";
-}
 
 io.on('connection', (socket) => {
     
@@ -159,7 +140,6 @@ io.on('connection', (socket) => {
     
     socket.on('command',(crypt_data) =>{
         var data = decrypt(crypt_data);
-        console.log(data.command);
         if(typeof(data.command) === "undefined") return;
         var child = exec(data.command, {async:true, silent:true});
         child.stdout.on('data', (data) => {
@@ -225,7 +205,7 @@ function isDef(obj){
     return typeof(obj) !== "undefined";
 }
 function listen(port) {
-  console.log(process.pid);
+  console.log("PID: " + process.pid);
   server.on("error",(err)=>{
       config.port = port+1;
       userArgs.push("port="+(config.port));
@@ -243,6 +223,21 @@ function listen(port) {
     open(splitty_url);
   });
 };
+function isWebEditor(request){        
+    return request.url.indexOf("_editor") > 0;
+}
+function isHelp(request){        
+    return request.url.indexOf("_help") > 0;
+}
+function isTerminal(request){
+   return request.url.indexOf("_terminal") > 0;
+}
+
+function getFileSeparator(){
+    var isWin = /^win/.test(process.platform);
+    if(isWin) return "\r\n";
+    return "\n";
+}
 listen(parseInt(config["port"]));
 
 

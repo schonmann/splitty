@@ -9,6 +9,7 @@ const Splitty = (()=>{
         self.startup  = () => {
             executeActions();
             openUserDefinedFiles();
+            setupUserDefinedAliases();
         }
         function executeActions(){
             actions.each((module)=>{
@@ -17,6 +18,15 @@ const Splitty = (()=>{
                 }
             });
         };
+        function setupUserDefinedAliases(){
+            if(configuration["editor"] && configuration["editor"]["aliases"]){
+                for(var alias in configuration["editor"]["aliases"]){
+                    if(!self.hasAlias(alias)){
+                        self.addAlias(alias,configuration["editor"]["aliases"][alias]);
+                    }
+                };
+            }
+        }
         function openUserDefinedFiles(){
             if(!_socket)throw "Socket not defined to Splitty Class, please configure socket object by using setSocket method from Splitty class.";
             if(configuration["files"] && configuration["files"]["toOpen"]){
@@ -86,8 +96,6 @@ const Splitty = (()=>{
         	return configuration.platform.startsWith("win");
         };
         self.emit = (channel,data) => {
-            console.log("ola: " + channel);
-            console.log(_socket);
             _socket.emit(channel,self.encrypt(data));
         };
         self.receive = (channel,callback) => {
@@ -95,6 +103,15 @@ const Splitty = (()=>{
                var plainData = self.decrypt(data); 
                callback(plainData);
             });
+        };
+        self.addAlias = (alias, command) => {
+            self.global("alias$$"+alias,command);
+        };
+        self.getAlias = (alias) => {
+            return self.global("alias$$"+alias);
+        };
+        self.hasAlias = (alias) => {
+            return self.hasGlobal("alias$$"+alias)
         };
         self.isUnix = ()=>{
         	return !self.isWindows();
