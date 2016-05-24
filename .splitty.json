@@ -1,0 +1,9 @@
+{
+    "editor":{
+        "aliases":{
+            "gs":"git status .",
+            "gc":"git commit -am $1",
+            "push":"git push origin master"
+        }
+    }
+}
