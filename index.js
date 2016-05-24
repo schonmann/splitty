@@ -36,14 +36,22 @@ if(!isDef(config["bindAddress"])) config["bindAddress"] = "localhost";
 if(!isDef(config["key"])) config["key"] = aes_key;
 else aes_key = config["key"];
 
+if(!config["files"]) config["files"] = {};
+
 userArgs.forEach((param)=>{
- var map = param.split("=");
- if(map[0] === "key"){
-     aes_key = map[1];
-     map[1] = aes_key;
+ if(param.indexOf("=") > 0){    
+     var map = param.split("=");
+     if(map[0] === "key"){
+         aes_key = map[1];
+         map[1] = aes_key;
+     }
+     config[map[0]] = map[1];
+ }else{
+     if(!config["files"]["toOpen"]) config["files"]["toOpen"] = [];
+     config["files"]["toOpen"].push(param);
  }
- config[map[0]] = map[1];
 });
+
 ////////////////////////////////////////////////////////////////////////////////////
 
 //config.key = genKey(aes_key);
@@ -79,6 +87,14 @@ function getFileSeparator(){
 }
 
 io.on('connection', (socket) => {
+    
+    socket.on('deleteConfigSections',(crypto_cnf) => {
+        var configs = decrypt(crypto_cnf);
+        configs.forEach((cnf)=>{
+            delete config[cnf]
+        });
+    });
+    
     socket.on('fileSave',(crypt_data) => {
         var data = decrypt(crypt_data);
         var path = config.workspace + data.filePath;
@@ -143,6 +159,7 @@ io.on('connection', (socket) => {
     
     socket.on('command',(crypt_data) =>{
         var data = decrypt(crypt_data);
+        console.log(data.command);
         if(typeof(data.command) === "undefined") return;
         var child = exec(data.command, {async:true, silent:true});
         child.stdout.on('data', (data) => {

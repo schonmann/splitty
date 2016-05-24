@@ -108,32 +108,35 @@ var FileAction = (()=>{
     });
     
     self.mkdir = (name,callback) => {
-        Shell.exec("mkdir " + name + " && ls",callback);
+        Shell.exec("mkdir " + name + " && ls | head -c 10",callback);
     };
     self.delete = (name,callback) => {
         if(Splitty.isUnix()){
-            Shell.exec("rm " + name + " && ls .",callback);
+            Shell.exec("rm " + name + " && ls . | head -c 10",callback);
         }else{
             Shell.exec("del " + value + " && dir .",callback);
         }
     };
     self.deleteRecursive = (name,callback) => {
         if(Splitty.isUnix()){
-            Shell.exec("rm -rf " + name + " && ls .",callback);
+            Shell.exec("rm -rf " + name + " && ls . | head -c 10",callback);
         }else{
             Shell.exec("RD /S /Q" + value + " && dir .",callback);
         }
     };
     self.createFile = (name,callback) => {
+       self.touch(name,callback);
+    };
+    self.touch = (name,callback) => {
         if(Splitty.isUnix()){
-            Shell.exec("touch " + name + " && ls .",callback);
+            Shell.exec("touch " + name + " && ls . | head -c 10",callback);
         }else{
             Shell.exec("type nul > " + value + " && dir .",callback);
         }
     };
     self.renameFile = (name,oldName,callback) => {
         if(Splitty.isUnix()){
-            Shell.exec("mv " + oldName + " " + name + " && ls .",callback);
+            Shell.exec("mv " + oldName + " " + name + " && ls . | head -c 10",callback);
         }else{
             //TODO implement Windows version
         }
