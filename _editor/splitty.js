@@ -4,12 +4,19 @@ const Splitty = (()=>{
         var configuration = null;
         var aes_key = "";
         var _socket = null;
+        var _editor = null;
         self.setKey = (key) => aes_key = key;
         self.register =  (module) => actions.push(module)
         self.startup  = () => {
             executeActions();
             openUserDefinedFiles();
             setupUserDefinedAliases();
+            setupAceEditorOptions();
+        }
+        function setupAceEditorOptions(){
+            if(configuration["editor"] && configuration["editor"]["ace"] && configuration["editor"]["ace"]["editorOptions"]){
+                _editor.setOptions(configuration["editor"]["ace"]["editorOptions"]);
+            }
         }
         function executeActions(){
             actions.each((module)=>{
@@ -88,6 +95,7 @@ const Splitty = (()=>{
             }
         };
         self.setSocket = (socket) => _socket = socket;
+        self.setEditor = (editor) => _editor = editor;
         self.setup = ()=>{
             var params = self.params();
             self.setKey(params["key"]);

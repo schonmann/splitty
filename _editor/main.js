@@ -21,6 +21,7 @@ function startupEditor(){
             });           
         });
         Splitty.setSocket(window.socket);
+        Splitty.setEditor(window.editor);
         FileUtils.setup(window.editor,window.socket);        
         Shell.setup(window.editor,window.socket);
         Shortcut.setup(window.editor);

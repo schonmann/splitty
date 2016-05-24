@@ -34,6 +34,7 @@ var FileUtils = (function(){
             fd.current = true;
             fd.dirty = false;
             fd.session = ace.createEditSession(fd.data,getMode(fd.extension));
+            try{fd.session.setOptions(Splitty.config()["editor"]["ace"]["sessionOptions"]);}catch(e){}
             fd.session.on('change',needToSave);
             currentFile = openedFiles.length - 1;
             self.openInEditor(fd);

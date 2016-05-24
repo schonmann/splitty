@@ -4,6 +4,18 @@
             "gs":"git status .",
             "gc":"git commit -am $1",
             "push":"git push origin master"
+        },
+        "ace":{
+            "_comments":"for more information go to: https://github.com/ajaxorg/ace/wiki/Configuring-Ace",
+            "editorOptions":{
+                "theme":"ace/theme/monokai",
+                "cursorStyle":"ace",
+                "animatedScroll":true,
+                "printMargin":false
+            },
+            "sessionOptions":{
+                "tabSize":"2"    
+            }
         }
     }
 }
