@@ -114,14 +114,14 @@ var FileAction = (()=>{
         if(Splitty.isUnix()){
             Shell.exec("rm " + name + " && ls . | head -c 10",callback);
         }else{
-            Shell.exec("del " + value + " && dir .",callback);
+            Shell.exec("del " + name + " && dir .",callback);
         }
     };
     self.deleteRecursive = (name,callback) => {
         if(Splitty.isUnix()){
             Shell.exec("rm -rf " + name + " && ls . | head -c 10",callback);
         }else{
-            Shell.exec("RD /S /Q" + value + " && dir .",callback);
+            Shell.exec("RD /S /Q" + name + " && dir .",callback);
         }
     };
     self.createFile = (name,callback) => {
@@ -131,7 +131,7 @@ var FileAction = (()=>{
         if(Splitty.isUnix()){
             Shell.exec("touch " + name + " && ls . | head -c 10",callback);
         }else{
-            Shell.exec("type nul > " + value + " && dir .",callback);
+            Shell.exec("type nul > " + name + " && dir .",callback);
         }
     };
     self.renameFile = (name,oldName,callback) => {
